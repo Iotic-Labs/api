@@ -1,0 +1,26 @@
+# run: buf generate
+# see https://github.com/johanbrandhorst/grpc-gateway-boilerplate/blob/master/buf.gen.yaml
+version: v1beta1
+plugins:
+  - name: go
+    out: gen/go
+    opt: paths=source_relative
+  - name: go-grpc
+    out: gen/go
+    opt: paths=source_relative,require_unimplemented_servers=false
+  - name: grpc-gateway
+    out: gen/go
+    opt: paths=source_relative
+  - name: python
+    out: gen/python
+  - name: python_grpc
+    out: gen/python
+  - name: js
+    out: gen/nodejs
+    opt: import_style=commonjs,binary
+  - name: grpc-web
+    out: gen/nodejs
+    path: nodejs/node_modules/.bin/protoc-gen-ts
+    opt:
+      - import_style=commonjs,binary
+      - service=grpc-web

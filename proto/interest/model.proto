@@ -1,0 +1,177 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol defintions (interests)
+
+
+syntax = "proto3";
+
+import "common/model.proto";
+import "feed/model.proto";
+import "google/protobuf/wrappers.proto";
+
+package interest;
+
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/interest";
+
+// An interest is the relationship between a Twin and a Feed. For example, creating
+// an interest on (following) a Feed results in any data shared on said Feed to be forwarded to
+// the associated Twin. Interests can be revoked either by the subscriber or provider and there
+// may only be one interest between any unique Twin and Feed combination.
+message Interest {
+  // FollowedFeed fully identify the (local or remote) feed to follow.
+  message FollowedFeed {
+    // Followed feed identifier
+    feed.Feed feed = 1;
+    // Feed remote host identifier (If not specified, the Interest is taken to be in scope of the host from which a request is made.)
+    common.HostID hostId = 2;
+  }
+
+  // Follower twin unique identifier.
+  common.TwinID followerTwinId = 2;
+
+  // a reference to the interested feed
+  FollowedFeed followedFeed = 3;
+
+}
+
+// CreateInterestRequest is used to create an interest between a twin and a feed.
+message CreateInterestRequest {
+  // CreateInterestRequest payload.
+  message Payload {
+    Interest interest = 2;
+  }
+  // CreateInterestRequest mandatory arguments.
+  message Arguments {
+    // Follower twin unique identifier
+    common.TwinID twinId = 1;
+  }
+
+  // CreateInterestRequest headers
+  common.Headers headers = 1;
+  // CreateInterestRequest arguments
+  Arguments args = 2;
+  // CreateInterestRequest payload
+  Payload payload = 3;
+}
+
+// CreateInterestResponse describes a successfully created interest.
+message CreateInterestResponse {
+  // CreateInterestResponse payload.
+  message Payload {
+    // Created interest
+    Interest interest = 2;
+
+    // whether the interest exists already (creating an existing interest is idempotent).
+    bool alreadyCreated = 3;
+  }
+  // CreateInterestResponse headers
+  common.Headers headers = 1;
+  // CreateInterestResponse payload
+  Payload payload = 2;
+}
+
+// ---------------------------------------
+
+// ListAllInterestsRequest is used to list all interests initiated by a given twin.
+message ListAllInterestsRequest {
+  // ListAllInterestsRequest mandatory arguments.
+  message Arguments {
+    // Follower twin unique identifier
+    common.TwinID twinId = 1;
+  }
+
+  // ListAllInterestsRequest headers
+  common.Headers headers = 1;
+  // ListAllInterestsRequest arguments
+  Arguments args = 2;
+  // Limit the results according to the value (optional: when not supplied, assume no default limits required - platform specific)
+  common.Range range = 20;
+}
+
+
+// ListAllInterestsResponse describes all the interest initiated by the given twin.
+message ListAllInterestsResponse {
+  // ListAllInterestsResponse payload.
+  message Payload {
+    repeated Interest interests = 1;
+  }
+  // ListAllInterestsResponse headers
+  common.Headers headers = 1;
+  // ListAllInterestsResponse payload.
+  Payload payload = 2;
+}
+
+// ---------------------------------------
+
+// FetchInterestRequest is used to initiate a stream to get the feed data shared on a given interest.
+message FetchInterestRequest {
+  // FetchInterestRequest mandatory arguments.
+  message Arguments {
+    // The interest
+    Interest interest = 1;
+  }
+  // FetchInterestRequest headers
+  common.Headers headers = 1;
+  // FetchInterestRequest arguments
+  Arguments args = 2;
+  // whether to fetch the last stored value if available (false by default)
+  google.protobuf.BoolValue fetchLastStored = 3;
+}
+
+// FetchInterestResponse describes a feed value shared on a given interest.
+message FetchInterestResponse {
+  // FetchInterestResponse payload.
+  message Payload {
+    // The interest
+    Interest interest = 1;
+    // The shared data
+    common.FeedData feedData = 2;
+  }
+  // FetchInterestResponse headers
+  common.Headers headers = 1;
+  // FetchInterestResponse payload
+  Payload payload = 2;
+}
+
+// ---------------------------------------
+
+// FetchLastStoredRequest is used to fetch the last stored value on a given interest if available.
+message FetchLastStoredRequest {
+  // FetchLastStoredRequest mandatory arguments.
+  message Arguments {
+    // The interest
+    Interest interest = 1;
+  }
+  // FetchLastStoredRequest headers
+  common.Headers headers = 1;
+  // FetchLastStoredRequest arguments
+  Arguments args = 2;
+}
+
+// ---------------------------------------
+
+// DeleteInterestRequest is used to delete an interest.
+message DeleteInterestRequest {
+  // DeleteInterestRequest mandatory arguments.
+  message Arguments {
+    // The interest
+    Interest interest = 1;
+  }
+  // DeleteInterestRequest headers
+  common.Headers headers = 1;
+  // DeleteInterestRequest args
+  Arguments args = 2;
+}
+
+// DeleteInterestResponse describes a deleted interest.
+message DeleteInterestResponse {
+  // DeleteInterestResponse payload.
+  message Payload {
+    // The deleted interest.
+    Interest interest = 1;
+  }
+  // DeleteInterestResponse headers
+  common.Headers headers = 1;
+  // DeleteInterestResponse payload
+  Payload payload = 2;
+}

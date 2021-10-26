@@ -1,0 +1,9 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol defintions (common)
+
+
+syntax = "proto3";
+package common;
+
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/common";

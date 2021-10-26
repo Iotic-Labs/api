@@ -1,0 +1,38 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// QAPI service definitions (twins)
+
+
+syntax = "proto3";
+
+import "twin/model.proto";
+
+package twin;
+
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/twin";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// TwinAPI enables creation and management of Iotics twins.
+service TwinAPI {
+
+    // CreateTwin creates a twin.
+    rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
+
+    // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
+    // The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
+    // described in the payload)
+    rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
+
+    // DeleteTwin deletes a twin.
+    rpc DeleteTwin(DeleteTwinRequest) returns (DeleteTwinResponse) {}
+
+    // UpdateTwin updates a twin (partial update).
+    rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
+
+    // Describes a twin.
+    rpc DescribeTwin(twin.DescribeTwinRequest) returns (twin.DescribeTwinResponse) {}
+
+    // List all twins.
+    rpc ListAllTwins(twin.ListAllTwinsRequest) returns (twin.ListAllTwinsResponse) {}
+}

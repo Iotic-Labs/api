@@ -1,0 +1,27 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol defintions (search)
+
+
+syntax = "proto3";
+
+import "common/model.proto";
+import "search/model.proto";
+
+package search;
+
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/search";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SearchAPI provides a set of services to run synchronous and asynchronous search.
+service SearchAPI {
+  // Send a search request. Results are expected asynchronously.
+  rpc DispatchSearchRequest(search.SearchRequest) returns (search.DispatchSearchResponse) {}
+
+  // Run a synchronous search based on a user timeout.
+  rpc SynchronousSearch(search.SearchRequest) returns (stream search.SearchResponse) {}
+
+  // Receive all search responses associated to a set of Search request for a given client application ID.
+  rpc ReceiveAllSearchResponses(common.SubscriptionHeaders) returns (stream search.SearchResponse) {}
+}

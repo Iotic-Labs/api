@@ -1,0 +1,18 @@
+.venv/
+.idea/
+**/*.swagger.json
+tmp/
+gen/
+
+python/dist
+python/iotics-api-web/iotics
+python/*/VERSION
+python/**/*.egg-info
+*.env
+
+# Node.js
+/nodejs/node_modules/
+/nodejs/package-lock.json
+
+# symlink used for local debugging using `replace` in `go.mod`
+iotic-go-proto-qapi

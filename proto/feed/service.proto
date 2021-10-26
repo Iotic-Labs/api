@@ -1,0 +1,35 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol defintions (feed)
+
+
+syntax = "proto3";
+
+import "feed/model.proto";
+
+package feed;
+
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/feed";
+
+// Create a feed owned by the provided twin.
+// A twin may have one or more feeds. Any twin can subscribe to a feed (access control permitting).
+// A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
+service FeedAPI {
+  // Creates a feed owned by a twin. (Idempotent)
+  rpc CreateFeed(feed.CreateFeedRequest) returns (feed.CreateFeedResponse) {}
+
+  // Deletes a feed owned by a twin. (Idempotent)
+  rpc DeleteFeed(feed.DeleteFeedRequest) returns (feed.DeleteFeedResponse) {}
+
+  // Updates attributes of a feed, including its metadata.
+  rpc UpdateFeed(feed.UpdateFeedRequest) returns (feed.UpdateFeedResponse) {}
+
+  // Shares a new sample of data for the given feed which any (interest) subscribers can receive.
+  rpc ShareFeedData(feed.ShareFeedDataRequest) returns (feed.ShareFeedDataResponse) {}
+
+  // List all feeds  owned by a twin.
+  rpc ListAllFeeds(feed.ListAllFeedsRequest) returns (feed.ListAllFeedsResponse) {}
+
+  // Describe feed.
+  rpc DescribeFeed(feed.DescribeFeedRequest) returns (feed.DescribeFeedResponse) {}
+}
