@@ -1,23 +1,37 @@
 // Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
 
-// Iotics Web protocol defintions (search)
-
-
+// Iotics Web protocol definitions (search)
 syntax = "proto3";
 
-// Scalar wrappers (for detecting presence as opposed to dealing only with default value)
-// import "third_party/googleapis/google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
-import "common/model.proto";
-import "feed/model.proto";
+import "iotics/api/common.proto";
+import "iotics/api/feed.proto";
+package iotics.api;
 
-package search;
-
-option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/search";
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "SearchProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+
+// SearchAPI provides a set of services to run synchronous and asynchronous search.
+service SearchAPI {
+  // Send a search request. Results are expected asynchronously.
+  rpc DispatchSearchRequest(SearchRequest) returns (DispatchSearchResponse) {}
+
+  // Run a synchronous search based on a user timeout.
+  rpc SynchronousSearch(SearchRequest) returns (stream SearchResponse) {}
+
+  // Receive all search responses associated to a set of Search request for a given client application ID.
+  rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
+}
 
 // ResponseType describes the type of the search response.
 // - FULL - Returns full responses including twins and feeds identifiers, labels/comments (for all languages if no language provided), properties and location
@@ -44,18 +58,18 @@ message SearchRequest {
       // language). Note that any (rather than all) of the keywords will produce a match.
       google.protobuf.StringValue text = 1;
       // Location filtering: area within which twins must be located
-      common.GeoCircle location = 2;
+      GeoCircle location = 2;
       // Properties filtering: one or more exact properties, all of which twins must have.
-      repeated common.Property properties = 3;
+      repeated Property properties = 3;
     }
     // Search Request filters
     Filter filter = 3;
   }
   // Search request headers
-  common.Headers headers = 1;
+  Headers headers = 1;
 
   // Search request scope
-  common.Scope scope = 2;
+  Scope scope = 2;
 
   // Search request lang. It implies both search and result text language
   google.protobuf.StringValue lang = 3;
@@ -64,7 +78,7 @@ message SearchRequest {
   Payload payload = 6;
 
   // Search request range
-  common.Range range = 20;
+  Range range = 20;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -77,7 +91,7 @@ message SearchResponse {
   // Search response feed details. Included with response type: FULL.
   message FeedDetails {
     // Feed
-    feed.Feed feed = 1;
+    Feed feed = 1;
     // The feed human readable label in the language specified in the request (if set)
     string label = 2;
     // whether offers the ability to store last received value
@@ -87,20 +101,20 @@ message SearchResponse {
   // Search response twin details.
   message TwinDetails {
     // Twin identifier. Included with response type: FULL, LOCATED and MINIMAL
-    common.TwinID id = 1;
+    TwinID id = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
-    common.GeoLocation location = 2;
+    GeoLocation location = 2;
     // Twin human readable label in the language specified in the request (if set). Included with response type: FULL and LOCATED
     string label = 3;
     // Twin tags. Included with response type: FULL
     repeated string tags = 4;
     // Twin custom properties. Does not include labels/comments/location. Included with response type: FULL
-    repeated common.Property properties = 5;
+    repeated Property properties = 5;
     // Feed details. Included with response type: FULL
     repeated FeedDetails feeds = 10;
   }
 
-  common.Headers headers = 1;
+  Headers headers = 1;
   // Search Response Payload.
   message Payload {
     // Type of the response.
@@ -108,7 +122,7 @@ message SearchResponse {
     // Response status - if present indicates that this response is invalid
     google.rpc.Status status = 2;
     // Response host identifier - indicates from which host this response comes from
-    common.HostID remoteHostId = 4;
+    HostID remoteHostId = 4;
 
     // Matching twins
     repeated TwinDetails twins = 10;

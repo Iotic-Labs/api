@@ -1,19 +1,23 @@
 // Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
 
-// Iotics Web protocol defintions (common)
-
-
+// Iotics Web protocol definitions (common)
 syntax = "proto3";
 
-// Scalar wrappers (for detecting presence as opposed to dealing only with default value)
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
-package common;
+package iotics.api;
 
-option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/common";
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "CommonProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
 
 // ---------------------------------------------------------------------------------------------------------------------
+
 
 // Limit is a request parameter to limit the number of results.
 // The use of "Limit" is:
