@@ -1,28 +1,53 @@
 // Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
 
-// Iotics Web protocol defintions (feed)
-
+// Iotics Web protocol definitions (feed)
 syntax = "proto3";
 
-import "common/model.proto";
 import "google/protobuf/wrappers.proto";
+import "iotics/api/common.proto";
 
-// For Python:
-//  iotics.api <-- iotics = pkgutil metapkg
-// TODO - add env var with py pkg prefix (so can change once a week)
-// from iotics.api.web.feed import CreateFeedRequest
-// iotics.google.rpc.status...
-package feed;
+package iotics.api;
 
-option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/feed";
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "FeedProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
 
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// Create a feed owned by the provided twin.
+// A twin may have one or more feeds. Any twin can subscribe to a feed (access control permitting).
+// A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
+service FeedAPI {
+  // Creates a feed owned by a twin. (Idempotent)
+  rpc CreateFeed(CreateFeedRequest) returns (CreateFeedResponse) {}
+
+  // Deletes a feed owned by a twin. (Idempotent)
+  rpc DeleteFeed(DeleteFeedRequest) returns (DeleteFeedResponse) {}
+
+  // Updates attributes of a feed, including its metadata.
+  rpc UpdateFeed(UpdateFeedRequest) returns (UpdateFeedResponse) {}
+
+  // Shares a new sample of data for the given feed which any (interest) subscribers can receive.
+  rpc ShareFeedData(ShareFeedDataRequest) returns (ShareFeedDataResponse) {}
+
+  // List all feeds owned by a twin.
+  rpc ListAllFeeds(ListAllFeedsRequest) returns (ListAllFeedsResponse) {}
+
+  // Describe feed.
+  rpc DescribeFeed(DescribeFeedRequest) returns (DescribeFeedResponse) {}
+}
 
 // A feed representation.
 message Feed {
   // feed identifier (unique within the scope of a twin identifier)
-  common.FeedID id = 1;
+  FeedID id = 1;
   // twin unique identifier (twin to which the feed belongs)
-  common.TwinID twinId = 2;
+  TwinID twinId = 2;
 }
 
 // CreateFeedRequestCreate is used to create a new feed in a given twin.
@@ -30,18 +55,18 @@ message CreateFeedRequest {
   // Payload describes the data needed to create a feed.
   message Payload {
     // ID of the feed to create
-    common.FeedID feedId = 1;
+    FeedID feedId = 1;
     // StoreLast indicates if the last received value should be stored of not
     bool storeLast = 2;
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
   message Arguments {
     // Identifier of the twin owning this feed
-    common.TwinID twinId = 1;
+    TwinID twinId = 1;
   }
 
   // CreateFeedRequest headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // CreateFeedRequest mandatory arguments
   Arguments args = 2;
   // CreateFeedRequest payload
@@ -58,7 +83,7 @@ message CreateFeedResponse {
     bool alreadyCreated = 2;
   }
   // CreateFeedResponse headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // CreateFeedResponse payload
   Payload payload = 2;
 }
@@ -73,7 +98,7 @@ message DeleteFeedRequest {
     Feed feed = 1;
   }
   // DeleteFeedRequest headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // DeleteFeedRequest mandatory arguments
   Arguments args = 2;
 }
@@ -86,7 +111,7 @@ message DeleteFeedResponse {
     Feed feed = 1;
   }
   // DeleteFeedResponse headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // DeleteFeedResponse payload
   Payload payload = 2;
 }
@@ -104,13 +129,13 @@ message UpdateFeedRequest {
     // storeLast dictates whether to store the last shared sample of a feed.
     google.protobuf.BoolValue storeLast = 1;
     // tags are the set of tags to add or remove.
-    common.Tags tags = 2;
+    Tags tags = 2;
     // values are descriptive individual data items to add/remove.
-    common.Values values = 3;
+    Values values = 3;
     // labels are human-readable set of labels (language-specific) to add or remove.
-    common.LabelUpdate labels = 4;
+    LabelUpdate labels = 4;
     // comments are the human-readable extended descriptions (language-specific) to add or remove.
-    common.CommentUpdate comments = 5;
+    CommentUpdate comments = 5;
   }
 
   // UpdateFeedRequest arguments.
@@ -119,7 +144,7 @@ message UpdateFeedRequest {
   }
 
   // UpdateFeedRequest headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // UpdateFeedRequest arguments
   Arguments args = 2;
   // UpdateFeedRequest payload
@@ -134,7 +159,7 @@ message UpdateFeedResponse {
     Feed feed = 1;
   }
   // UpdateFeedResponse headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   //UpdateFeedResponse payload
   Payload payload = 2;
 }
@@ -146,7 +171,7 @@ message ShareFeedDataRequest {
 
   // ShareFeedDataRequest payload.
   message Payload {
-    common.FeedData sample = 1;
+    FeedData sample = 1;
   }
   // ShareFeedDataRequest arguments.
   message Arguments {
@@ -154,7 +179,7 @@ message ShareFeedDataRequest {
   }
 
   // ShareFeedDataRequest headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // ShareFeedDataRequest arguments
   Arguments args = 2;
   // ShareFeedDataRequest payload
@@ -165,7 +190,7 @@ message ShareFeedDataRequest {
 // ShareFeedDataResponse is used to indicate a successful feed share.
 message ShareFeedDataResponse {
   // ShareFeedDataResponse headers
-  common.Headers headers = 1;
+  Headers headers = 1;
 }
 
 // ---------------------------------------
@@ -175,15 +200,15 @@ message ListAllFeedsRequest {
   // ListAllFeedsRequest mandatory arguments.
   message Arguments {
     // Identifier of the twin owning this feed
-    common.TwinID twinId = 1;
+    TwinID twinId = 1;
   }
   // ListAllFeedsRequest headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // ListAllFeedsRequest arguments
   Arguments args = 2;
   // Limit the results according to the value
   // (optional: when not supplied, assume no default limits required - See https://ioticlabs.atlassian.net/browse/FO-1362)
-  common.Range range = 3;
+  Range range = 3;
 }
 
 // ListAllFeedsResponse describes the list of the feeds owned by a twin.
@@ -195,7 +220,7 @@ message ListAllFeedsResponse {
 
   }
   // ListAllFeedsResponse headers
-  common.Headers headers = 1;
+  Headers headers = 1;
   // ListAllFeedsResponse payload
   Payload payload = 2;
 }
@@ -203,64 +228,65 @@ message ListAllFeedsResponse {
 // Description of twin: Provides public metadata lookup for individual resources.
 message DescribeFeedRequest {
 
-    // Only one action argument is necessary.
-    message Arguments {
-        // Feed to describe
-        Feed feed = 1;
+  // Only one action argument is necessary.
+  message Arguments {
+    // Feed to describe
+    Feed feed = 1;
 
-        // optional HostID to describe a remote feed
-        common.HostID remoteHostId = 2;
-    }
-    common.Headers headers = 1;
-    // Language code for labels and comments. If set, only the label and comment in the given language will be returned
-    // instead of all. This field does not apply to values and tags which are always returned in full.
-    google.protobuf.StringValue lang = 2;
-    // DescribeFeedRequest mandatory arguments
-    Arguments args = 3;
+    // optional HostID to describe a remote feed
+    HostID remoteHostId = 2;
+  }
+  Headers headers = 1;
+  // Language code for labels and comments. If set, only the label and comment in the given language will be returned
+  // instead of all. This field does not apply to values and tags which are always returned in full.
+  google.protobuf.StringValue lang = 2;
+  // DescribeFeedRequest mandatory arguments
+  Arguments args = 3;
 }
+// Describe feed response.
+message DescribeFeedResponse {
+  Headers headers = 1;
 
-// Metadata result databag.
-message MetaResult {
+
+  // Metadata result databag.
+  message MetaResult {
     // Labels in all languages set for the feed. (Or: Only label in chosen language, if lang field was specified in the
     // request.)
-    repeated common.LangLiteral labels = 1;
+    repeated LangLiteral labels = 1;
     // values semantically describing the share payload of Feed or expected arguments for a Control request
-    repeated common.Value values = 2;
+    repeated Value values = 2;
     repeated string tags = 3;
     // Comments in all languages set for the feed. (Or: Only comment in chosen language, if lang field was specified in
     // the request.)
-    repeated common.LangLiteral comments = 4;
+    repeated LangLiteral comments = 4;
     // Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored
     // request. (See interest API)
     bool storeLast = 5;
-}
+  }
 
-// Describe feed response.
-message DescribeFeedResponse {
-    common.Headers headers = 1;
-    // DescribeFeedResponse payload.
-    message Payload {
-        Feed feed = 1;
-        MetaResult result = 2;
-        common.HostID remoteHostId = 3;
-    }
-    Payload payload = 2;
+  // DescribeFeedResponse payload.
+  message Payload {
+    Feed feed = 1;
+    MetaResult result = 2;
+    HostID remoteHostId = 3;
+  }
+  Payload payload = 2;
 }
 
 // UpsertFeedWithMeta is used to describe the full feed state. Used in UpsertTwinRequest.
 message UpsertFeedWithMeta {
-    // Id of the feed to create/update
-    string id = 1;
+  // Id of the feed to create/update
+  string id = 1;
 
-    // Labels are human-readable set of labels (language-specific) to set
-    repeated common.LangLiteral labels = 2;
+  // Labels are human-readable set of labels (language-specific) to set
+  repeated LangLiteral labels = 2;
 
-    // Comments are human-readable set of labels (language-specific) to set
-    repeated common.LangLiteral comments = 3;
+  // Comments are human-readable set of labels (language-specific) to set
+  repeated LangLiteral comments = 3;
 
-    // storeLast dictates whether to store the last shared sample of the feed. Default 'False'
-    bool storeLast = 4;
+  // storeLast dictates whether to store the last shared sample of the feed. Default 'False'
+  bool storeLast = 4;
 
-    // values to set
-    repeated common.Value values = 5;
+  // values to set
+  repeated Value values = 5;
 }
