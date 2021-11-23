@@ -1,4 +1,4 @@
-as their corresponding service# Iotics API
+# Iotics API
 
 Create Data Mesh. Use interoperable digital twins to create data interactions and build powerful real-time data products. This repository contains protocol buffers specification for Iotics API.
 
