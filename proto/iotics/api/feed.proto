@@ -25,6 +25,7 @@ option php_namespace = "Iotics\\Api";
 service FeedAPI {
   // Creates a feed owned by a twin. (Idempotent)
   // Deprecation: CreateFeedRequest.payload.storeLast is no longer used. Please use UpdateFeed or UpsertTwin to set feed storeLast value.
+  // Deprecation: CreateFeedResponse.payload.alreadyCreated is no longer set (the service remains idempotent).
   rpc CreateFeed(CreateFeedRequest) returns (CreateFeedResponse) {}
 
   // Deletes a feed owned by a twin. (Idempotent)
@@ -77,12 +78,14 @@ message CreateFeedRequest {
 }
 
 // CreateFeedResponse describes a created feed.
+// Deprecation: CreateFeedResponse.payload.alreadyCreated is no longer set (the service remains idempotent).
 message CreateFeedResponse {
   // CreateFeedResponse payload.
   message Payload {
     // The created feed
     Feed feed = 1;
     // AlreadyCreated indicates if the feed already existed (the create is idempotent)
+    // Deprecated: no longer set
     bool alreadyCreated = 2;
   }
   // CreateFeedResponse headers

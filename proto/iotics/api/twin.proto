@@ -26,6 +26,7 @@ service TwinAPI {
   // CreateTwin creates a twin.
   // Deprecation: CreateTwinResponse.payload.twin.visibility is no longer set.
   // The twin visibility can be obtained through a call to DescribeTwin.
+  // Deprecation: CreateTwinResponse.payload.alreadyCreated is no longer set (the service remains idempotent).
   rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
 
   // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
@@ -113,6 +114,7 @@ message CreateTwinRequest {
 // CreateTwinResponse is received when a twin has been created.
 // Deprecation: resp.payload.twin.visibility is no longer set.
 // The twin visibility can be obtained through a call to DescribeTwin.
+// Deprecation: resp.payload.alreadyCreated is no longer set (the service remains idempotent).
 message CreateTwinResponse {
 
   // Payload identifies the twin which was created.
@@ -121,6 +123,7 @@ message CreateTwinResponse {
     Twin twin = 1;
 
     // whether the twin exists already (creating an existing twin is idempotent). Optional, with default=false.
+    // Deprecated: no longer set
     bool alreadyCreated = 2;
   }
 
