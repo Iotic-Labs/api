@@ -24,6 +24,7 @@ option php_namespace = "Iotics\\Api";
 // A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
 service FeedAPI {
   // Creates a feed owned by a twin. (Idempotent)
+  // Deprecation: CreateFeedRequest.payload.storeLast is no longer used. Please use UpdateFeed or UpsertTwin to set feed storeLast value.
   rpc CreateFeed(CreateFeedRequest) returns (CreateFeedResponse) {}
 
   // Deletes a feed owned by a twin. (Idempotent)
@@ -51,12 +52,14 @@ message Feed {
 }
 
 // CreateFeedRequestCreate is used to create a new feed in a given twin.
+// Deprecation: CreateFeedRequest.payload.storeLast is no longer used. Please use UpdateFeed or UpsertTwin to set feed storeLast value.
 message CreateFeedRequest {
   // Payload describes the data needed to create a feed.
   message Payload {
     // ID of the feed to create
     FeedID feedId = 1;
     // StoreLast indicates if the last received value should be stored of not
+    // Deprecated: storeLast can be set using UpdateFeedRequest or UpsertFeedWithMeta
     bool storeLast = 2;
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
