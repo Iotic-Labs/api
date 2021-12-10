@@ -49,7 +49,6 @@ message LangLiteral {
   // String representation of the value
   string value = 2;
 }
-
 // StringLiteral is a metadata property type describing a string without a language (implicit datatype: rdf:string).
 message StringLiteral {
   // String representation of the value
@@ -110,24 +109,6 @@ message GeoCircle {
   double radiusKm = 2;
 }
 
-// LabelUpdate describes labels metadata property update: addition and deletion of labels with language.
-message LabelUpdate {
-  // List of labels to be added. (Note: Only one label per language is stored, i.e. any existing ones with the same
-  // language will be replaced.)
-  repeated LangLiteral added = 1;
-  // List of languages for which to remove labels
-  repeated string deletedByLang = 2;
-}
-
-// CommentUpdate describes comments metadata property update: addition and deletion of comments with language.
-message CommentUpdate {
-  // List of labels to be added. (Note: Only one comment per language is stored, i.e. any existing ones with the same
-  // language will be replaced.)
-  repeated LangLiteral added = 1;
-  // List of languages for which to remove comments
-  repeated string deletedByLang = 2;
-}
-
 // Visibility defines who a twin is visible to.
 // PRIVATE - the twin is only visible in a LOCAL scope.
 // PUBLIC - the twin is visible in any scope.
@@ -142,15 +123,6 @@ enum Visibility {
 enum Scope {
   GLOBAL = 0;
   LOCAL = 1;
-}
-
-// Tags describes tags metadata property update: list of tags to be added and deleted. if a tag appears in both lists,
-// applications may choose to ignore the tags or throw some error.
-message Tags {
-  // List of tags to be added
-  repeated string added = 1;
-  // List of tags to be deleted
-  repeated string deleted = 2;
 }
 
 // Headers describes the common headers applicable to all the API requests

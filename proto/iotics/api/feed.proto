@@ -128,14 +128,8 @@ message UpdateFeedRequest {
 
     // storeLast dictates whether to store the last shared sample of a feed.
     google.protobuf.BoolValue storeLast = 1;
-    // tags are the set of tags to add or remove.
-    Tags tags = 2;
     // values are descriptive individual data items to add/remove.
     Values values = 3;
-    // labels are human-readable set of labels (language-specific) to add or remove.
-    LabelUpdate labels = 4;
-    // comments are the human-readable extended descriptions (language-specific) to add or remove.
-    CommentUpdate comments = 5;
   }
 
   // UpdateFeedRequest arguments.
@@ -237,9 +231,6 @@ message DescribeFeedRequest {
     HostID remoteHostId = 2;
   }
   Headers headers = 1;
-  // Language code for labels and comments. If set, only the label and comment in the given language will be returned
-  // instead of all. This field does not apply to values and tags which are always returned in full.
-  google.protobuf.StringValue lang = 2;
   // DescribeFeedRequest mandatory arguments
   Arguments args = 3;
 }
@@ -250,15 +241,8 @@ message DescribeFeedResponse {
 
   // Metadata result databag.
   message MetaResult {
-    // Labels in all languages set for the feed. (Or: Only label in chosen language, if lang field was specified in the
-    // request.)
-    repeated LangLiteral labels = 1;
     // values semantically describing the share payload of Feed or expected arguments for a Control request
     repeated Value values = 2;
-    repeated string tags = 3;
-    // Comments in all languages set for the feed. (Or: Only comment in chosen language, if lang field was specified in
-    // the request.)
-    repeated LangLiteral comments = 4;
     // Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored
     // request. (See interest API)
     bool storeLast = 5;
@@ -277,12 +261,6 @@ message DescribeFeedResponse {
 message UpsertFeedWithMeta {
   // Id of the feed to create/update
   string id = 1;
-
-  // Labels are human-readable set of labels (language-specific) to set
-  repeated LangLiteral labels = 2;
-
-  // Comments are human-readable set of labels (language-specific) to set
-  repeated LangLiteral comments = 3;
 
   // storeLast dictates whether to store the last shared sample of the feed. Default 'False'
   bool storeLast = 4;

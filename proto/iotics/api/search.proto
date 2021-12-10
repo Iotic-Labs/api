@@ -54,8 +54,8 @@ message SearchRequest {
 
     // Search request filters, any of these can be used in combination or on their own.
     message Filter {
-      // Text filtering. One or more keywords which must match either text from twin/feed labels/comments (in the given
-      // language). Note that any (rather than all) of the keywords will produce a match.
+      // Text filtering. One or more keywords which must match text from twin properies. Note that any (rather than all)
+      // of the keywords will produce a match.
       google.protobuf.StringValue text = 1;
       // Location filtering: area within which twins must be located
       GeoCircle location = 2;
@@ -71,7 +71,7 @@ message SearchRequest {
   // Search request scope
   Scope scope = 2;
 
-  // Search request lang. It implies both search and result text language
+  // Search request language, applicable to text filtering. If not specified, text search will match any language.
   google.protobuf.StringValue lang = 3;
 
   // Search request payload
@@ -92,8 +92,6 @@ message SearchResponse {
   message FeedDetails {
     // Feed
     Feed feed = 1;
-    // The feed human readable label in the language specified in the request (if set)
-    string label = 2;
     // whether offers the ability to store last received value
     bool storeLast = 3;
   }
@@ -104,10 +102,6 @@ message SearchResponse {
     TwinID id = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
-    // Twin human readable label in the language specified in the request (if set). Included with response type: FULL and LOCATED
-    string label = 3;
-    // Twin tags. Included with response type: FULL
-    repeated string tags = 4;
     // Twin custom properties. Does not include labels/comments/location. Included with response type: FULL
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL

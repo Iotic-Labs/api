@@ -169,17 +169,12 @@ message DescribeTwinRequest {
 
   Headers headers = 1;
 
-  // Language code for labels and comments. If set, only the label and comment in the given language will be returned
-  // instead of all. This field does not apply to tags and properties which are always returend in full.
-  google.protobuf.StringValue lang = 2;
-
   Arguments args = 3;
 }
 
 // Metadata message for this Feed.
 message FeedMeta {
   FeedID feedId = 1;
-  repeated LangLiteral labels = 2;
   bool storeLast = 3;
 }
 
@@ -191,14 +186,7 @@ message DescribeTwinResponse {
   // Metadata result data bag for this feed.
   message MetaResult {
     GeoLocation location = 1;
-    // Labels in all languages set for the twin. (Or: Only label in chosen language, if lang field was specified in
-    // the request.)
-    repeated LangLiteral labels = 2;
-    // Comments in all languages set for the twin. (Or: Only comment in chosen language, if lang field was specified
-    // in the request.)
-    repeated LangLiteral comments = 3;
     repeated FeedMeta feeds = 4;
-    repeated string tags = 5;
     // Custom properties associated with this twin. Does not include labels/comments/location.
     repeated Property properties = 6;
   }
@@ -260,20 +248,11 @@ message UpdateTwinRequest {
   // Note that the specified metadata changes are applied in the following order:
   // tags, visibility, properties, labels, comments, location
   message Payload {
-    // Tags are the set of tags to add or remove.
-    Tags tags = 1;
-
     // New visibility
     VisibilityUpdate newVisibility = 2;
 
     // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
     PropertyUpdate properties = 3;
-
-    // Labels are human-readable set of labels (language-specific) to add or remove.
-    LabelUpdate labels = 4;
-
-    // Comments are the human-readable extended descriptions (language-specific) to add or remove.
-    CommentUpdate comments = 5;
 
     // Location to be set/unset
     GeoLocationUpdate location = 6;
@@ -313,12 +292,6 @@ message UpsertTwinRequest {
 
     // Twin visibility. Default value: 'PRIVATE'
     Visibility visibility = 2;
-
-    // Labels are human-readable set of labels (language-specific) to set
-    repeated LangLiteral labels = 3;
-
-    // Comments are human-readable set of labels (language-specific) to set
-    repeated LangLiteral comments = 4;
 
     // Twin Properties to set
     repeated Property properties = 5;
