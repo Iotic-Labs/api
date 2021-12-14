@@ -24,6 +24,9 @@ option php_namespace = "Iotics\\Api";
 service TwinAPI {
 
   // CreateTwin creates a twin.
+  // Deprecation: CreateTwinResponse.payload.twin.visibility is no longer set.
+  // The twin visibility can be obtained through a call to DescribeTwin.
+  // Deprecation: CreateTwinResponse.payload.alreadyCreated is no longer set (the service remains idempotent).
   rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
 
   // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
@@ -32,9 +35,13 @@ service TwinAPI {
   rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
 
   // DeleteTwin deletes a twin.
+  // Deprecation: DeleteTwinResponse.payload.twin.visibility is no longer set.
+  // The twin visibility can be obtained through a call to DescribeTwin.
   rpc DeleteTwin(DeleteTwinRequest) returns (DeleteTwinResponse) {}
 
   // UpdateTwin updates a twin (partial update).
+  // Deprecation: UpdateTwinResponse.payload.twin.visibility is no longer set.
+  // The twin visibility can be obtained through a call to DescribeTwin.
   rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
 
   // Describes a twin.
@@ -52,6 +59,7 @@ message Twin {
   TwinID id = 1;
 
   // Visibility of this twin
+  // Deprecated: the field is no longer set except for DescribeTwinResponse and ListAllTwinsResponse
   Visibility visibility = 2;
 }
 
@@ -104,6 +112,9 @@ message CreateTwinRequest {
 }
 
 // CreateTwinResponse is received when a twin has been created.
+// Deprecation: resp.payload.twin.visibility is no longer set.
+// The twin visibility can be obtained through a call to DescribeTwin.
+// Deprecation: resp.payload.alreadyCreated is no longer set (the service remains idempotent).
 message CreateTwinResponse {
 
   // Payload identifies the twin which was created.
@@ -112,6 +123,7 @@ message CreateTwinResponse {
     Twin twin = 1;
 
     // whether the twin exists already (creating an existing twin is idempotent). Optional, with default=false.
+    // Deprecated: no longer set
     bool alreadyCreated = 2;
   }
 
@@ -141,6 +153,8 @@ message DeleteTwinRequest {
 }
 
 // Deleted is received when a twin has been deleted.
+// Deprecation: resp.payload.twin.visibility is no longer set.
+// The twin visibility can be obtained through a call to DescribeTwin.
 message DeleteTwinResponse {
 
   // Payload identifies the twin which was deleted.
@@ -290,6 +304,8 @@ message UpdateTwinRequest {
 
 
 // UpdateTwinResponse describes an updated twin. It is received when the update operation is successful.
+// Deprecation: resp.payload.twin.visibility is no longer set.
+// The twin visibility can be obtained through a call to DescribeTwin.
 message UpdateTwinResponse {
   // UpdateTwinResponse payload.
   message Payload {
