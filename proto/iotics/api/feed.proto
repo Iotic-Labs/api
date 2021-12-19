@@ -126,6 +126,24 @@ message DeleteFeedResponse {
 
 // UpdateFeedRequest is used to update attributes (including metadata) of a given feed.
 message UpdateFeedRequest {
+  // Soft breaking change: move to common once ready for real breaking change
+
+  // PropertyUpdate describes the update of feed properties.
+  // Can be used to add, replace, or delete properties. The order of operations is:
+  // clearedAll (if True), deleted, deletedByKey, added.
+  // Note that internal properties (such as location) cannot be modified here.
+  message PropertyUpdate {
+
+    // Delete all properties currently set on the twin.
+    bool clearedAll = 1;
+
+    // Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
+    repeated Property deleted = 2;
+    // Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
+    repeated string deletedByKey = 3;
+    // Adds the given properties
+    repeated Property added = 4;
+  }
 
   // UpdateFeedRequest payload. One or more fields can be provided, depending on what needs to be updated.
   // Note that the specified metadata changes are applied in the following order:
@@ -142,6 +160,8 @@ message UpdateFeedRequest {
     LabelUpdate labels = 4;
     // comments are the human-readable extended descriptions (language-specific) to add or remove.
     CommentUpdate comments = 5;
+    // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
+    PropertyUpdate properties = 6;
   }
 
   // UpdateFeedRequest arguments.
@@ -268,6 +288,9 @@ message DescribeFeedResponse {
     // Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored
     // request. (See interest API)
     bool storeLast = 5;
+
+    // Custom properties associated with this feed.
+    repeated Property properties = 6;
   }
 
   // DescribeFeedResponse payload.
@@ -295,4 +318,7 @@ message UpsertFeedWithMeta {
 
   // values to set
   repeated Value values = 5;
+
+  // feed properties to set
+  repeated Property properties = 6;
 }

@@ -96,6 +96,9 @@ message SearchResponse {
     string label = 2;
     // whether offers the ability to store last received value
     bool storeLast = 3;
+    // Feed custom properties.
+    repeated Property properties = 4;
+
   }
 
   // Search response twin details.
@@ -108,7 +111,7 @@ message SearchResponse {
     string label = 3;
     // Twin tags. Included with response type: FULL
     repeated string tags = 4;
-    // Twin custom properties. Does not include labels/comments/location. Included with response type: FULL
+    // Twin custom properties.
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL
     repeated FeedDetails feeds = 10;

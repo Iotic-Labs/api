@@ -213,7 +213,7 @@ message DescribeTwinResponse {
     repeated LangLiteral comments = 3;
     repeated FeedMeta feeds = 4;
     repeated string tags = 5;
-    // Custom properties associated with this twin. Does not include labels/comments/location.
+    // Custom properties associated with this twin.
     repeated Property properties = 6;
   }
 
