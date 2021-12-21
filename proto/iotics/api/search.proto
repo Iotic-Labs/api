@@ -24,16 +24,12 @@ option php_namespace = "Iotics\\Api";
 // SearchAPI provides a set of services to run synchronous and asynchronous search.
 service SearchAPI {
   // Send a search request. Results are expected asynchronously.
-  // Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
   rpc DispatchSearchRequest(SearchRequest) returns (DispatchSearchResponse) {}
 
   // Run a synchronous search based on a user timeout.
-  // Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
-  // Deprecation: tags and labels response fields are no longer returned.
   rpc SynchronousSearch(SearchRequest) returns (stream SearchResponse) {}
 
   // Receive all search responses associated to a set of Search request for a given client application ID.
-  // Deprecation: tags and labels response fields are no longer returned.
   rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
 }
 
@@ -48,7 +44,6 @@ enum ResponseType {
 }
 
 // SearchRequest describes a search request used for both synchronous and asynchronous search.
-// Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
 message SearchRequest {
   // Search request payload.
   message Payload {
@@ -92,15 +87,11 @@ message SearchRequest {
 // It contains all the matching twins/feeds according to the request scope/range/lang/filters in the expected response type format.
 // In the decentralised iotics operating environment, each node in the network generates a response and the client is expected to
 // receive a stream of response messages.
-// Deprecation: tags and labels response fields are no longer returned.
 message SearchResponse {
   // Search response feed details. Included with response type: FULL.
   message FeedDetails {
     // Feed
     Feed feed = 1;
-    // The feed human readable label in the language specified in the request (if set)
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    string label = 2;
     // whether offers the ability to store last received value
     bool storeLast = 3;
     // Feed custom properties.
@@ -114,12 +105,6 @@ message SearchResponse {
     TwinID id = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
-    // Twin human readable label in the language specified in the request (if set). Included with response type: FULL and LOCATED
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    string label = 3;
-    // Twin tags. Included with response type: FULL
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    repeated string tags = 4;
     // Twin custom properties.
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL
