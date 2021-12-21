@@ -24,31 +24,20 @@ option php_namespace = "Iotics\\Api";
 service TwinAPI {
 
   // CreateTwin creates a twin.
-  // Deprecation: CreateTwinResponse.payload.twin.visibility is no longer set.
-  // The twin visibility can be obtained through a call to DescribeTwin.
-  // Deprecation: CreateTwinResponse.payload.alreadyCreated is no longer set (the service remains idempotent).
   rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
 
   // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
   // The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
   // described in the payload)
-  // Deprecation: twin/feed labels and comments are now ignored and will be removed as part of the next major release.
   rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
 
   // DeleteTwin deletes a twin.
-  // Deprecation: DeleteTwinResponse.payload.twin.visibility is no longer set.
-  // The twin visibility can be obtained through a call to DescribeTwin.
   rpc DeleteTwin(DeleteTwinRequest) returns (DeleteTwinResponse) {}
 
   // UpdateTwin updates a twin (partial update).
-  // Deprecation: UpdateTwinResponse.payload.twin.visibility is no longer set.
-  // The twin visibility can be obtained through a call to DescribeTwin.
-  // Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
   rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
 
   // Describes a twin.
-  // Deprecation: lang filter request field is now ignored.
-  // Deprecation: tags, labels and comments response fields are no longer returned.
   rpc DescribeTwin(DescribeTwinRequest) returns (DescribeTwinResponse) {}
 
   // List all twins.
@@ -63,7 +52,6 @@ message Twin {
   TwinID id = 1;
 
   // Visibility of this twin
-  // Deprecated: the field is no longer set except for DescribeTwinResponse and ListAllTwinsResponse
   Visibility visibility = 2;
 }
 
@@ -87,19 +75,6 @@ message ListAllTwinsResponse {
   Payload payload = 2;
 }
 
-// Message returned by the List service as a stream.
-message ListTwinsResponse {
-  Headers headers = 1;
-
-  // Payload of listed twins.
-  message Payload {
-    // the twin - may be omitted if the response code is not a success code
-    Twin twin = 1;
-  }
-  Payload payload = 2;
-}
-
-
 // CreateTwinRequest is made to create a twin (idempotent).
 message CreateTwinRequest {
   // Arguments identifies the twin to create.
@@ -116,19 +91,12 @@ message CreateTwinRequest {
 }
 
 // CreateTwinResponse is received when a twin has been created.
-// Deprecation: resp.payload.twin.visibility is no longer set.
-// The twin visibility can be obtained through a call to DescribeTwin.
-// Deprecation: resp.payload.alreadyCreated is no longer set (the service remains idempotent).
 message CreateTwinResponse {
 
   // Payload identifies the twin which was created.
   message Payload {
-    // created twin
-    Twin twin = 1;
-
-    // whether the twin exists already (creating an existing twin is idempotent). Optional, with default=false.
-    // Deprecated: no longer set
-    bool alreadyCreated = 2;
+    // Unique ID of the twin to delete
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -157,14 +125,12 @@ message DeleteTwinRequest {
 }
 
 // Deleted is received when a twin has been deleted.
-// Deprecation: resp.payload.twin.visibility is no longer set.
-// The twin visibility can be obtained through a call to DescribeTwin.
 message DeleteTwinResponse {
 
   // Payload identifies the twin which was deleted.
   message Payload {
-    // Details of twin which was deleted
-    Twin twin = 1;
+    // Unique ID of the twin to delete
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -175,7 +141,6 @@ message DeleteTwinResponse {
 }
 
 // Description of twin: Provides public metadata lookup for individual resources.
-// Deprecation: lang filter request field is now ignored.
 message DescribeTwinRequest {
   // Only one action argument is necessary.
   message Arguments {
@@ -188,23 +153,16 @@ message DescribeTwinRequest {
 
   Headers headers = 1;
 
-  // Language code for labels and comments. If set, only the label and comment in the given language will be returned
-  // instead of all. This field does not apply to tags and properties which are always returned in full.
-  // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-  google.protobuf.StringValue lang = 2;
-
   Arguments args = 3;
 }
 
 // Metadata message for this Feed.
 message FeedMeta {
   FeedID feedId = 1;
-  repeated LangLiteral labels = 2;
   bool storeLast = 3;
 }
 
 // The response for a description request on this twin.
-// Deprecation: tags, labels and comments response fields are no longer returned.
 message DescribeTwinResponse {
   Headers headers = 1;
 
@@ -212,19 +170,7 @@ message DescribeTwinResponse {
   // Metadata result data bag for this feed.
   message MetaResult {
     GeoLocation location = 1;
-    // Labels in all languages set for the twin. (Or: Only label in chosen language, if lang field was specified in
-    // the request.)
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Labels are no longer special properties.
-    repeated LangLiteral labels = 2;
-    // Comments in all languages set for the twin. (Or: Only comment in chosen language, if lang field was specified
-    // in the request.)
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Comments are no longer special properties
-    repeated LangLiteral comments = 3;
     repeated FeedMeta feeds = 4;
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    repeated string tags = 5;
     // Custom properties associated with this twin.
     repeated Property properties = 6;
   }
@@ -246,23 +192,6 @@ message DescribeTwinResponse {
 
 // ---------------------------------------
 
-// PropertyUpdate describes the update of a twin properties.
-// Can be used to add, replace, or delete properties. The order of operations is:
-// clearedAll (if True), deleted, deletedByKey, added.
-// Note that internal properties (such as location) cannot be modified here.
-message PropertyUpdate {
-
-  // Delete all properties currently set on the twin.
-  bool clearedAll = 1;
-
-  // Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
-  repeated Property deleted = 2;
-  // Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
-  repeated string deletedByKey = 3;
-  // Adds the given properties
-  repeated Property added = 4;
-}
-
 // VisibilityUpdate describes the update of a twin visibility.
 message VisibilityUpdate {
   // New visibility for this twin
@@ -276,7 +205,6 @@ message GeoLocationUpdate {
 }
 
 // UpdateTwinRequest is used to update attributes (including metadata) of a given twin.
-// Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
 message UpdateTwinRequest {
   // UpdateTwinRequest mandatory arguments.
   message Arguments {
@@ -287,25 +215,11 @@ message UpdateTwinRequest {
   // Note that the specified metadata changes are applied in the following order:
   // tags, visibility, properties, labels, comments, location
   message Payload {
-    // Tags are the set of tags to add or remove.
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    Tags tags = 1;
-
     // New visibility
     VisibilityUpdate newVisibility = 2;
 
     // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
     PropertyUpdate properties = 3;
-
-    // Labels are human-readable set of labels (language-specific) to add or remove.
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Labels can be added as regular properties.
-    LabelUpdate labels = 4;
-
-    // Comments are the human-readable extended descriptions (language-specific) to add or remove.
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Comments can be added as regular properties.
-    CommentUpdate comments = 5;
 
     // Location to be set/unset
     GeoLocationUpdate location = 6;
@@ -322,13 +236,11 @@ message UpdateTwinRequest {
 
 
 // UpdateTwinResponse describes an updated twin. It is received when the update operation is successful.
-// Deprecation: resp.payload.twin.visibility is no longer set.
-// The twin visibility can be obtained through a call to DescribeTwin.
 message UpdateTwinResponse {
   // UpdateTwinResponse payload.
   message Payload {
-    // Updated Twin
-    Twin twin = 1;
+    // Unique ID of the twin to delete
+    TwinID twinId = 1;
   }
   // UpdateTwinResponse headers
   Headers headers = 1;
@@ -337,7 +249,6 @@ message UpdateTwinResponse {
 }
 
 // UpsertTwinRequest describes the full state of a twin + its feeds to create or update (full update)
-// Deprecation: twin/feed labels and comments are now ignored and will be removed as part of the next major release.
 message UpsertTwinRequest {
 
   // UpsertTwinRequest payload. This state will be applied to the twin/feeds
@@ -348,16 +259,6 @@ message UpsertTwinRequest {
 
     // Twin visibility. Default value: 'PRIVATE'
     Visibility visibility = 2;
-
-    // Labels are human-readable set of labels (language-specific) to set
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Labels can be added as regular properties.
-    repeated LangLiteral labels = 3;
-
-    // Comments are human-readable set of labels (language-specific) to set
-    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-    // Labels can be added as regular properties.
-    repeated LangLiteral comments = 4;
 
     // Twin Properties to set
     repeated Property properties = 5;

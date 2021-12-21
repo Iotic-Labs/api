@@ -110,26 +110,6 @@ message GeoCircle {
   double radiusKm = 2;
 }
 
-// LabelUpdate describes labels metadata property update: addition and deletion of labels with language.
-// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-message LabelUpdate {
-  // List of labels to be added. (Note: Only one label per language is stored, i.e. any existing ones with the same
-  // language will be replaced.)
-  repeated LangLiteral added = 1;
-  // List of languages for which to remove labels
-  repeated string deletedByLang = 2;
-}
-
-// CommentUpdate describes comments metadata property update: addition and deletion of comments with language.
-// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-message CommentUpdate {
-  // List of labels to be added. (Note: Only one comment per language is stored, i.e. any existing ones with the same
-  // language will be replaced.)
-  repeated LangLiteral added = 1;
-  // List of languages for which to remove comments
-  repeated string deletedByLang = 2;
-}
-
 // Visibility defines who a twin is visible to.
 // PRIVATE - the twin is only visible in a LOCAL scope.
 // PUBLIC - the twin is visible in any scope.
@@ -144,16 +124,6 @@ enum Visibility {
 enum Scope {
   GLOBAL = 0;
   LOCAL = 1;
-}
-
-// Tags describes tags metadata property update: list of tags to be added and deleted. if a tag appears in both lists,
-// applications may choose to ignore the tags or throw some error.
-// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
-message Tags {
-  // List of tags to be added
-  repeated string added = 1;
-  // List of tags to be deleted
-  repeated string deleted = 2;
 }
 
 // Headers describes the common headers applicable to all the API requests
@@ -250,4 +220,22 @@ message FeedData {
   // data is the actual set of datapoints, encoded according the the mime type. The data should follow the Feed's
   // value defintions but that is not enforced. (See also Value)
   bytes data = 4;
+}
+
+
+// PropertyUpdate describes the update of a twin properties.
+// Can be used to add, replace, or delete properties. The order of operations is:
+// clearedAll (if True), deleted, deletedByKey, added.
+// Note that internal properties (such as location) cannot be modified here.
+message PropertyUpdate {
+
+  // Delete all properties currently set on the twin.
+  bool clearedAll = 1;
+
+  // Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
+  repeated Property deleted = 2;
+  // Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
+  repeated string deletedByKey = 3;
+  // Adds the given properties
+  repeated Property added = 4;
 }
