@@ -32,6 +32,7 @@ service TwinAPI {
   // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
   // The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
   // described in the payload)
+  // Deprecation: twin/feed labels and comments are now ignored and will be removed as part of the next major release.
   rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
 
   // DeleteTwin deletes a twin.
@@ -42,9 +43,12 @@ service TwinAPI {
   // UpdateTwin updates a twin (partial update).
   // Deprecation: UpdateTwinResponse.payload.twin.visibility is no longer set.
   // The twin visibility can be obtained through a call to DescribeTwin.
+  // Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
   rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
 
   // Describes a twin.
+  // Deprecation: lang filter request field is now ignored.
+  // Deprecation: tags, labels and comments response fields are no longer returned.
   rpc DescribeTwin(DescribeTwinRequest) returns (DescribeTwinResponse) {}
 
   // List all twins.
@@ -171,6 +175,7 @@ message DeleteTwinResponse {
 }
 
 // Description of twin: Provides public metadata lookup for individual resources.
+// Deprecation: lang filter request field is now ignored.
 message DescribeTwinRequest {
   // Only one action argument is necessary.
   message Arguments {
@@ -184,7 +189,8 @@ message DescribeTwinRequest {
   Headers headers = 1;
 
   // Language code for labels and comments. If set, only the label and comment in the given language will be returned
-  // instead of all. This field does not apply to tags and properties which are always returend in full.
+  // instead of all. This field does not apply to tags and properties which are always returned in full.
+  // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
   google.protobuf.StringValue lang = 2;
 
   Arguments args = 3;
@@ -198,6 +204,7 @@ message FeedMeta {
 }
 
 // The response for a description request on this twin.
+// Deprecation: tags, labels and comments response fields are no longer returned.
 message DescribeTwinResponse {
   Headers headers = 1;
 
@@ -207,13 +214,18 @@ message DescribeTwinResponse {
     GeoLocation location = 1;
     // Labels in all languages set for the twin. (Or: Only label in chosen language, if lang field was specified in
     // the request.)
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels are no longer special properties.
     repeated LangLiteral labels = 2;
     // Comments in all languages set for the twin. (Or: Only comment in chosen language, if lang field was specified
     // in the request.)
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Comments are no longer special properties
     repeated LangLiteral comments = 3;
     repeated FeedMeta feeds = 4;
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     repeated string tags = 5;
-    // Custom properties associated with this twin. Does not include labels/comments/location.
+    // Custom properties associated with this twin.
     repeated Property properties = 6;
   }
 
@@ -264,6 +276,7 @@ message GeoLocationUpdate {
 }
 
 // UpdateTwinRequest is used to update attributes (including metadata) of a given twin.
+// Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
 message UpdateTwinRequest {
   // UpdateTwinRequest mandatory arguments.
   message Arguments {
@@ -275,6 +288,7 @@ message UpdateTwinRequest {
   // tags, visibility, properties, labels, comments, location
   message Payload {
     // Tags are the set of tags to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     Tags tags = 1;
 
     // New visibility
@@ -284,9 +298,13 @@ message UpdateTwinRequest {
     PropertyUpdate properties = 3;
 
     // Labels are human-readable set of labels (language-specific) to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels can be added as regular properties.
     LabelUpdate labels = 4;
 
     // Comments are the human-readable extended descriptions (language-specific) to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Comments can be added as regular properties.
     CommentUpdate comments = 5;
 
     // Location to be set/unset
@@ -319,6 +337,7 @@ message UpdateTwinResponse {
 }
 
 // UpsertTwinRequest describes the full state of a twin + its feeds to create or update (full update)
+// Deprecation: twin/feed labels and comments are now ignored and will be removed as part of the next major release.
 message UpsertTwinRequest {
 
   // UpsertTwinRequest payload. This state will be applied to the twin/feeds
@@ -331,9 +350,13 @@ message UpsertTwinRequest {
     Visibility visibility = 2;
 
     // Labels are human-readable set of labels (language-specific) to set
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels can be added as regular properties.
     repeated LangLiteral labels = 3;
 
     // Comments are human-readable set of labels (language-specific) to set
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels can be added as regular properties.
     repeated LangLiteral comments = 4;
 
     // Twin Properties to set
@@ -352,6 +375,7 @@ message UpsertTwinRequest {
   // UpdateTwinRequest payload
   Payload payload = 2;
 }
+
 // UpsertTwinResponse is received when a twin and its feeds have been created/updated.
 message UpsertTwinResponse {
 

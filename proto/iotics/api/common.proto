@@ -111,6 +111,7 @@ message GeoCircle {
 }
 
 // LabelUpdate describes labels metadata property update: addition and deletion of labels with language.
+// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
 message LabelUpdate {
   // List of labels to be added. (Note: Only one label per language is stored, i.e. any existing ones with the same
   // language will be replaced.)
@@ -120,6 +121,7 @@ message LabelUpdate {
 }
 
 // CommentUpdate describes comments metadata property update: addition and deletion of comments with language.
+// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
 message CommentUpdate {
   // List of labels to be added. (Note: Only one comment per language is stored, i.e. any existing ones with the same
   // language will be replaced.)
@@ -146,6 +148,7 @@ enum Scope {
 
 // Tags describes tags metadata property update: list of tags to be added and deleted. if a tag appears in both lists,
 // applications may choose to ignore the tags or throw some error.
+// DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
 message Tags {
   // List of tags to be added
   repeated string added = 1;

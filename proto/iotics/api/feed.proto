@@ -32,6 +32,7 @@ service FeedAPI {
   rpc DeleteFeed(DeleteFeedRequest) returns (DeleteFeedResponse) {}
 
   // Updates attributes of a feed, including its metadata.
+  // Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
   rpc UpdateFeed(UpdateFeedRequest) returns (UpdateFeedResponse) {}
 
   // Shares a new sample of data for the given feed which any (interest) subscribers can receive.
@@ -41,6 +42,8 @@ service FeedAPI {
   rpc ListAllFeeds(ListAllFeedsRequest) returns (ListAllFeedsResponse) {}
 
   // Describe feed.
+  // Deprecation: lang filter request field is now ignored.
+  // Deprecation: tags, labels and comments response fields are no longer returned.
   rpc DescribeFeed(DescribeFeedRequest) returns (DescribeFeedResponse) {}
 }
 
@@ -125,7 +128,26 @@ message DeleteFeedResponse {
 // ---------------------------------------
 
 // UpdateFeedRequest is used to update attributes (including metadata) of a given feed.
+// Deprecation: tags, labels and comments are now ignored and will be removed as part of the next major release.
 message UpdateFeedRequest {
+  // Soft breaking change: move to common once ready for real breaking change
+
+  // PropertyUpdate describes the update of feed properties.
+  // Can be used to add, replace, or delete properties. The order of operations is:
+  // clearedAll (if True), deleted, deletedByKey, added.
+  // Note that internal properties (such as location) cannot be modified here.
+  message PropertyUpdate {
+
+    // Delete all properties currently set on the twin.
+    bool clearedAll = 1;
+
+    // Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
+    repeated Property deleted = 2;
+    // Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
+    repeated string deletedByKey = 3;
+    // Adds the given properties
+    repeated Property added = 4;
+  }
 
   // UpdateFeedRequest payload. One or more fields can be provided, depending on what needs to be updated.
   // Note that the specified metadata changes are applied in the following order:
@@ -135,13 +157,20 @@ message UpdateFeedRequest {
     // storeLast dictates whether to store the last shared sample of a feed.
     google.protobuf.BoolValue storeLast = 1;
     // tags are the set of tags to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     Tags tags = 2;
     // values are descriptive individual data items to add/remove.
     Values values = 3;
     // labels are human-readable set of labels (language-specific) to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels can be added as regular properties.
     LabelUpdate labels = 4;
     // comments are the human-readable extended descriptions (language-specific) to add or remove.
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Comment can be added as regular properties.
     CommentUpdate comments = 5;
+    // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
+    PropertyUpdate properties = 6;
   }
 
   // UpdateFeedRequest arguments.
@@ -232,6 +261,7 @@ message ListAllFeedsResponse {
 }
 
 // Description of twin: Provides public metadata lookup for individual resources.
+// Deprecation: lang filter request field is now ignored.
 message DescribeFeedRequest {
 
   // Only one action argument is necessary.
@@ -245,11 +275,13 @@ message DescribeFeedRequest {
   Headers headers = 1;
   // Language code for labels and comments. If set, only the label and comment in the given language will be returned
   // instead of all. This field does not apply to values and tags which are always returned in full.
+  // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
   google.protobuf.StringValue lang = 2;
   // DescribeFeedRequest mandatory arguments
   Arguments args = 3;
 }
 // Describe feed response.
+// Deprecation: tags, labels and comments response fields are no longer returned.
 message DescribeFeedResponse {
   Headers headers = 1;
 
@@ -258,16 +290,24 @@ message DescribeFeedResponse {
   message MetaResult {
     // Labels in all languages set for the feed. (Or: Only label in chosen language, if lang field was specified in the
     // request.)
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Labels are no longer special properties.
     repeated LangLiteral labels = 1;
     // values semantically describing the share payload of Feed or expected arguments for a Control request
     repeated Value values = 2;
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     repeated string tags = 3;
     // Comments in all languages set for the feed. (Or: Only comment in chosen language, if lang field was specified in
     // the request.)
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+    // Comments are no longer special properties
     repeated LangLiteral comments = 4;
     // Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored
     // request. (See interest API)
     bool storeLast = 5;
+
+    // Custom properties associated with this feed.
+    repeated Property properties = 6;
   }
 
   // DescribeFeedResponse payload.
@@ -285,9 +325,13 @@ message UpsertFeedWithMeta {
   string id = 1;
 
   // Labels are human-readable set of labels (language-specific) to set
+  // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+  // Labels can be added as regular properties.
   repeated LangLiteral labels = 2;
 
   // Comments are human-readable set of labels (language-specific) to set
+  // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
+  // Comments can be added as regular properties.
   repeated LangLiteral comments = 3;
 
   // storeLast dictates whether to store the last shared sample of the feed. Default 'False'
@@ -295,4 +339,7 @@ message UpsertFeedWithMeta {
 
   // values to set
   repeated Value values = 5;
+
+  // feed properties to set
+  repeated Property properties = 6;
 }

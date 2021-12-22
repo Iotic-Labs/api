@@ -24,12 +24,16 @@ option php_namespace = "Iotics\\Api";
 // SearchAPI provides a set of services to run synchronous and asynchronous search.
 service SearchAPI {
   // Send a search request. Results are expected asynchronously.
+  // Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
   rpc DispatchSearchRequest(SearchRequest) returns (DispatchSearchResponse) {}
 
   // Run a synchronous search based on a user timeout.
+  // Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
+  // Deprecation: tags and labels response fields are no longer returned.
   rpc SynchronousSearch(SearchRequest) returns (stream SearchResponse) {}
 
   // Receive all search responses associated to a set of Search request for a given client application ID.
+  // Deprecation: tags and labels response fields are no longer returned.
   rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
 }
 
@@ -44,6 +48,7 @@ enum ResponseType {
 }
 
 // SearchRequest describes a search request used for both synchronous and asynchronous search.
+// Deprecation: search by text is now applied to twin rdfs:comment/rdfs:label instead of iotics:label/iotics:comments.
 message SearchRequest {
   // Search request payload.
   message Payload {
@@ -54,8 +59,8 @@ message SearchRequest {
 
     // Search request filters, any of these can be used in combination or on their own.
     message Filter {
-      // Text filtering. One or more keywords which must match either text from twin/feed labels/comments (in the given
-      // language). Note that any (rather than all) of the keywords will produce a match.
+      // Text filtering. One or more keywords which must match text from twin properies. Note that any (rather than all)
+      // of the keywords will produce a match.
       google.protobuf.StringValue text = 1;
       // Location filtering: area within which twins must be located
       GeoCircle location = 2;
@@ -71,7 +76,7 @@ message SearchRequest {
   // Search request scope
   Scope scope = 2;
 
-  // Search request lang. It implies both search and result text language
+  // Search request language, applicable to text filtering. If not specified, text search will match any language.
   google.protobuf.StringValue lang = 3;
 
   // Search request payload
@@ -87,15 +92,20 @@ message SearchRequest {
 // It contains all the matching twins/feeds according to the request scope/range/lang/filters in the expected response type format.
 // In the decentralised iotics operating environment, each node in the network generates a response and the client is expected to
 // receive a stream of response messages.
+// Deprecation: tags and labels response fields are no longer returned.
 message SearchResponse {
   // Search response feed details. Included with response type: FULL.
   message FeedDetails {
     // Feed
     Feed feed = 1;
     // The feed human readable label in the language specified in the request (if set)
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     string label = 2;
     // whether offers the ability to store last received value
     bool storeLast = 3;
+    // Feed custom properties.
+    repeated Property properties = 4;
+
   }
 
   // Search response twin details.
@@ -105,10 +115,12 @@ message SearchResponse {
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
     // Twin human readable label in the language specified in the request (if set). Included with response type: FULL and LOCATED
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     string label = 3;
     // Twin tags. Included with response type: FULL
+    // DEPRECATED: will be removed in the next major release. Not read/set anymore, will be considered as a no-op.
     repeated string tags = 4;
-    // Twin custom properties. Does not include labels/comments/location. Included with response type: FULL
+    // Twin custom properties.
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL
     repeated FeedDetails feeds = 10;
