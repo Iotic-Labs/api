@@ -1,0 +1,74 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol definitions (direct metadata manipulation)
+syntax = "proto3";
+
+import "iotics/api/common.proto";
+
+package iotics.api;
+
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "MetaProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// MetaAPI enables manipulation of metadata associated with Twins and Feeds
+service MetaAPI {
+
+  // SparqlQuery performs a SPARQL 1.1 query.
+  rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
+}
+
+
+// Available response content types for SPARQL requests. Note that applicable content types depend on the type of query
+// (e.g. SELECT vs CONSTRUCT)
+enum SparqlResponseType {
+  // Applicable to SELECT/ASK (SPARQL 1.1 Query Results JSON Format)
+  JSON = 0;
+  // Applicable to CONSTRUCT/DESCRIBE
+  RDF_TURTLE = 1;
+  // Applicable to CONSTRUCT/DESCRIBE
+  RDF_XML = 2;
+  // Applicable to CONSTRUCT/DESCRIBE
+  RDF_NTRIPLES = 3;
+  // Applicable to SELECT
+  CSV = 4;
+}
+
+// Performs a SPARQL query
+message SparqlQueryRequest {
+  Headers headers = 1;
+
+  message Payload {
+    SparqlResponseType responseType = 1;
+    bytes query = 2;
+  }
+
+  Payload payload = 2;
+}
+
+// Response of the SPARQL query request. For large results expect multiple stream responses, each containing a chunk
+// of the response.
+message SparqlQueryResponse {
+  // TODO - It's wasteful to include the headers & actualType with every single chunk. Instead one could use oneof
+  // to wrap {headers + actualType} or {resultChunk}.
+  // Alternative - headers and actualType are empty in non-first chunk
+  Headers headers = 1;
+
+  // Payload of query response.
+  message Payload {
+    // The actual response content type (as raw mime type)
+    string actualType = 1;
+
+    // Query result chunk, encoded according to actualType
+    bytes resultChunk = 2;
+  }
+
+  Payload payload = 2;
+}
