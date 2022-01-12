@@ -23,6 +23,12 @@ service MetaAPI {
 
   // SparqlQuery performs a SPARQL 1.1 query.
   rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
+
+  // SparqlUpdate performs a SPARQL 1.1 update.
+  rpc SparqlUpdate(stream SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
+
+  // GraphStore performs a Graph Store Protocol update.
+  rpc GraphStore(stream GraphStoreRequest) returns (GraphStoreResponse) {}
 }
 
 
@@ -71,4 +77,58 @@ message SparqlQueryResponse {
   }
 
   Payload payload = 2;
+}
+
+// Available content types for SPARQL graph store requests.
+enum SparqlStoreRdfType {
+  TURTLE = 0;
+  XML = 1;
+  NTRIPLES = 2;
+}
+
+enum SparqlStoreOp {
+  // Replace any existing metadata with the provided set
+  PUT = 0;
+  // Add the provided set of metadata
+  DELETE = 1;
+  // Delete any existing metadata
+  POST = 2;
+}
+
+// Performs a SPARQL graph store request to update custom metadata.
+message GraphStoreRequest {
+  // TODO - rather than sending headers, rdfType & op with every chunk
+  // Alternative: headers & rdfType are empty in non-first chunk
+  Headers headers = 1;
+
+  message Payload {
+    SparqlStoreRdfType rdfType = 1;
+    SparqlStoreOp op = 2;
+    // Applicable RDF for PUT & POST operations. This field is ignored for the DELETE operation.
+    bytes rdf = 3;
+  }
+
+  Payload payload = 2;
+}
+
+// Response for a SPARQL graph store request
+message GraphStoreResponse {
+  Headers headers = 1;
+}
+
+// Performs a SPARQL update against custom metadata only.
+message SparqlUpdateRequest {
+  // Consider empty headers for non-first chunk
+  Headers headers = 1;
+
+  message Payload {
+    bytes update = 1;
+  }
+
+  Payload payload = 2;
+}
+
+// Response of the SPARQL update request.
+message SparqlUpdateResponse {
+  Headers headers = 1;
 }
