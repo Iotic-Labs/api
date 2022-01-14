@@ -16,3 +16,5 @@ python/**/*.egg-info
 
 # symlink used for local debugging using `replace` in `go.mod`
 iotic-go-proto-qapi
+
+.pytest_cache
