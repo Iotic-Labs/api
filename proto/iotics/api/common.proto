@@ -20,11 +20,8 @@ option php_namespace = "Iotics\\Api";
 
 
 // Limit is a request parameter to limit the number of results.
-// The use of "Limit" is:
-// - if limit is not supplied or supplied with no limit value, assume default=500
-// - if limit is supplied assume max number of entries is whatever specified. The limit value is capped to 1000.
 message Limit {
-  // Max number of results
+  // Max number of results (under configuration max limit constraint)
   uint32 value = 1;
 }
 
@@ -36,7 +33,7 @@ message Offset {
 }
 
 // Range is the combination of the "Limit" and "Offset" is a request parameters. It is
-// used to return a specific range of results.
+// used to return a specific range of results. Default value is applied if no limit is specified.
 message Range {
   Limit limit = 1;
   Offset offset = 2;

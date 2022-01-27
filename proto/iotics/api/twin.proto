@@ -58,7 +58,7 @@ message Twin {
 // List all twins.
 message ListAllTwinsRequest {
   Headers headers = 1;
-  // Limit the results according to the value (optional: when not supplied, assume no default limits required - platform specific).
+  // Listing result range
   Range range = 20;
 }
 
