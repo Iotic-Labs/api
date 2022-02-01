@@ -1,0 +1,113 @@
+// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol definitions (meta)
+syntax = "proto3";
+
+import "google/rpc/status.proto";
+import "iotics/api/common.proto";
+
+package iotics.api;
+
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "MetaProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// MetaAPI enables querying of metadata associated with Twins and Feeds.
+service MetaAPI {
+
+  // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
+  // - Chunks for a particular result will arrive in-order though they might be interleaved with chunks from other
+  //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest.
+  // - The call will only complete once the (specified or host default) request timeout has been reached. The client can
+  //   choose to end the stream early once they have received enough results. (E.g. in the case of Scope.LOCAL this
+  //   would be after the one and only sequence of chunks has been received.)
+  rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
+}
+
+// SparqlResultType defines the result content types for SPARQL requests. Note that applicable content types depend on
+// the type of query.
+enum SparqlResultType {
+
+  // Applicable to SELECT/ASK (SPARQL 1.1 Query Results JSON Format)
+  SPARQL_JSON = 0;
+  // Applicable to SELECT/ASK (SPARQL 1.1 Query Results XML Format)
+  SPARQL_XML = 1;
+  // Applicable to SELECT/ASK (SPARQL 1.1. Query Results CSV Format)
+  SPARQL_CSV = 2;
+  // Applicable to CONSTRUCT/DESCRIBE (Terse RDF Triple Language)
+  RDF_TURTLE = 3;
+  // Applicable to CONSTRUCT/DESCRIBE (RDF 1.1 XML)
+  RDF_XML = 4;
+  // Applicable to CONSTRUCT/DESCRIBE (RDF 1.1 N-Triples)
+  RDF_NTRIPLES = 5;
+}
+
+// SparqlQueryRequest describes a SPARQL query.
+message SparqlQueryRequest {
+
+  // SPARQL request payload.
+  message Payload {
+
+    // The desired result content type. Note that choosing an invalid result type for the type of query will result in
+    // an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
+    SparqlResultType resultContentType = 1;
+    // A UTF8-encoded SPARQL 1.1 query
+    bytes query = 2;
+  }
+
+  // SPARQL request headers
+  Headers headers = 1;
+
+  // SPARQL request scope
+  Scope scope = 2;
+
+  // SPARQL request payload
+  Payload payload = 3;
+}
+
+// SparqlQueryResponse is a part of a result for a SPARQL query request. Multiple chunks form a complete result. Related
+// chunks can be identified by a combination of:
+// - The host ID (unset for local results)
+// - Client reference (in headers, set by caller)
+// - Chunk sequence number
+message SparqlQueryResponse {
+
+  // Payload of the query result chunk
+  message Payload {
+
+    // Result host identifier. Indicates from which host this result chunk came from. For a local result, this field
+    // will be unset.
+    HostID remoteHostId = 1;
+
+    // Position of a chunk in result from a given host (and request). The first chunk has a sequence number of 0.
+    uint64 seqNum = 2;
+
+    // Indicates whether this is the last chunk from a given host, for a specific request. Results for different
+    // requests can be identified by setting a unique clientRef in the request headers.
+    bool last = 3;
+
+    // Result error status (only applicable to local results, i.e. when remoteHostId is unset). If set, this will
+    // indicate a problem with running the query (e.g. invalid syntax or content type) as opposed to a more general
+    // issue (in which case the standard gRPC error mechanism will be used and the stream terminated).
+    google.rpc.Status status = 4;
+
+    // Content type of the result.
+    SparqlResultType contentType = 5;
+
+    // Query result chunk, encoded according to actualType. The maximum size of each chunk is host-specific.
+    bytes resultChunk = 6;
+  }
+
+  // Headers for the query result. clientRef within can be used to identify which query the result applies to.
+  Headers headers = 1;
+
+  // SPARQL result chunk payload.
+  Payload payload = 2;
+}
