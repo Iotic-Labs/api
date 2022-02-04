@@ -68,9 +68,21 @@ message ListAllTwinsRequest {
 message ListAllTwinsResponse {
   Headers headers = 1;
 
+  // ListAllTwinsResponse twin details.
+  message TwinDetails {
+    // Twin identifier.
+    TwinID id = 1;
+    // Twin visibility. Enum that defines a twins level of visibility.
+    Visibility visibility = 2;
+    // Twin location (if set).
+    GeoLocation location = 3;
+    // Twin custom properties.
+    repeated Property properties = 5;
+  }
+
   // Payload of listed twins.
   message Payload {
-    repeated Twin twins = 1;
+    repeated TwinDetails twins = 1;
   }
   Payload payload = 2;
 }
