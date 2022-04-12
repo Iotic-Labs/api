@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+// Copyright (c) 2019-2022 Iotic Labs Ltd. All rights reserved.
 
 // Iotics Web protocol definitions (meta)
 syntax = "proto3";
@@ -24,11 +24,17 @@ service MetaAPI {
 
   // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
   // - Chunks for a particular result will arrive in-order though they might be interleaved with chunks from other
-  //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest.
+  //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest;
   // - The call will only complete once the (specified or host default) request timeout has been reached. The client can
   //   choose to end the stream early once they have received enough results. (E.g. in the case of Scope.LOCAL this
   //   would be after the one and only sequence of chunks has been received.)
   rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
+
+  // SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to 
+  // one of the following graph IRIs:
+  // 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be 
+  //    visible during SPARQL queries both with local & global scope (and thus, the Iotics network).
+  rpc SparqlUpdate(SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
 }
 
 // SparqlResultType defines the result content types for SPARQL requests. Note that applicable content types depend on
@@ -52,7 +58,7 @@ enum SparqlResultType {
 // SparqlQueryRequest describes a SPARQL query.
 message SparqlQueryRequest {
 
-  // SPARQL request payload.
+  // SPARQL query request payload.
   message Payload {
 
     // The desired result content type. Note that choosing an invalid result type for the type of query will result in
@@ -62,13 +68,13 @@ message SparqlQueryRequest {
     bytes query = 2;
   }
 
-  // SPARQL request headers
+  // SPARQL query request headers
   Headers headers = 1;
 
-  // SPARQL request scope
+  // SPARQL query request scope
   Scope scope = 2;
 
-  // SPARQL request payload
+  // SPARQL query request payload
   Payload payload = 3;
 }
 
@@ -101,13 +107,37 @@ message SparqlQueryResponse {
     // Content type of the result.
     SparqlResultType contentType = 5;
 
-    // Query result chunk, encoded according to actualType. The maximum size of each chunk is host-specific.
+    // Query result chunk, encoded according to actualType. 
+    // Note that:
+    // - The maximum size of each chunk is host-specific.
     bytes resultChunk = 6;
   }
 
   // Headers for the query result. clientRef within can be used to identify which query the result applies to.
   Headers headers = 1;
 
-  // SPARQL result chunk payload.
+  // SPARQL query result chunk payload.
   Payload payload = 2;
+}
+
+// Performs a SPARQL update against custom metadata only.
+message SparqlUpdateRequest {
+
+  // SPARQL update request headers
+  Headers headers = 1;
+
+  // SPARQL update request payload.
+  message Payload {
+    // A UTF8-encoded SPARQL 1.1 update
+    bytes update = 1;
+  }
+
+  // SPARQL update request payload.
+  Payload payload = 2;
+}
+
+// Response of the SPARQL update request.
+message SparqlUpdateResponse {
+  // SPARQL update response headers
+  Headers headers = 1;
 }
