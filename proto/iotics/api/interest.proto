@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2020 Iotic Labs Ltd. All rights reserved.
+// Copyright (c) 2019-2022 Iotic Labs Ltd. All rights reserved.
 
 // Iotics Web protocol definitions (interests)
 syntax = "proto3";
