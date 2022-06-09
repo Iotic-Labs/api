@@ -20,6 +20,7 @@ option php_namespace = "Iotics\\Api";
 
 
 // MetaAPI enables querying of metadata associated with Twins and Feeds.
+// All services only affect the local resources - except if mentioned differently.
 service MetaAPI {
 
   // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
@@ -27,7 +28,7 @@ service MetaAPI {
   //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest;
   // - The call will only complete once the (specified or host default) request timeout has been reached. The client can
   //   choose to end the stream early once they have received enough results. (E.g. in the case of Scope.LOCAL this
-  //   would be after the one and only sequence of chunks has been received.)
+  //   would be after the one and only sequence of chunks has been received.). (local and remote)
   rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
 
   // SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to 

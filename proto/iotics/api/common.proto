@@ -86,12 +86,6 @@ message Property {
   }
 }
 
-// PointType used to describe a point as a FEED or a CONTROL.
-enum PointType {
-  FEED = 0;
-  CONTROL = 1;
-}
-
 // GeoLocation is the geographic location of a Twin.
 message GeoLocation {
   // Latitude
@@ -181,8 +175,14 @@ message FeedID {
   string value = 1;
 }
 
-// Value is the definition of an individual piece of data within a Feed share. Values are purely descriptive, e.g. a
-// Feed follower should expect data to match the values associated with said Feed but must be able to recover where this
+// InputID is a unique input identifier (scoped to the set of input for a TwinID).
+message InputID {
+  // Input Identifier string representation (simple string)
+  string value = 1;
+}
+
+// Value is the definition of an individual piece of data within a Feed share or an Input send. Values are purely descriptive, e.g. a
+// follower should expect data to match the values associated with said Feed/Input but must be able to recover where this
 // is not the case.
 message Value {
   // label is the unique identifier of the value. It is language-neutral. E.g.: "t" / "temp" / "temperature".
@@ -211,11 +211,12 @@ message Values {
 message FeedData {
   // occurredAt is the UTC timestamp of the sample. Typically this is either the time at which an application shared
   // this sample or the time applicable to the sample itself (such as an hourly weather observation).
+  // (Optional: set to host time is not provided)
   google.protobuf.Timestamp occurredAt = 2;
   // mime is the mime type of the encoded data.
   string mime = 3;
   // data is the actual set of datapoints, encoded according the the mime type. The data should follow the Feed's
-  // value defintions but that is not enforced. (See also Value)
+  // value definitions but that is not enforced. (See also Value)
   bytes data = 4;
 }
 

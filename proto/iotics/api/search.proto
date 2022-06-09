@@ -22,11 +22,12 @@ option php_namespace = "Iotics\\Api";
 
 
 // SearchAPI provides a set of services to run synchronous and asynchronous search.
+// All services only affect the local resources - except if mentioned differently.
 service SearchAPI {
-  // Send a search request. Results are expected asynchronously.
+  // Send a search request. Results are expected asynchronously. (local and remote)
   rpc DispatchSearchRequest(SearchRequest) returns (DispatchSearchResponse) {}
 
-  // Run a synchronous search based on a user timeout.
+  // Run a synchronous search based on a user timeout. (local and remote)
   rpc SynchronousSearch(SearchRequest) returns (stream SearchResponse) {}
 
   // Receive all search responses associated to a set of Search request for a given client application ID.

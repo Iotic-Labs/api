@@ -22,19 +22,19 @@ option php_namespace = "Iotics\\Api";
 
 // InterestAPI enables creation and management of interests between a twin and a feed.
 service InterestAPI {
-  // Fetch feed data for this interest.
+  // Fetch feed data for this interest. (local and remote)
   rpc FetchInterests(FetchInterestRequest) returns (stream FetchInterestResponse) {}
 
-  // Fetch last data shared on this interest.
+  // Fetch last data shared on this interest. (local and remote)
   rpc FetchLastStored(FetchLastStoredRequest) returns (FetchInterestResponse) {}
 
   // List all interests associated to a given follower twin (Not implemented yet).
   rpc ListAllInterests(ListAllInterestsRequest) returns (ListAllInterestsResponse) {}
 
-  // Create an interest between a follower twin and a followed feed.
+  // Create an interest between a follower twin and a followed feed. (Not implemented yet).
   rpc CreateInterest(CreateInterestRequest) returns (CreateInterestResponse) {}
 
-  // Delete an existing interest.
+  // Delete an existing interest. (Not implemented yet).
   rpc DeleteInterest(DeleteInterestRequest) returns (DeleteInterestResponse) {}
 
 }
