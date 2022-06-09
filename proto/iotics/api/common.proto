@@ -169,9 +169,15 @@ message TwinID {
   string value = 1;
 }
 
-// FeedID is a unique feed identifier (scoped to the TwinID).
+// FeedID is a unique feed identifier (scoped to the set of feed for a TwinID).
 message FeedID {
   // Feed Identifier string representation (simple string)
+  string value = 1;
+}
+
+// InputID is a unique input identifier (scoped to the set of input for a TwinID).
+message InputID {
+  // Input Identifier string representation (simple string)
   string value = 1;
 }
 
