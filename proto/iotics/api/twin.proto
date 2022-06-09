@@ -5,6 +5,7 @@ syntax = "proto3";
 
 import "iotics/api/common.proto";
 import "iotics/api/feed.proto";
+import "iotics/api/input.proto";
 
 package iotics.api;
 
@@ -174,15 +175,20 @@ message FeedMeta {
   bool storeLast = 3;
 }
 
+// Metadata message for this input.
+message InputMeta {
+  InputID inputId = 1;
+}
+
 // The response for a description request on this twin.
 message DescribeTwinResponse {
   Headers headers = 1;
-
 
   // Metadata result data bag for this feed.
   message MetaResult {
     GeoLocation location = 1;
     repeated FeedMeta feeds = 4;
+    repeated InputMeta inputs = 5;
     // Custom properties associated with this twin.
     repeated Property properties = 6;
   }
