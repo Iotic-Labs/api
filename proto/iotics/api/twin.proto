@@ -20,7 +20,7 @@ option php_namespace = "Iotics\\Api";
 
 
 // TwinAPI enables creation and management of Iotics twins.
-// All services only affect the local resources - except if mentioned differently.
+// Services only affect local resources, unless stated otherwise.
 service TwinAPI {
 
   // CreateTwin creates a twin.
@@ -278,8 +278,11 @@ message UpsertTwinRequest {
     // Twin location to set. If not set the Twin will have no location
     GeoLocation location = 6;
 
-    // Feeds with metadata to set to the twin
+    // Feeds with metadata to set for the twin
     repeated UpsertFeedWithMeta feeds = 7;
+
+    // Inputs with metadata to set for the twin
+    repeated UpsertInputWithMeta inputs = 8;
 
   }
   // UpdateTwinRequest headers

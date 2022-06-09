@@ -22,7 +22,7 @@ option php_namespace = "Iotics\\Api";
 
 
 // SearchAPI provides a set of services to run synchronous and asynchronous search.
-// All services only affect the local resources - except if mentioned differently.
+// Services only affect local resources, unless stated otherwise.
 service SearchAPI {
   // Send a search request. Results are expected asynchronously. (local and remote)
   rpc DispatchSearchRequest(SearchRequest) returns (DispatchSearchResponse) {}
@@ -112,6 +112,8 @@ message SearchResponse {
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL
     repeated FeedDetails feeds = 10;
+    // Input details. Included with response type: FULL
+    repeated InputDetails inputs = 11;
   }
 
   Headers headers = 1;
