@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "iotics/api/common.proto";
 import "iotics/api/feed.proto";
+import "iotics/api/input.proto";
 package iotics.api;
 
 option csharp_namespace = "Iotics.Api";
@@ -98,6 +99,13 @@ message SearchResponse {
     // Feed custom properties.
     repeated Property properties = 4;
 
+  }
+  // Search response input details. Included with response type: FULL.
+  message InputDetails {
+    // Input
+    Input input = 1;
+    // Input custom properties.
+    repeated Property properties = 4;
   }
 
   // Search response twin details.
