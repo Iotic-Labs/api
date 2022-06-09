@@ -22,7 +22,7 @@ option php_namespace = "Iotics\\Api";
 // Create a feed owned by the provided twin.
 // A twin may have one or more feeds. Any twin can subscribe to a feed (access control permitting).
 // A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
-// All services only affect the local resources - except if mentioned differently.
+// Services only affect local resources, unless stated otherwise.
 service FeedAPI {
   // Creates a feed owned by a twin. (Idempotent)
   rpc CreateFeed(CreateFeedRequest) returns (CreateFeedResponse) {}
@@ -36,16 +36,16 @@ service FeedAPI {
   // Shares a new sample of data for the given feed which any (interest) subscribers can receive.
   rpc ShareFeedData(ShareFeedDataRequest) returns (ShareFeedDataResponse) {}
 
-  // List all feeds owned by a twin.
+  // Lists all feeds owned by a twin.
   rpc ListAllFeeds(ListAllFeedsRequest) returns (ListAllFeedsResponse) {}
 
-  // Describe feed. (local and remote)
+  // Describes a feed. (local and remote)
   rpc DescribeFeed(DescribeFeedRequest) returns (DescribeFeedResponse) {}
 }
 
 // A feed representation.
 message Feed {
-  // Feed identifier (unique within the scope of a twin identifier feed set)
+  // Feed identifier (unique within the scope of a twin identifier's feed set)
   FeedID id = 1;
   // Twin unique identifier (twin to which the feed belongs)
   TwinID twinId = 2;

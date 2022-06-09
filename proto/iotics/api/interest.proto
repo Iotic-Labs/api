@@ -6,6 +6,7 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 import "iotics/api/common.proto";
 import "iotics/api/feed.proto";
+import "iotics/api/input.proto";
 
 package iotics.api;
 
@@ -37,6 +38,51 @@ service InterestAPI {
   // Delete an existing interest. (Not implemented yet).
   rpc DeleteInterest(DeleteInterestRequest) returns (DeleteInterestResponse) {}
 
+  // Send a message to an input. (local and remote)
+  rpc SendInputMessage(SendInputMessageRequest) returns (SendInputMessageResponse) {}
+
+}
+
+// An interest is the relationship between a Twin and an Input.
+message InputInterest {
+  // InputInterest destination input identification.
+  message DestinationInput {
+    // Input to send the message to
+    Input input = 1;
+    // HostID to identify a remote input (Optional, keep empty if input is local)
+    HostID hostId = 2;
+  }
+  // Sender twin unique identifier.
+  TwinID senderTwinId = 1;
+
+  // a reference to the input of interest
+  DestinationInput destInput = 2;
+}
+
+// SendInputMessageRequest is used to send a message to a given input.
+message SendInputMessageRequest {
+  // SendInputMessageRequest payload.
+  message Payload {
+    // Message to send
+    InputMessage message = 1;
+  }
+  // SendInputMessageRequest arguments.
+  message Arguments {
+    // The interest
+    InputInterest interest = 1;
+  }
+  // SendInputMessageRequest headers
+  Headers headers = 1;
+  // SendInputMessageRequest mandatory arguments
+  Arguments args = 2;
+  // SendInputMessageRequest payload
+  Payload payload = 3;
+}
+
+// SendInputMessageResponse is used to indicate a successful send.
+message SendInputMessageResponse {
+  // SendInputMessageResponse headers
+  Headers headers = 1;
 }
 
 // An interest is the relationship between a Twin and a Feed. For example, creating

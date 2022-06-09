@@ -20,7 +20,7 @@ option php_namespace = "Iotics\\Api";
 
 
 // MetaAPI enables querying of metadata associated with Twins and Feeds.
-// All services only affect the local resources - except if mentioned differently.
+// Services only affect local resources, unless stated otherwise.
 service MetaAPI {
 
   // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
@@ -31,9 +31,9 @@ service MetaAPI {
   //   would be after the one and only sequence of chunks has been received.). (local and remote)
   rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
 
-  // SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to 
+  // SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to
   // one of the following graph IRIs:
-  // 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be 
+  // 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be
   //    visible during SPARQL queries both with local & global scope (and thus, the Iotics network).
   rpc SparqlUpdate(SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
 }
@@ -108,7 +108,7 @@ message SparqlQueryResponse {
     // Content type of the result.
     SparqlResultType contentType = 5;
 
-    // Query result chunk, encoded according to actualType. 
+    // Query result chunk, encoded according to actualType.
     // Note that:
     // - The maximum size of each chunk is host-specific.
     bytes resultChunk = 6;

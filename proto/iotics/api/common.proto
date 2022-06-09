@@ -169,13 +169,13 @@ message TwinID {
   string value = 1;
 }
 
-// FeedID is a unique feed identifier (scoped to the TwinID).
+// FeedID is a unique feed identifier (scoped to the set of feeds for a TwinID).
 message FeedID {
   // Feed Identifier string representation (simple string)
   string value = 1;
 }
 
-// InputID is a unique input identifier (scoped to the set of input for a TwinID).
+// InputID is a unique input identifier (scoped to the set of inputs for a TwinID).
 message InputID {
   // Input Identifier string representation (simple string)
   string value = 1;
@@ -211,7 +211,7 @@ message Values {
 message FeedData {
   // occurredAt is the UTC timestamp of the sample. Typically this is either the time at which an application shared
   // this sample or the time applicable to the sample itself (such as an hourly weather observation).
-  // (Optional: set to host time is not provided)
+  // (Optional: set to host time if not provided)
   google.protobuf.Timestamp occurredAt = 2;
   // mime is the mime type of the encoded data.
   string mime = 3;
