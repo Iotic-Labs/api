@@ -3,7 +3,6 @@
 // Iotics Web protocol definitions (twins)
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
 import "iotics/api/common.proto";
 import "iotics/api/feed.proto";
 
@@ -21,6 +20,7 @@ option php_namespace = "Iotics\\Api";
 
 
 // TwinAPI enables creation and management of Iotics twins.
+// All services only affect the local resources - except if mentioned differently.
 service TwinAPI {
 
   // CreateTwin creates a twin.
@@ -37,7 +37,7 @@ service TwinAPI {
   // UpdateTwin updates a twin (partial update).
   rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
 
-  // Describes a twin.
+  // Describes a twin. (local and remote)
   rpc DescribeTwin(DescribeTwinRequest) returns (DescribeTwinResponse) {}
 
   // List all twins.

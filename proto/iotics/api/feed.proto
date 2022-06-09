@@ -22,6 +22,7 @@ option php_namespace = "Iotics\\Api";
 // Create a feed owned by the provided twin.
 // A twin may have one or more feeds. Any twin can subscribe to a feed (access control permitting).
 // A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
+// All services only affect the local resources - except if mentioned differently.
 service FeedAPI {
   // Creates a feed owned by a twin. (Idempotent)
   rpc CreateFeed(CreateFeedRequest) returns (CreateFeedResponse) {}
@@ -38,15 +39,15 @@ service FeedAPI {
   // List all feeds owned by a twin.
   rpc ListAllFeeds(ListAllFeedsRequest) returns (ListAllFeedsResponse) {}
 
-  // Describe feed.
+  // Describe feed. (local and remote)
   rpc DescribeFeed(DescribeFeedRequest) returns (DescribeFeedResponse) {}
 }
 
 // A feed representation.
 message Feed {
-  // feed identifier (unique within the scope of a twin identifier)
+  // Feed identifier (unique within the scope of a twin identifier feed set)
   FeedID id = 1;
-  // twin unique identifier (twin to which the feed belongs)
+  // Twin unique identifier (twin to which the feed belongs)
   TwinID twinId = 2;
 }
 
@@ -78,14 +79,13 @@ message CreateFeedResponse {
   message Payload {
     // The created feed
     Feed feed = 1;
-    // AlreadyCreated indicates if the feed already existed (the create is idempotent)
   }
+
   // CreateFeedResponse headers
   Headers headers = 1;
   // CreateFeedResponse payload
   Payload payload = 2;
 }
-
 // ---------------------------------------
 
 // DeleteFeedRequest is used to delete a feed from a given twin.
@@ -95,43 +95,41 @@ message DeleteFeedRequest {
     // Feed to delete
     Feed feed = 1;
   }
+
   // DeleteFeedRequest headers
   Headers headers = 1;
   // DeleteFeedRequest mandatory arguments
   Arguments args = 2;
 }
 
-
 // DeleteFeedResponse describes a deleted feed.
 message DeleteFeedResponse {
   // DeleteFeedResponse payload.
   message Payload {
+    // Deleted feed
     Feed feed = 1;
   }
+
   // DeleteFeedResponse headers
   Headers headers = 1;
   // DeleteFeedResponse payload
   Payload payload = 2;
 }
-
 // ---------------------------------------
 
 // UpdateFeedRequest is used to update attributes (including metadata) of a given feed.
 message UpdateFeedRequest {
-
   // UpdateFeedRequest payload. One or more fields can be provided, depending on what needs to be updated.
   // Note that the specified metadata changes are applied in the following order:
   // tags, values, labels, comments
   message Payload {
-
-    // storeLast dictates whether to store the last shared sample of a feed.
+    // StoreLast dictates whether to store the last shared sample of a feed.
     google.protobuf.BoolValue storeLast = 1;
-    // values are descriptive individual data items to add/remove.
+    // Values are descriptive individual data items to add/remove.
     Values values = 3;
     // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
     PropertyUpdate properties = 6;
   }
-
   // UpdateFeedRequest arguments.
   message Arguments {
     Feed feed = 1;
@@ -149,26 +147,27 @@ message UpdateFeedRequest {
 message UpdateFeedResponse {
   // UpdateFeedResponse payload.
   message Payload {
-    // Updated Twin
+    // Updated feed
     Feed feed = 1;
   }
+
   // UpdateFeedResponse headers
   Headers headers = 1;
   //UpdateFeedResponse payload
   Payload payload = 2;
 }
-
 // ---------------------------------------
 
 // ShareFeedDataRequest is used to share a new sample of data for the given feed.
 message ShareFeedDataRequest {
-
   // ShareFeedDataRequest payload.
   message Payload {
+    // Sample to share
     FeedData sample = 1;
   }
   // ShareFeedDataRequest arguments.
   message Arguments {
+    // Feed sharing the sample
     Feed feed = 1;
   }
 
@@ -186,7 +185,6 @@ message ShareFeedDataResponse {
   // ShareFeedDataResponse headers
   Headers headers = 1;
 }
-
 // ---------------------------------------
 
 // ListAllFeedsRequest is used to list all the feeds owned by a given twin.
@@ -196,6 +194,7 @@ message ListAllFeedsRequest {
     // Identifier of the twin owning this feed
     TwinID twinId = 1;
   }
+
   // ListAllFeedsRequest headers
   Headers headers = 1;
   // ListAllFeedsRequest arguments
@@ -211,39 +210,37 @@ message ListAllFeedsResponse {
   message Payload {
     // List of the feeds owned by the twin
     repeated Feed feeds = 1;
-
   }
+
   // ListAllFeedsResponse headers
   Headers headers = 1;
   // ListAllFeedsResponse payload
   Payload payload = 2;
 }
+// ---------------------------------------
 
 // Description of twin: Provides public metadata lookup for individual resources.
 message DescribeFeedRequest {
-
-  // Only one action argument is necessary.
+  // DescribeFeedRequest arguments.
   message Arguments {
     // Feed to describe
     Feed feed = 1;
-
-    // optional HostID to describe a remote feed
+    // HostID to describe a remote feed (Optional, keep empty if feed is local)
     HostID remoteHostId = 2;
   }
+
+  // DescribeFeedRequest headers
   Headers headers = 1;
   // DescribeFeedRequest mandatory arguments
   Arguments args = 3;
 }
+
 // Describe feed response.
 message DescribeFeedResponse {
-  Headers headers = 1;
-
-
   // Metadata result databag.
   message MetaResult {
-    // values semantically describing the share payload of Feed or expected arguments for a Control request
+    // Values semantically describing the share payload of Feed
     repeated Value values = 2;
-
     // Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored
     // request. (See interest API)
     bool storeLast = 5;
@@ -251,27 +248,31 @@ message DescribeFeedResponse {
     // Custom properties associated with this feed.
     repeated Property properties = 6;
   }
-
   // DescribeFeedResponse payload.
   message Payload {
+    // Described feed
     Feed feed = 1;
+    // Metadata result
     MetaResult result = 2;
+    // HostID of the described feed. (Optional, empty if feed is local)
     HostID remoteHostId = 3;
   }
+
+  // DescribeFeedResponse headers
+  Headers headers = 1;
+  // DescribeFeedResponse payload
   Payload payload = 2;
 }
+// ---------------------------------------
 
 // UpsertFeedWithMeta is used to describe the full feed state. Used in UpsertTwinRequest.
 message UpsertFeedWithMeta {
   // Id of the feed to create/update
   string id = 1;
-
-  // storeLast dictates whether to store the last shared sample of the feed. Default 'False'
+  // StoreLast dictates whether to store the last shared sample of the feed. Default 'False'
   bool storeLast = 4;
-
-  // values to set
+  // Values to set
   repeated Value values = 5;
-
-  // feed properties to set
+  // Feed properties to set
   repeated Property properties = 6;
 }
