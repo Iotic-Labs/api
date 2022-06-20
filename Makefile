@@ -1,4 +1,4 @@
-BUF_VERSION:=0.55.0
+BUF_VERSION:=1.5.0
 
 GOPATH=$(shell go env GOPATH)
 BUF = docker run --volume "${PWD}:/workspace" --workdir /workspace bufbuild/buf:${BUF_VERSION}
