@@ -3,6 +3,9 @@
 // Iotics Web protocol definitions (twins)
 syntax = "proto3";
 
+
+import "google/protobuf/timestamp.proto";
+
 import "iotics/api/common.proto";
 import "iotics/api/feed.proto";
 import "iotics/api/input.proto";
@@ -79,6 +82,10 @@ message ListAllTwinsResponse {
     GeoLocation location = 3;
     // Twin custom properties.
     repeated Property properties = 5;
+    // Twin createdAt timestamp.
+    google.protobuf.Timestamp createdAt = 6;
+    // Twin updatedAt timestamp.
+    google.protobuf.Timestamp updatedAt = 7;
   }
 
   // Payload of listed twins.
@@ -191,6 +198,11 @@ message DescribeTwinResponse {
     repeated InputMeta inputs = 5;
     // Custom properties associated with this twin.
     repeated Property properties = 6;
+
+    // Twin createdAt timestamp.
+    google.protobuf.Timestamp createdAt = 7;
+    // Twin updatedAt timestamp.
+    google.protobuf.Timestamp updatedAt = 8;
   }
 
   // Payload of described twins.
