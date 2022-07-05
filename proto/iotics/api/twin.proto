@@ -200,9 +200,9 @@ message DescribeTwinResponse {
     repeated Property properties = 6;
 
     // Twin createdAt timestamp.
-    google.protobuf.Timestamp createdAt = 4;
+    google.protobuf.Timestamp createdAt = 7;
     // Twin updatedAt timestamp.
-    google.protobuf.Timestamp updatedAt = 5;
+    google.protobuf.Timestamp updatedAt = 8;
   }
 
   // Payload of described twins.
