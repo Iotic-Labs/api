@@ -36,6 +36,32 @@ service MetaAPI {
   // 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be
   //    visible during SPARQL queries both with local & global scope (and thus, the Iotics network).
   rpc SparqlUpdate(SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
+
+  // ExplorerQuery - Deprecated - use SparqlQuery instead.
+  rpc ExplorerQuery(ExplorerRequest) returns (stream SparqlQueryResponse) {}
+}
+
+// ExplorerRequest - Deprecated. Use SparqlQueryRequest instead.
+message ExplorerRequest {
+
+  // Explorer request payload.
+  message Payload {
+    // The desired result content type. Note that choosing an invalid result type for the type of query will result in
+    // an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
+    SparqlResultType resultContentType = 1;
+
+    // keyword defines the search term associated to the explorer request.
+    string keyword = 2;
+  }
+
+  // Explorer request headers
+  Headers headers = 1;
+
+  // Explorer request scope
+  Scope scope = 2;
+
+  // Explorer request payload
+  Payload payload = 3;
 }
 
 // SparqlResultType defines the result content types for SPARQL requests. Note that applicable content types depend on
