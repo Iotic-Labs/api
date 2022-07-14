@@ -52,7 +52,7 @@ message Twin {
   // Unique ID of the twin, assigned by the user.
   TwinID id = 1;
 
-  // Visibility of this twin
+  // DEPRECATED - see field description for details.
   Visibility visibility = 2;
 }
 
@@ -73,7 +73,7 @@ message ListAllTwinsResponse {
   message TwinDetails {
     // Twin identifier.
     TwinID id = 1;
-    // Twin visibility. Enum that defines a twins level of visibility.
+    // DEPRECATED - see field description for details.
     Visibility visibility = 2;
     // Twin location (if set).
     GeoLocation location = 3;
@@ -210,9 +210,9 @@ message DescribeTwinResponse {
 
 // ---------------------------------------
 
-// VisibilityUpdate describes the update of a twin visibility.
+// DEPRECATED - see Visibility field description for details.
 message VisibilityUpdate {
-  // New visibility for this twin
+  // DEPRECATED - see field description for details.
   Visibility visibility = 1;
 }
 
@@ -233,7 +233,7 @@ message UpdateTwinRequest {
   // Note that the specified metadata changes are applied in the following order:
   // tags, visibility, properties, labels, comments, location
   message Payload {
-    // New visibility
+    // DEPRECATED - see Visibility field description for details.
     VisibilityUpdate newVisibility = 2;
 
     // Custom properties to add/remove. Internal properties (such as location) cannot be modified here.
@@ -275,7 +275,10 @@ message UpsertTwinRequest {
     // Unique ID of the twin to create/update
     string twinId = 1;
 
-    // Twin visibility. Default value: 'PRIVATE'
+    // DEPRECATED - see field description for details.
+    // If any metadata network allowlist property is provided, the visibility value will be ignored.
+    //
+    // Default value: 'PRIVATE'
     Visibility visibility = 2;
 
     // Twin Properties to set

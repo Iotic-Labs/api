@@ -114,7 +114,7 @@ message SearchResponse {
     TwinID id = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
-    // Twin visibility. Enum that defines a twins level of visibility.
+    // DEPRECATED - see field description for details.
     Visibility visibility = 3;
     // Twin custom properties.
     repeated Property properties = 5;
