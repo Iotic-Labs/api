@@ -101,9 +101,17 @@ message GeoCircle {
   double radiusKm = 2;
 }
 
-// Visibility defines who a twin is visible to.
-// PRIVATE - the twin is only visible in a LOCAL scope.
-// PUBLIC - the twin is visible in any scope.
+// DEPRECATED
+// This field will be temporarily maintained alongside the metadata network allowlist for backwards compatibility.
+// Going forward, the metadata network allowlist should be used instead.
+//
+// Read behaviour:
+// PRIVATE - the twin is only visible in a LOCAL scope or according to the metadata network allowlist
+// PUBLIC - the twin is visible in any scope. (ie. metadata network allowlist [ALLOW_ALL])
+//
+// Write behaviour:
+// PRIVATE - set the metadata network allowlist to ALLOW_NONE: the twin is only visible in a LOCAL scope
+// PUBLIC - set the metadata network allowlist to ALLOW_ALL: the twin is visible in any scope.
 enum Visibility {
   PRIVATE = 0;
   PUBLIC = 1;
