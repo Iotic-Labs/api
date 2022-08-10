@@ -174,18 +174,6 @@ message TwinID {
   string hostId = 2;
 }
 
-// FeedID is a unique feed identifier (scoped to the set of feeds for a TwinID).
-message FeedID {
-  // Feed Identifier string representation (simple string)
-  string value = 1;
-}
-
-// InputID is a unique input identifier (scoped to the set of inputs for a TwinID).
-message InputID {
-  // Input Identifier string representation (simple string)
-  string value = 1;
-}
-
 // Value is the definition of an individual piece of data within a Feed share or an Input send. Values are purely descriptive, e.g. a
 // follower should expect data to match the values associated with said Feed/Input but must be able to recover where this
 // is not the case.
