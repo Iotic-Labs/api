@@ -140,7 +140,7 @@ message SearchResponse {
   // Search response twin details.
   message TwinDetails {
     // Twin identifier. Included with response type: FULL, LOCATED and MINIMAL
-    TwinID id = 1;
+    Twin twin = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
     // DEPRECATED - see field description for details.
@@ -164,8 +164,6 @@ message SearchResponse {
     ResponseType responseType = 1;
     // Response status - if present indicates that this response is invalid
     google.rpc.Status status = 2;
-    // Response host identifier - indicates from which host this response comes from
-    HostID remoteHostId = 4;
 
     // Matching twins
     repeated TwinDetails twins = 10;
