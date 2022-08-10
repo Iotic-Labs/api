@@ -37,7 +37,7 @@ message Input {
   // Input identifier (unique within the scope of a twin identifier's input set)
   InputID id = 1;
   // Twin unique identifier (twin to which the input belongs)
-  TwinID twinId = 2;
+  Twin twin = 2;
 }
 // ---------------------------------------
 
@@ -76,8 +76,6 @@ message DescribeInputRequest {
   message Arguments {
     // Input to describe
     Input input = 1;
-    // HostID to describe a remote input (Optional, keep empty if input is local)
-    HostID remoteHostId = 2;
   }
 
   // DescribeInputRequest headers
@@ -101,8 +99,6 @@ message DescribeInputResponse {
     Input input = 1;
     // Metadata result
     MetaResult result = 2;
-    // HostID of the described input. (Optional, empty if input is local)
-    HostID remoteHostId = 3;
   }
 
   // DescribeInputResponse headers

@@ -48,17 +48,6 @@ service TwinAPI {
   rpc ListAllTwins(ListAllTwinsRequest) returns (ListAllTwinsResponse) {}
 }
 
-// Twin is the virtual representation of a (physical, purely virtual or hybrid) device,
-// is only ever located in the host it was created.
-message Twin {
-
-  // Unique ID of the twin, assigned by the user.
-  TwinID id = 1;
-
-  // DEPRECATED - see field description for details.
-  Visibility visibility = 2;
-}
-
 // List all twins.
 message ListAllTwinsRequest {
   Headers headers = 1;
@@ -75,7 +64,7 @@ message ListAllTwinsResponse {
   // ListAllTwinsResponse twin details.
   message TwinDetails {
     // Twin identifier.
-    TwinID id = 1;
+    Twin twin = 1;
     // DEPRECATED - see field description for details.
     Visibility visibility = 2;
     // Twin location (if set).
@@ -100,7 +89,7 @@ message CreateTwinRequest {
   // Arguments identifies the twin to create.
   message Payload {
     // Unique ID of the twin to create
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // Common headers
@@ -116,7 +105,7 @@ message CreateTwinResponse {
   // Payload identifies the twin which was created.
   message Payload {
     // Unique ID of the twin to delete
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // Common headers
@@ -134,7 +123,7 @@ message DeleteTwinRequest {
   // Arguments identifies the twin to delete.
   message Arguments {
     // Unique ID of the twin to delete
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // Common headers
@@ -150,7 +139,7 @@ message DeleteTwinResponse {
   // Payload identifies the twin which was deleted.
   message Payload {
     // Unique ID of the twin to delete
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // Common headers
@@ -164,11 +153,8 @@ message DeleteTwinResponse {
 message DescribeTwinRequest {
   // Only one action argument is necessary.
   message Arguments {
-    // unique id of the twin to describe
-    TwinID twinId = 1;
-
-    // optional HostID to describe a remote twin
-    HostID remoteHostId = 2;
+    // Unique ID of the twin to describe
+    Twin twin = 1;
   }
 
   Headers headers = 1;
@@ -194,6 +180,8 @@ message DescribeTwinResponse {
   // Metadata result data bag for this feed.
   message MetaResult {
     GeoLocation location = 1;
+    // Deprecated - see field description for details.
+    Visibility visibility = 2;
     repeated FeedMeta feeds = 4;
     repeated InputMeta inputs = 5;
     // Custom properties associated with this twin.
@@ -212,9 +200,6 @@ message DescribeTwinResponse {
 
     // the description details
     MetaResult result = 2;
-
-    // optional - if present indicates this response comes from a remote host
-    HostID remoteHostId = 3;
   }
   Payload payload = 2;
 }
@@ -239,7 +224,7 @@ message UpdateTwinRequest {
   // UpdateTwinRequest mandatory arguments.
   message Arguments {
     // Unique ID of the twin to update
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
   // UpdateTwinRequest payload. One or more fields can be provided, depending on what needs to be updated.
   // Note that the specified metadata changes are applied in the following order:
@@ -270,7 +255,7 @@ message UpdateTwinResponse {
   // UpdateTwinResponse payload.
   message Payload {
     // Unique ID of the twin to delete
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
   // UpdateTwinResponse headers
   Headers headers = 1;
@@ -285,7 +270,7 @@ message UpsertTwinRequest {
   message Payload {
 
     // Unique ID of the twin to create/update
-    string twinId = 1;
+    Twin twin = 1;
 
     // DEPRECATED - see field description for details.
     // If any metadata network allowlist property is provided, the visibility value will be ignored.
@@ -318,8 +303,8 @@ message UpsertTwinResponse {
 
   // Payload identifies the twin which was created.
   message Payload {
-    // created/updated twin
-    string twinId = 1;
+    // Unique ID of the created/updated twin
+    Twin twin = 1;
   }
 
   // Common headers

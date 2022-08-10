@@ -107,7 +107,7 @@ message SparqlQueryRequest {
 
 // SparqlQueryResponse is a part of a result for a SPARQL query request. Multiple chunks form a complete result. Related
 // chunks can be identified by a combination of:
-// - The host ID (unset for local results)
+// - The hostId
 // - Client reference (in headers, set by caller)
 // - Chunk sequence number
 message SparqlQueryResponse {
@@ -117,7 +117,7 @@ message SparqlQueryResponse {
 
     // Result host identifier. Indicates from which host this result chunk came from. For a local result, this field
     // will be unset.
-    HostID remoteHostId = 1;
+    string hostId = 1;
 
     // Position of a chunk in result from a given host (and request). The first chunk has a sequence number of 0.
     uint64 seqNum = 2;
@@ -126,7 +126,7 @@ message SparqlQueryResponse {
     // requests can be identified by setting a unique clientRef in the request headers.
     bool last = 3;
 
-    // Result error status (only applicable to local results, i.e. when remoteHostId is unset). If set, this will
+    // Result error status (only applicable to local results). If set, this will
     // indicate a problem with running the query (e.g. invalid syntax or content type) as opposed to a more general
     // issue (in which case the standard gRPC error mechanism will be used and the stream terminated).
     google.rpc.Status status = 4;

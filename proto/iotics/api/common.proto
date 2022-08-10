@@ -165,16 +165,13 @@ message SubscriptionHeaders {
 
 }
 
-// HostID is a unique host identifier.
-message HostID {
-  // Host Identifier string representation
-  string value = 1;
-}
-
-// TwinID is a unique twin identifier.
-message TwinID {
+// Twin is the virtual representation of a (physical, purely virtual or hybrid) device,
+// is only ever located in the host it was created.
+message Twin {
   // Twin Identifier (using DID format)
-  string value = 1;
+  string id = 1;
+  // Host Identifier (using DID format)
+  string hostId = 2;
 }
 
 // FeedID is a unique feed identifier (scoped to the set of feeds for a TwinID).

@@ -48,7 +48,7 @@ message Feed {
   // Feed identifier (unique within the scope of a twin identifier's feed set)
   FeedID id = 1;
   // Twin unique identifier (twin to which the feed belongs)
-  TwinID twinId = 2;
+  Twin twin = 2;
 }
 
 // CreateFeedRequestCreate is used to create a new feed in a given twin.
@@ -62,7 +62,7 @@ message CreateFeedRequest {
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
   message Arguments {
     // Identifier of the twin owning this feed
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // CreateFeedRequest headers
@@ -192,7 +192,7 @@ message ListAllFeedsRequest {
   // ListAllFeedsRequest mandatory arguments.
   message Arguments {
     // Identifier of the twin owning this feed
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // ListAllFeedsRequest headers
@@ -225,8 +225,6 @@ message DescribeFeedRequest {
   message Arguments {
     // Feed to describe
     Feed feed = 1;
-    // HostID to describe a remote feed (Optional, keep empty if feed is local)
-    HostID remoteHostId = 2;
   }
 
   // DescribeFeedRequest headers
@@ -254,8 +252,6 @@ message DescribeFeedResponse {
     Feed feed = 1;
     // Metadata result
     MetaResult result = 2;
-    // HostID of the described feed. (Optional, empty if feed is local)
-    HostID remoteHostId = 3;
   }
 
   // DescribeFeedResponse headers
