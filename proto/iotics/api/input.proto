@@ -34,8 +34,8 @@ service InputAPI {
 
 // Representation of an input.
 message Input {
-  // Input identifier (unique within the scope of a twin identifier's input set)
-  InputID id = 1;
+  // Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+  string id = 1;
   // Twin unique identifier (twin to which the input belongs)
   TwinID twinId = 2;
 }

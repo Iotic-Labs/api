@@ -45,8 +45,8 @@ service FeedAPI {
 
 // A feed representation.
 message Feed {
-  // Feed identifier (unique within the scope of a twin identifier's feed set)
-  FeedID id = 1;
+  // Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+  string id = 1;
   // Twin unique identifier (twin to which the feed belongs)
   TwinID twinId = 2;
 }
@@ -56,7 +56,7 @@ message CreateFeedRequest {
   // Payload describes the data needed to create a feed.
   message Payload {
     // ID of the feed to create
-    FeedID feedId = 1;
+    Feed feed = 1;
     // StoreLast indicates if the last received value should be stored of not
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
