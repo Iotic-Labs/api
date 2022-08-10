@@ -49,11 +49,9 @@ message InputInterest {
   message DestinationInput {
     // Input to send the message to
     Input input = 1;
-    // HostID to identify a remote input (Optional, keep empty if input is local)
-    HostID hostId = 2;
   }
   // Sender twin unique identifier.
-  TwinID senderTwinId = 1;
+  Twin senderTwin = 1;
 
   // a reference to the input of interest
   DestinationInput destInput = 2;
@@ -94,16 +92,13 @@ message Interest {
   message FollowedFeed {
     // Followed feed identifier
     Feed feed = 1;
-    // Feed remote host identifier (If not specified, the Interest is taken to be in scope of the host from which a request is made.)
-    HostID hostId = 2;
   }
 
   // Follower twin unique identifier.
-  TwinID followerTwinId = 2;
+  Twin followerTwin = 2;
 
   // a reference to the interested feed
   FollowedFeed followedFeed = 3;
-
 }
 
 // CreateInterestRequest is used to create an interest between a twin and a feed.
@@ -115,7 +110,7 @@ message CreateInterestRequest {
   // CreateInterestRequest mandatory arguments.
   message Arguments {
     // Follower twin unique identifier
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // CreateInterestRequest headers
@@ -149,7 +144,7 @@ message ListAllInterestsRequest {
   // ListAllInterestsRequest mandatory arguments.
   message Arguments {
     // Follower twin unique identifier
-    TwinID twinId = 1;
+    Twin twin = 1;
   }
 
   // ListAllInterestsRequest headers
