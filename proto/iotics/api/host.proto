@@ -1,0 +1,41 @@
+// Copyright (c) 2019-2022 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol definitions (hosts)
+syntax = "proto3";
+
+import "iotics/api/common.proto";
+
+package iotics.api;
+
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "HostProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// HostAPI enables management of Iotics host twins.
+// Services only affect local resources, unless stated otherwise.
+service HostAPI {
+  // GetHostID gets the ID of the host twin.
+  rpc GetHostID(GetHostIDRequest) returns (GetHostIDResponse) {}
+}
+
+// GetHostIDRequest: gets the local host twin's ID
+message GetHostIDRequest {
+  Headers headers = 1;
+}
+
+// GetHostIDResponse: response containing the local host twin's ID
+message GetHostIDResponse {
+  message Payload {
+    string hostId = 1;
+  }
+  Headers headers = 1;
+
+  Payload payload = 2;
+}
