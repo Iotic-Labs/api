@@ -44,7 +44,7 @@ service FeedAPI {
 }
 
 // A feed representation.
-message Feed {
+message FeedID {
   // Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
   string id = 1;
   // Twin unique identifier (twin to which the feed belongs)
@@ -56,7 +56,7 @@ message CreateFeedRequest {
   // Payload describes the data needed to create a feed.
   message Payload {
     // ID of the feed to create
-    Feed feed = 1;
+    FeedID feedId = 1;
     // StoreLast indicates if the last received value should be stored of not
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
@@ -78,7 +78,7 @@ message CreateFeedResponse {
   // CreateFeedResponse payload.
   message Payload {
     // The created feed
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // CreateFeedResponse headers
@@ -93,7 +93,7 @@ message DeleteFeedRequest {
   // DeleteFeedRequest arguments.
   message Arguments {
     // Feed to delete
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // DeleteFeedRequest headers
@@ -107,7 +107,7 @@ message DeleteFeedResponse {
   // DeleteFeedResponse payload.
   message Payload {
     // Deleted feed
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // DeleteFeedResponse headers
@@ -132,7 +132,7 @@ message UpdateFeedRequest {
   }
   // UpdateFeedRequest arguments.
   message Arguments {
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // UpdateFeedRequest headers
@@ -148,7 +148,7 @@ message UpdateFeedResponse {
   // UpdateFeedResponse payload.
   message Payload {
     // Updated feed
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // UpdateFeedResponse headers
@@ -168,7 +168,7 @@ message ShareFeedDataRequest {
   // ShareFeedDataRequest arguments.
   message Arguments {
     // Feed sharing the sample
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // ShareFeedDataRequest headers
@@ -209,7 +209,7 @@ message ListAllFeedsResponse {
   // ListAllFeedsResponse payload.
   message Payload {
     // List of the feeds owned by the twin
-    repeated Feed feeds = 1;
+    repeated FeedID feedIds = 1;
   }
 
   // ListAllFeedsResponse headers
@@ -224,7 +224,7 @@ message DescribeFeedRequest {
   // DescribeFeedRequest arguments.
   message Arguments {
     // Feed to describe
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // DescribeFeedRequest headers
@@ -249,7 +249,7 @@ message DescribeFeedResponse {
   // DescribeFeedResponse payload.
   message Payload {
     // Described feed
-    Feed feed = 1;
+    FeedID feedId = 1;
     // Metadata result
     MetaResult result = 2;
   }
