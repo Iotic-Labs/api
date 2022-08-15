@@ -164,13 +164,13 @@ message DescribeTwinRequest {
 
 // Metadata message for this Feed.
 message FeedMeta {
-  Feed feed = 1;
+  FeedID feedId = 1;
   bool storeLast = 3;
 }
 
 // Metadata message for this input.
 message InputMeta {
-  Input input = 1;
+  InputID inputId = 1;
 }
 
 // The response for a description request on this twin.

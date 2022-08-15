@@ -48,7 +48,7 @@ message InputInterest {
   // InputInterest destination input identification.
   message DestinationInput {
     // Input to send the message to
-    Input input = 1;
+    InputID inputId = 1;
   }
   // Sender twin unique identifier.
   TwinID senderTwinId = 1;
@@ -91,7 +91,7 @@ message Interest {
   // FollowedFeed fully identify the (local or remote) feed to follow.
   message FollowedFeed {
     // Followed feed identifier
-    Feed feed = 1;
+    FeedID feedId = 1;
   }
 
   // Follower twin unique identifier.

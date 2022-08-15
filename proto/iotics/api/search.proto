@@ -122,7 +122,7 @@ message SearchResponse {
   // Search response feed details. Included with response type: FULL.
   message FeedDetails {
     // Feed
-    Feed feed = 1;
+    FeedID feedId = 1;
     // whether offers the ability to store last received value
     bool storeLast = 3;
     // Feed custom properties.
@@ -132,7 +132,7 @@ message SearchResponse {
   // Search response input details. Included with response type: FULL.
   message InputDetails {
     // Input
-    Input input = 1;
+    InputID inputId = 1;
     // Input custom properties.
     repeated Property properties = 4;
   }
@@ -164,6 +164,8 @@ message SearchResponse {
     ResponseType responseType = 1;
     // Response status - if present indicates that this response is invalid
     google.rpc.Status status = 2;
+    // Host identifier string representation
+    string hostId = 3;
 
     // Matching twins
     repeated TwinDetails twins = 10;

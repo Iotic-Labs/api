@@ -33,7 +33,7 @@ service InputAPI {
 }
 
 // Representation of an input.
-message Input {
+message InputID {
   // Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
   string id = 1;
   // Twin unique identifier (twin to which the input belongs)
@@ -46,7 +46,7 @@ message DeleteInputRequest {
   // DeleteInputRequest arguments.
   message Arguments {
     // Input to delete
-    Input input = 1;
+    InputID inputId = 1;
   }
 
   // DeleteInputRequest headers
@@ -60,7 +60,7 @@ message DeleteInputResponse {
   // DeleteInputResponse payload.
   message Payload {
     // Deleted input
-    Input input = 1;
+    InputID inputId = 1;
   }
 
   // DeleteInputResponse headers
@@ -75,7 +75,7 @@ message DescribeInputRequest {
   // DescribeInputRequest arguments.
   message Arguments {
     // Input to describe
-    Input input = 1;
+    InputID inputId = 1;
   }
 
   // DescribeInputRequest headers
@@ -96,7 +96,7 @@ message DescribeInputResponse {
   // DescribeInputResponse payload.
   message Payload {
     // Described input
-    Input input = 1;
+    InputID inputId = 1;
     // Metadata result
     MetaResult result = 2;
   }
@@ -138,7 +138,7 @@ message ReceiveInputMessageRequest {
   // ReceiveInputMessageRequest arguments.
   message Arguments {
     // Input to listen messages from
-    Input input = 1;
+    InputID inputId = 1;
   }
 
   // ReceiveInputMessageRequest headers
@@ -151,7 +151,7 @@ message ReceiveInputMessageRequest {
 message ReceiveInputMessageResponse {
   message Payload {
     // Input the message has been sent to
-    Input input = 1;
+    InputID inputId = 1;
     // Input message
     InputMessage message = 2;
   }
