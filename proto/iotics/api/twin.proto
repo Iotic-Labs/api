@@ -64,7 +64,7 @@ message ListAllTwinsResponse {
   // ListAllTwinsResponse twin details.
   message TwinDetails {
     // Twin identifier.
-    Twin twin = 1;
+    TwinID twinId = 1;
     // DEPRECATED - see field description for details.
     Visibility visibility = 2;
     // Twin location (if set).
@@ -89,7 +89,7 @@ message CreateTwinRequest {
   // Arguments identifies the twin to create.
   message Payload {
     // Unique ID of the twin to create
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -105,7 +105,7 @@ message CreateTwinResponse {
   // Payload identifies the twin which was created.
   message Payload {
     // Unique ID of the twin to delete
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -123,7 +123,7 @@ message DeleteTwinRequest {
   // Arguments identifies the twin to delete.
   message Arguments {
     // Unique ID of the twin to delete
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -139,7 +139,7 @@ message DeleteTwinResponse {
   // Payload identifies the twin which was deleted.
   message Payload {
     // Unique ID of the twin to delete
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // Common headers
@@ -154,7 +154,7 @@ message DescribeTwinRequest {
   // Only one action argument is necessary.
   message Arguments {
     // Unique ID of the twin to describe
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   Headers headers = 1;
@@ -196,7 +196,7 @@ message DescribeTwinResponse {
   // Payload of described twins.
   message Payload {
     // the twin
-    Twin twin = 1;
+    TwinID twinId = 1;
 
     // the description details
     MetaResult result = 2;
@@ -224,7 +224,7 @@ message UpdateTwinRequest {
   // UpdateTwinRequest mandatory arguments.
   message Arguments {
     // Unique ID of the twin to update
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
   // UpdateTwinRequest payload. One or more fields can be provided, depending on what needs to be updated.
   // Note that the specified metadata changes are applied in the following order:
@@ -255,7 +255,7 @@ message UpdateTwinResponse {
   // UpdateTwinResponse payload.
   message Payload {
     // Unique ID of the twin to delete
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
   // UpdateTwinResponse headers
   Headers headers = 1;
@@ -270,7 +270,7 @@ message UpsertTwinRequest {
   message Payload {
 
     // Unique ID of the twin to create/update
-    Twin twin = 1;
+    TwinID twinId = 1;
 
     // DEPRECATED - see field description for details.
     // If any metadata network allowlist property is provided, the visibility value will be ignored.
@@ -304,7 +304,7 @@ message UpsertTwinResponse {
   // Payload identifies the twin which was created.
   message Payload {
     // Unique ID of the created/updated twin
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // Common headers
