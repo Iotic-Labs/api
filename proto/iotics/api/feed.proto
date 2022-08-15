@@ -48,7 +48,7 @@ message Feed {
   // Feed identifier (unique within the scope of a twin identifier's feed set)
   FeedID id = 1;
   // Twin unique identifier (twin to which the feed belongs)
-  Twin twin = 2;
+  TwinID twinId = 2;
 }
 
 // CreateFeedRequestCreate is used to create a new feed in a given twin.
@@ -62,7 +62,7 @@ message CreateFeedRequest {
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
   message Arguments {
     // Identifier of the twin owning this feed
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // CreateFeedRequest headers
@@ -192,7 +192,7 @@ message ListAllFeedsRequest {
   // ListAllFeedsRequest mandatory arguments.
   message Arguments {
     // Identifier of the twin owning this feed
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // ListAllFeedsRequest headers

@@ -37,7 +37,7 @@ message Input {
   // Input identifier (unique within the scope of a twin identifier's input set)
   InputID id = 1;
   // Twin unique identifier (twin to which the input belongs)
-  Twin twin = 2;
+  TwinID twinId = 2;
 }
 // ---------------------------------------
 

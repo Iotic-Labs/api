@@ -140,7 +140,7 @@ message SearchResponse {
   // Search response twin details.
   message TwinDetails {
     // Twin identifier. Included with response type: FULL, LOCATED and MINIMAL
-    Twin twin = 1;
+    TwinID twinId = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
     // DEPRECATED - see field description for details.

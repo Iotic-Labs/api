@@ -165,9 +165,9 @@ message SubscriptionHeaders {
 
 }
 
-// Twin is the virtual representation of a (physical, purely virtual or hybrid) device,
+// TwinID is the virtual representation of a (physical, purely virtual or hybrid) device,
 // is only ever located in the host it was created.
-message Twin {
+message TwinID {
   // Twin Identifier (using DID format)
   string id = 1;
   // Host Identifier (using DID format)
