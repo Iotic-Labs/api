@@ -51,7 +51,7 @@ message InputInterest {
     Input input = 1;
   }
   // Sender twin unique identifier.
-  Twin senderTwin = 1;
+  TwinID senderTwinId = 1;
 
   // a reference to the input of interest
   DestinationInput destInput = 2;
@@ -95,7 +95,7 @@ message Interest {
   }
 
   // Follower twin unique identifier.
-  Twin followerTwin = 2;
+  TwinID followerTwinId = 2;
 
   // a reference to the interested feed
   FollowedFeed followedFeed = 3;
@@ -110,7 +110,7 @@ message CreateInterestRequest {
   // CreateInterestRequest mandatory arguments.
   message Arguments {
     // Follower twin unique identifier
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // CreateInterestRequest headers
@@ -144,7 +144,7 @@ message ListAllInterestsRequest {
   // ListAllInterestsRequest mandatory arguments.
   message Arguments {
     // Follower twin unique identifier
-    Twin twin = 1;
+    TwinID twinId = 1;
   }
 
   // ListAllInterestsRequest headers
