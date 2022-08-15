@@ -88,8 +88,8 @@ message ListAllTwinsResponse {
 message CreateTwinRequest {
   // Arguments identifies the twin to create.
   message Payload {
-    // Unique ID of the twin to create
-    TwinID twinId = 1;
+    // Twin identifier string representation (simple string)
+    string id = 1;
   }
 
   // Common headers

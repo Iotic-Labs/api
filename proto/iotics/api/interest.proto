@@ -45,16 +45,11 @@ service InterestAPI {
 
 // An interest is the relationship between a Twin and an Input.
 message InputInterest {
-  // InputInterest destination input identification.
-  message DestinationInput {
-    // Input to send the message to
-    InputID inputId = 1;
-  }
   // Sender twin unique identifier.
   TwinID senderTwinId = 1;
 
   // a reference to the input of interest
-  DestinationInput destInput = 2;
+  InputID destInputId = 2;
 }
 
 // SendInputMessageRequest is used to send a message to a given input.
@@ -88,17 +83,11 @@ message SendInputMessageResponse {
 // the associated Twin. Interests can be revoked either by the subscriber or provider and there
 // may only be one interest between any unique Twin and Feed combination.
 message Interest {
-  // FollowedFeed fully identify the (local or remote) feed to follow.
-  message FollowedFeed {
-    // Followed feed identifier
-    FeedID feedId = 1;
-  }
-
   // Follower twin unique identifier.
-  TwinID followerTwinId = 2;
+  TwinID followerTwinId = 1;
 
   // a reference to the interested feed
-  FollowedFeed followedFeed = 3;
+  FeedID followedFeedId = 2;
 }
 
 // CreateInterestRequest is used to create an interest between a twin and a feed.

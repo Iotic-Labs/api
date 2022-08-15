@@ -110,7 +110,7 @@ message DescribeInputResponse {
 
 // UpsertInputWithMeta is used to describe the full input state. Used in UpsertTwinRequest.
 message UpsertInputWithMeta {
-  // Id of the input to create/update
+  // Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
   string id = 1;
   // Values to set
   repeated Value values = 2;
