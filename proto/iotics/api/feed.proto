@@ -55,9 +55,8 @@ message FeedID {
 message CreateFeedRequest {
   // Payload describes the data needed to create a feed.
   message Payload {
-    // ID of the feed to create
-    FeedID feedId = 1;
-    // StoreLast indicates if the last received value should be stored of not
+    // Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+    string id = 1;
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
   message Arguments {
@@ -263,7 +262,7 @@ message DescribeFeedResponse {
 
 // UpsertFeedWithMeta is used to describe the full feed state. Used in UpsertTwinRequest.
 message UpsertFeedWithMeta {
-  // Id of the feed to create/update
+  // Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
   string id = 1;
   // StoreLast dictates whether to store the last shared sample of the feed. Default 'False'
   bool storeLast = 4;
