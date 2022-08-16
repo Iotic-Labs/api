@@ -33,6 +33,15 @@ service SearchAPI {
 
   // Receive all search responses associated to a set of Search request for a given client application ID.
   rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
+
+  // TODO - this will be supported in future but is out of scope for initial requirements
+  // Run an advanced search request on a user timeout and return formatted results. Note that more than one result can
+  // be returned from each host and a final empty response indicates that no more results are expected from the
+  // associated host. (local and remote)
+  rpc AdvancedSearch(AdvancedSearchRequest) returns (stream SearchResponse) {}
+
+  // Run an advanced search request on a user timeout and return raw (RDF) results. (local and remote)
+  rpc AdvancedSearchRaw(AdvancedSearchRawRequest) returns (stream AdvancedSearchRawResponse) {}
 }
 
 // ResponseType describes the type of the search response.
@@ -81,6 +90,111 @@ message SearchRequest {
 
   // Search request range
   Range range = 20;
+}
+
+// AdvancedSearchRequest describes a search request with more filtering possibilities than SearchRequest. It returns
+// formatted details about the twins matched by the supplied filter.
+message AdvancedSearchRequest {
+  // Search request payload.
+  message Payload {
+
+    // Expected response type
+    ResponseType responseType = 1;
+
+    // The search filter, expressed as <LANG-TODO>
+    string filter = 2;
+  }
+
+  // Search request headers
+  Headers headers = 1;
+
+  // Search request scope
+  Scope scope = 2;
+
+  // Search request payload
+  Payload payload = 3;
+
+  // Search result limit (optional), affecting the maximum number of twins returned, per host. If not specified, no
+  // limit will be applied.
+  Limit limit = 4;
+}
+
+// AdvancedSearchRawRequest describes a search request with more filtering possibilities than SearchRequest. It returns
+// encoded RDF about the twins matched by the supplied filter.
+message AdvancedSearchRawRequest {
+  // Search request payload.
+  message Payload {
+
+    // Expected response type
+    RdfResultType responseType = 1;
+
+    // The search filter, expressed as <LANG-TODO>
+    string filter = 2;
+  }
+
+  // Search request headers
+  Headers headers = 1;
+
+  // Search request scope
+  Scope scope = 2;
+
+  // Search request payload
+  Payload payload = 3;
+
+  // Search result limit (optional), affecting the maximum number of twins returned, per host. If not specified, no
+  // limit will be applied.
+  Limit limit = 4;
+}
+
+// AdvancedSearchRawResponse is a part of a result for an advanced search request. Multiple chunks form a complete
+// result. Related chunks can be identified by a combination of:
+// - The host ID (unset for local results)
+// - Client reference (in headers, set by caller)
+// - Chunk sequence number
+message AdvancedSearchRawResponse {
+
+  // Payload of the query result chunk
+  message Payload {
+
+    // Result host identifier. Indicates from which host this result chunk came from. For a local result, this field
+    // will be unset.
+    HostID remoteHostId = 1;
+
+    // Position of a chunk in result from a given host (and request). The first chunk has a sequence number of 0.
+    uint64 seqNum = 2;
+
+    // Indicates whether this is the last chunk from a given host, for a specific request. Results for different
+    // requests can be identified by setting a unique clientRef in the request headers.
+    bool last = 3;
+
+    // Result error status (only applicable to local results, i.e. when remoteHostId is unset). If set, this will
+    // indicate a problem with running the query (e.g. invalid syntax or content type) as opposed to a more general
+    // issue (in which case the standard gRPC error mechanism will be used and the stream terminated).
+    google.rpc.Status status = 4;
+
+    // Content type of the result.
+    RdfResultType contentType = 5;
+
+    // Query result chunk, encoded according to actualType.
+    // Note that:
+    // - The maximum size of each chunk is host-specific.
+    bytes resultChunk = 6;
+  }
+
+  // Headers for the query result. clientRef within can be used to identify which query the result applies to.
+  Headers headers = 1;
+
+  // Search query result chunk payload.
+  Payload payload = 2;
+}
+
+enum RdfResultType {
+
+  TURTLE = 0;
+  // Applicable to CONSTRUCT/DESCRIBE (RDF 1.1 XML)
+  XML = 1;
+  // Applicable to CONSTRUCT/DESCRIBE (RDF 1.1 N-Triples)
+  NTRIPLES = 2;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
