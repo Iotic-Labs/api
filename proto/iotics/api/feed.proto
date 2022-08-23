@@ -47,8 +47,10 @@ service FeedAPI {
 message FeedID {
   // Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
   string id = 1;
-  // Twin unique identifier (twin to which the feed belongs)
-  TwinID twinId = 2;
+  // Twin identifier string representation (simple string) (twin to which the feed belongs)
+  string twinId = 2;
+  // Host identifier string representation (simple string) (Host to which the twin belongs)
+  string hostId = 3;
 }
 
 // CreateFeedRequestCreate is used to create a new feed in a given twin.
