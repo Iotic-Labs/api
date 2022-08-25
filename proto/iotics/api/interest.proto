@@ -29,15 +29,6 @@ service InterestAPI {
   // Fetch last data shared on this interest. (local and remote)
   rpc FetchLastStored(FetchLastStoredRequest) returns (FetchInterestResponse) {}
 
-  // List all interests associated to a given follower twin (Not implemented yet).
-  rpc ListAllInterests(ListAllInterestsRequest) returns (ListAllInterestsResponse) {}
-
-  // Create an interest between a follower twin and a followed feed. (Not implemented yet).
-  rpc CreateInterest(CreateInterestRequest) returns (CreateInterestResponse) {}
-
-  // Delete an existing interest. (Not implemented yet).
-  rpc DeleteInterest(DeleteInterestRequest) returns (DeleteInterestResponse) {}
-
   // Send a message to an input. (local and remote)
   rpc SendInputMessage(SendInputMessageRequest) returns (SendInputMessageResponse) {}
 
@@ -90,73 +81,6 @@ message Interest {
   FeedID followedFeedId = 2;
 }
 
-// CreateInterestRequest is used to create an interest between a twin and a feed.
-message CreateInterestRequest {
-  // CreateInterestRequest payload.
-  message Payload {
-    Interest interest = 2;
-  }
-  // CreateInterestRequest mandatory arguments.
-  message Arguments {
-    // Follower twin unique identifier
-    TwinID twinId = 1;
-  }
-
-  // CreateInterestRequest headers
-  Headers headers = 1;
-  // CreateInterestRequest arguments
-  Arguments args = 2;
-  // CreateInterestRequest payload
-  Payload payload = 3;
-}
-
-// CreateInterestResponse describes a successfully created interest.
-message CreateInterestResponse {
-  // CreateInterestResponse payload.
-  message Payload {
-    // Created interest
-    Interest interest = 2;
-
-    // whether the interest exists already (creating an existing interest is idempotent).
-    bool alreadyCreated = 3;
-  }
-  // CreateInterestResponse headers
-  Headers headers = 1;
-  // CreateInterestResponse payload
-  Payload payload = 2;
-}
-
-// ---------------------------------------
-
-// ListAllInterestsRequest is used to list all interests initiated by a given twin.
-message ListAllInterestsRequest {
-  // ListAllInterestsRequest mandatory arguments.
-  message Arguments {
-    // Follower twin unique identifier
-    TwinID twinId = 1;
-  }
-
-  // ListAllInterestsRequest headers
-  Headers headers = 1;
-  // ListAllInterestsRequest arguments
-  Arguments args = 2;
-  // Limit the results according to the value (optional: when not supplied, assume no default limits required - platform specific)
-  Range range = 20;
-}
-
-
-// ListAllInterestsResponse describes all the interest initiated by the given twin.
-message ListAllInterestsResponse {
-  // ListAllInterestsResponse payload.
-  message Payload {
-    repeated Interest interests = 1;
-  }
-  // ListAllInterestsResponse headers
-  Headers headers = 1;
-  // ListAllInterestsResponse payload.
-  Payload payload = 2;
-}
-
 // ---------------------------------------
 
 // FetchInterestRequest is used to initiate a stream to get the feed data shared on a given interest.
@@ -202,32 +126,4 @@ message FetchLastStoredRequest {
   Headers headers = 1;
   // FetchLastStoredRequest arguments
   Arguments args = 2;
-}
-
-// ---------------------------------------
-
-// DeleteInterestRequest is used to delete an interest.
-message DeleteInterestRequest {
-  // DeleteInterestRequest mandatory arguments.
-  message Arguments {
-    // The interest
-    Interest interest = 1;
-  }
-  // DeleteInterestRequest headers
-  Headers headers = 1;
-  // DeleteInterestRequest args
-  Arguments args = 2;
-}
-
-// DeleteInterestResponse describes a deleted interest.
-message DeleteInterestResponse {
-  // DeleteInterestResponse payload.
-  message Payload {
-    // The deleted interest.
-    Interest interest = 1;
-  }
-  // DeleteInterestResponse headers
-  Headers headers = 1;
-  // DeleteInterestResponse payload
-  Payload payload = 2;
 }
