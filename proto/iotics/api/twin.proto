@@ -19,6 +19,7 @@ option java_outer_classname = "TwinProto";
 option java_package = "com.iotics.api";
 option objc_class_prefix = "IAX";
 option php_namespace = "Iotics\\Api";
+option optimize_for = CODE_SIZE;
 
 // ---------------------------------------------------------------------------------------------------------------------
 
