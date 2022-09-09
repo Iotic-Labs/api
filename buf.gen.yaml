@@ -1,6 +1,4 @@
-# run: buf generate
-# see https://github.com/johanbrandhorst/grpc-gateway-boilerplate/blob/master/buf.gen.yaml
-version: v1beta1
+version: v1
 plugins:
   - name: go
     out: gen/go
@@ -20,7 +18,9 @@ plugins:
     opt: import_style=commonjs,binary
   - name: grpc-web
     out: gen/nodejs
-    path: nodejs/node_modules/.bin/protoc-gen-ts
     opt:
       - import_style=commonjs,binary
       - service=grpc-web
+    path: nodejs/node_modules/.bin/protoc-gen-ts
+  - name: java_grpc
+    out: gen/java
