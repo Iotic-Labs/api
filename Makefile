@@ -5,6 +5,9 @@ BUF = docker run --volume "${PWD}:/workspace" --workdir /workspace bufbuild/buf:
 
 build: lint
 
+mod-update:
+	$(BUF) mod update
+
 list:
 	$(BUF) ls-files
 
@@ -13,4 +16,3 @@ lint:
 
 lint-with-buf-error-codes:
 	$(BUF) lint --error-format=config-ignore-yaml
-
