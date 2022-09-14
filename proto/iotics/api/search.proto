@@ -34,8 +34,8 @@ service SearchAPI {
   // Receive all search responses associated to a set of Search request for a given client application ID.
   rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
 
-  // Run a filter search request on a user timeout and return formatted results.
-  rpc FilterSearch(FilterSearchRequest) returns (stream SearchResponse) {}
+  // Run an advanced (filter) search request on a user timeout and return formatted results.
+  rpc AdvancedSearch(AdvancedSearchRequest) returns (stream SearchResponse) {}
 }
 
 // ResponseType describes the type of the search response.
@@ -86,9 +86,9 @@ message SearchRequest {
   Range range = 20;
 }
 
-// FilterSearchRequest describes a search request with more filtering possibilities than SearchRequest. It returns
+// AdvancedSearchRequest describes a search request with more filtering possibilities than SearchRequest. It returns
 // formatted details about the twins matched by the supplied filter.
-message FilterSearchRequest {
+message AdvancedSearchRequest {
   // Search request payload.
   message Payload {
 
