@@ -10,6 +10,14 @@ Protobuf definitions are under `proto/` directory.
 
 See <https://github.com/golang/protobuf> and <https://github.com/grpc-ecosystem/grpc-gateway>
 
+## Dependencies
+
+See the `deps:` section in `buf.yaml` regarding third-party dependencies. To update these, run:
+
+```shell
+make mod-update
+```
+
 ## Lint
 
 Validate proto files:
