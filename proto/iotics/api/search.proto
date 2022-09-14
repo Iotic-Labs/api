@@ -33,6 +33,9 @@ service SearchAPI {
 
   // Receive all search responses associated to a set of Search request for a given client application ID.
   rpc ReceiveAllSearchResponses(SubscriptionHeaders) returns (stream SearchResponse) {}
+
+  // Run an advanced (filter) search request on a user timeout and return formatted results.
+  rpc AdvancedSearch(AdvancedSearchRequest) returns (stream SearchResponse) {}
 }
 
 // ResponseType describes the type of the search response.
@@ -56,7 +59,7 @@ message SearchRequest {
 
     // Search request filters, any of these can be used in combination or on their own.
     message Filter {
-      // Text filtering. One or more keywords which must match text from twin properies. Note that any (rather than all)
+      // Text filtering. One or more keywords which must match text from twin properties. Note that any (rather than all)
       // of the keywords will produce a match.
       google.protobuf.StringValue text = 1;
       // Location filtering: area within which twins must be located
@@ -78,6 +81,32 @@ message SearchRequest {
 
   // Search request payload
   Payload payload = 6;
+
+  // Search request range
+  Range range = 20;
+}
+
+// AdvancedSearchRequest describes a search request with more filtering possibilities than SearchRequest. It returns
+// formatted details about the twins matched by the supplied filter.
+message AdvancedSearchRequest {
+  // Search request payload.
+  message Payload {
+
+    // Expected response type
+    ResponseType responseType = 1;
+
+    // The search filter, expressed as a JSON-encoded AST (in JSONLogic style)
+    string filter = 2;
+  }
+
+  // Search request headers
+  Headers headers = 1;
+
+  // Search request scope
+  Scope scope = 2;
+
+  // Search request payload
+  Payload payload = 3;
 
   // Search request range
   Range range = 20;
