@@ -108,9 +108,8 @@ message AdvancedSearchRequest {
   // Search request payload
   Payload payload = 3;
 
-  // Search result limit (optional), affecting the maximum number of twins returned, per host. If not specified, a host-
-  // configured maximum limit will be applied.
-  Limit limit = 4;
+  // Search request range
+  Range range = 20;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
