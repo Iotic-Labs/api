@@ -1,6 +1,6 @@
 # Iotics API
 
-Create Data Mesh. Use interoperable digital twins to create data interactions and build powerful real-time data products. This repository contains protocol buffers specification for Iotics API.
+This repository contains protocol buffer specifications for the Iotics API.
 
 The build pipeline is using [Buf](https://docs.buf.build)
 
@@ -8,7 +8,7 @@ The build pipeline is using [Buf](https://docs.buf.build)
 
 Protobuf definitions are under `proto/` directory.
 
-See <https://github.com/golang/protobuf> and <https://github.com/grpc-ecosystem/grpc-gateway>
+See [golang/protobuf](https://github.com/golang/protobuf) and [grpc-ecosystem/grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
 
 ## Dependencies
 
@@ -18,6 +18,16 @@ See the `deps:` section in `buf.yaml` regarding third-party dependencies. To upd
 make mod-update
 ```
 
+## Health Check
+
+> See [grpc/grpc-proto](https://github.com/grpc/grpc-proto)
+
+To include a copy of the canonical gRPC health check proto, run:
+
+```shell
+make health-proto-update
+```
+
 ## Lint
 
 Validate proto files:
@@ -25,6 +35,7 @@ Validate proto files:
 ```shell
 make lint
 ```
+
 
 ## Prerequisites
 
