@@ -3,6 +3,7 @@
 // Iotics Web protocol definitions (hosts)
 syntax = "proto3";
 
+import "google/api/annotations.proto";
 import "iotics/api/common.proto";
 
 package iotics.api;

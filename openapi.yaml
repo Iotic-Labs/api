@@ -1,0 +1,2963 @@
+# Generated with protoc-gen-openapi
+# https://github.com/kollalabs/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /api/v2/host/id:
+        get:
+            tags:
+                - HostAPI
+            summary: GetHostID
+            description: GetHostID gets the ID of the host twin.
+            operationId: HostAPI_GetHostID
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetHostIDResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    ? /api/v2/hosts/{followerHostId}/twins/{followerTwinId}/interests/hosts/{followedHostId}/twins/{followedTwinId}/feeds/{followedFeedId}/samples/last
+    :   get:
+            tags:
+                - InterestAPI
+            summary: FetchLastStored
+            description: Fetch last data shared on this interest. (local and remote)
+            operationId: InterestAPI_FetchLastStored
+            parameters:
+                - name: followerHostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: followerTwinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: followedHostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: followedTwinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: followedFeedId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.interest.followerTwinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.interest.followerTwinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.interest.followedFeedId.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+                - name: args.interest.followedFeedId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.interest.followedFeedId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FetchInterestResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{hostId}/twins/{twinId}:
+        get:
+            tags:
+                - TwinAPI
+            summary: DescribeTwin
+            description: Describes a twin. (local and remote)
+            operationId: TwinAPI_DescribeTwin
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.twinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.twinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DescribeTwinResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - TwinAPI
+            summary: DeleteTwin
+            description: DeleteTwin deletes a twin.
+            operationId: TwinAPI_DeleteTwin
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.twinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.twinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteTwinResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - TwinAPI
+            summary: UpdateTwin
+            description: UpdateTwin updates a twin (partial update).
+            operationId: TwinAPI_UpdateTwin
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.twinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.twinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateTwinRequest_Payload'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateTwinResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{hostId}/twins/{twinId}/feeds:
+        get:
+            tags:
+                - FeedAPI
+            summary: ListAllFeeds
+            description: Lists all feeds owned by a twin.
+            operationId: FeedAPI_ListAllFeeds
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.twinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.twinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: range.limit.value
+                  in: query
+                  description: Max number of results (under configuration max limit constraint)
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: range.offset.value
+                  in: query
+                  description: Result number to start from
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAllFeedsResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - FeedAPI
+            summary: CreateFeed
+            description: Creates a feed owned by a twin. (Idempotent)
+            operationId: FeedAPI_CreateFeed
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.twinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.twinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: payload.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json: {}
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateFeedResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{hostId}/twins/{twinId}/feeds/{feedId}:
+        get:
+            tags:
+                - FeedAPI
+            summary: DescribeFeed
+            description: Describes a feed. (local and remote)
+            operationId: FeedAPI_DescribeFeed
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: feedId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.feedId.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+                - name: args.feedId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.feedId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DescribeFeedResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        put:
+            tags:
+                - FeedAPI
+            summary: UpdateFeed
+            description: Updates attributes of a feed, including its metadata.
+            operationId: FeedAPI_UpdateFeed
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: feedId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.feedId.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+                - name: args.feedId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.feedId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateFeedRequest_Payload'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateFeedResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - FeedAPI
+            summary: DeleteFeed
+            description: Deletes a feed owned by a twin. (Idempotent)
+            operationId: FeedAPI_DeleteFeed
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: feedId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.feedId.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+                - name: args.feedId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.feedId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteFeedResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{hostId}/twins/{twinId}/feeds/{feedId}/shares:
+        post:
+            tags:
+                - FeedAPI
+            summary: ShareFeedData
+            description: Shares a new sample of data for the given feed which any (interest) subscribers can receive.
+            operationId: FeedAPI_ShareFeedData
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: feedId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.feedId.id
+                  in: query
+                  description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                  schema:
+                    type: string
+                - name: args.feedId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.feedId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ShareFeedDataRequest_Payload'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ShareFeedDataResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{hostId}/twins/{twinId}/inputs/{inputId}:
+        get:
+            tags:
+                - InputAPI
+            summary: DescribeInput
+            description: Describes an input. (local and remote)
+            operationId: InputAPI_DescribeInput
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: inputId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.inputId.id
+                  in: query
+                  description: Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+                  schema:
+                    type: string
+                - name: args.inputId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.inputId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DescribeInputResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - InputAPI
+            summary: DeleteInput
+            description: Deletes an input. (Idempotent)
+            operationId: InputAPI_DeleteInput
+            parameters:
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: inputId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.inputId.id
+                  in: query
+                  description: Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+                  schema:
+                    type: string
+                - name: args.inputId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.inputId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteInputResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/hosts/{senderHostId}/twins/{senderTwinId}/interests/hosts/{hostId}/twins/{twinId}/inputs/{inputId}/messages:
+        post:
+            tags:
+                - InterestAPI
+            summary: SendInputMessage
+            description: Send a message to an input. (local and remote)
+            operationId: InterestAPI_SendInputMessage
+            parameters:
+                - name: senderHostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: senderTwinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: hostId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: twinId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: inputId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: args.interest.senderTwinId.id
+                  in: query
+                  description: Twin Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.interest.senderTwinId.hostId
+                  in: query
+                  description: Host Identifier (using DID format)
+                  schema:
+                    type: string
+                - name: args.interest.destInputId.id
+                  in: query
+                  description: Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+                  schema:
+                    type: string
+                - name: args.interest.destInputId.twinId
+                  in: query
+                  description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                  schema:
+                    type: string
+                - name: args.interest.destInputId.hostId
+                  in: query
+                  description: Host identifier string representation (simple string) (Host to which the twin belongs)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SendInputMessageRequest_Payload'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SendInputMessageResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/meta/explorer:
+        post:
+            tags:
+                - MetaAPI
+            summary: ExplorerQuery
+            description: ExplorerQuery - Deprecated - use SparqlQuery instead.
+            operationId: MetaAPI_ExplorerQuery
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ExplorerRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SparqlQueryResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/meta/sparql:
+        put:
+            tags:
+                - MetaAPI
+            summary: SparqlUpdate
+            description: |-
+                SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to
+                 one of the following graph IRIs:
+                 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be
+                    visible during SPARQL queries both with local & global scope (and thus, the Iotics network).
+            operationId: MetaAPI_SparqlUpdate
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SparqlUpdateRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SparqlUpdateResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - MetaAPI
+            summary: SparqlQuery
+            description: |-
+                SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
+                 - Chunks for a particular result will arrive in-order though they might be interleaved with chunks from other
+                   results (when performing a non-local query). See scope parameter in SparqlQueryRequest;
+                 - The call will only complete once the (specified or host default) request timeout has been reached. The client can
+                   choose to end the stream early once they have received enough results. (E.g. in the case of Scope.LOCAL this
+                   would be after the one and only sequence of chunks has been received.). (local and remote)
+            operationId: MetaAPI_SparqlQuery
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SparqlQueryRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SparqlQueryResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/searches:
+        post:
+            tags:
+                - SearchAPI
+            summary: SynchronousSearch
+            description: Run a synchronous search based on a user timeout. (local and remote)
+            operationId: SearchAPI_SynchronousSearch
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SearchRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SearchResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v2/twins:
+        get:
+            tags:
+                - TwinAPI
+            summary: ListAllTwins
+            description: List all twins.
+            operationId: TwinAPI_ListAllTwins
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: range.limit.value
+                  in: query
+                  description: Max number of results (under configuration max limit constraint)
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: range.offset.value
+                  in: query
+                  description: Result number to start from
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListAllTwinsResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        put:
+            tags:
+                - TwinAPI
+            summary: UpsertTwin
+            description: |-
+                UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
+                 The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
+                 described in the payload)
+            operationId: TwinAPI_UpsertTwin
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpsertTwinRequest_Payload'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpsertTwinResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - TwinAPI
+            summary: CreateTwin
+            description: CreateTwin creates a twin.
+            operationId: TwinAPI_CreateTwin
+            parameters:
+                - name: Iotics-ClientAppId
+                  in: header
+                  description: 'Custom header: Iotics-ClientAppId'
+                  schema:
+                    type: string
+                - name: Iotics-ClientRef
+                  in: header
+                  description: 'Custom header: Iotics-ClientRef'
+                  schema:
+                    type: string
+                - name: Iotics-ConsumerGroup
+                  in: header
+                  description: 'Custom header: Iotics-ConsumerGroup'
+                  schema:
+                    type: string
+                - name: Iotics-RequestTimeout
+                  in: header
+                  description: 'Custom header: Iotics-RequestTimeout'
+                  schema:
+                    type: string
+                - name: Iotics-TransactionRef
+                  in: header
+                  description: 'Custom header: Iotics-TransactionRef'
+                  schema:
+                    type: string
+                - name: headers.clientRef
+                  in: query
+                  description: Optional client reference. Any responses associated with the request will include this reference.
+                  schema:
+                    type: string
+                - name: headers.clientAppId
+                  in: query
+                  description: User namespace used to group all the requests/responses
+                  schema:
+                    type: string
+                - name: headers.transactionRef
+                  in: query
+                  description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - name: headers.consumerGroup.value
+                  in: query
+                  description: The string value.
+                  schema:
+                    type: string
+                - name: headers.requestTimeout
+                  in: query
+                  description: Client request timeout used to stop the request processing once the timeout is reached
+                  schema:
+                    type: string
+                    format: date-time
+                - name: payload.id
+                  in: query
+                  description: Twin identifier string representation (simple string)
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json: {}
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateTwinResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+components:
+    schemas:
+        CreateFeedResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/CreateFeedResponse_Payload'
+            description: CreateFeedResponse describes a created feed.
+        CreateFeedResponse_Payload:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+            description: CreateFeedResponse payload.
+        CreateTwinResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/CreateTwinResponse_Payload'
+            description: CreateTwinResponse is received when a twin has been created.
+        CreateTwinResponse_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+            description: Payload identifies the twin which was created.
+        DeleteFeedResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DeleteFeedResponse_Payload'
+            description: DeleteFeedResponse describes a deleted feed.
+        DeleteFeedResponse_Payload:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+            description: DeleteFeedResponse payload.
+        DeleteInputResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DeleteInputResponse_Payload'
+            description: DeleteInputResponse describes a deleted input.
+        DeleteInputResponse_Payload:
+            type: object
+            properties:
+                inputId:
+                    $ref: '#/components/schemas/InputID'
+            description: DeleteInputResponse payload.
+        DeleteTwinResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DeleteTwinResponse_Payload'
+            description: Deleted is received when a twin has been deleted.
+        DeleteTwinResponse_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+            description: Payload identifies the twin which was deleted.
+        DescribeFeedResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DescribeFeedResponse_Payload'
+            description: Describe feed response.
+        DescribeFeedResponse_MetaResult:
+            type: object
+            properties:
+                values:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Value'
+                    description: Values semantically describing the share payload of Feed
+                storeLast:
+                    type: boolean
+                    description: Whether this feed might have its most recent data sample stored. If so, it can be retrieved via FetchLastStored request. (See interest API)
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Custom properties associated with this feed.
+            description: Metadata result databag.
+        DescribeFeedResponse_Payload:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+                result:
+                    $ref: '#/components/schemas/DescribeFeedResponse_MetaResult'
+            description: DescribeFeedResponse payload.
+        DescribeInputResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DescribeInputResponse_Payload'
+            description: DescribeInputResponse provides metadata lookup for individual input resources.
+        DescribeInputResponse_MetaResult:
+            type: object
+            properties:
+                values:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Value'
+                    description: Values semantically describing the Input messages
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Custom properties associated with this input.
+            description: DescribeInputResponse metadata result.
+        DescribeInputResponse_Payload:
+            type: object
+            properties:
+                inputId:
+                    $ref: '#/components/schemas/InputID'
+                result:
+                    $ref: '#/components/schemas/DescribeInputResponse_MetaResult'
+            description: DescribeInputResponse payload.
+        DescribeTwinResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/DescribeTwinResponse_Payload'
+            description: The response for a description request on this twin.
+        DescribeTwinResponse_MetaResult:
+            type: object
+            properties:
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+                visibility:
+                    enum:
+                        - PRIVATE
+                        - PUBLIC
+                    type: string
+                    description: Deprecated - see field description for details.
+                    format: enum
+                feeds:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FeedMeta'
+                inputs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/InputMeta'
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Custom properties associated with this twin.
+                createdAt:
+                    type: string
+                    description: Twin createdAt timestamp.
+                    format: date-time
+                updatedAt:
+                    type: string
+                    description: Twin updatedAt timestamp.
+                    format: date-time
+            description: Metadata result data bag for this feed.
+        DescribeTwinResponse_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+                result:
+                    $ref: '#/components/schemas/DescribeTwinResponse_MetaResult'
+            description: Payload of described twins.
+        ExplorerRequest:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                scope:
+                    enum:
+                        - GLOBAL
+                        - LOCAL
+                    type: string
+                    description: Explorer request scope
+                    format: enum
+                payload:
+                    $ref: '#/components/schemas/ExplorerRequest_Payload'
+            description: ExplorerRequest - Deprecated. Use SparqlQueryRequest instead.
+        ExplorerRequest_Payload:
+            type: object
+            properties:
+                resultContentType:
+                    enum:
+                        - SPARQL_JSON
+                        - SPARQL_XML
+                        - SPARQL_CSV
+                        - RDF_TURTLE
+                        - RDF_XML
+                        - RDF_NTRIPLES
+                    type: string
+                    description: The desired result content type. Note that choosing an invalid result type for the type of query will result in an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
+                    format: enum
+                keyword:
+                    type: string
+                    description: keyword defines the search term associated to the explorer request.
+            description: Explorer request payload.
+        FeedData:
+            type: object
+            properties:
+                occurredAt:
+                    type: string
+                    description: 'occurredAt is the UTC timestamp of the sample. Typically this is either the time at which an application shared this sample or the time applicable to the sample itself (such as an hourly weather observation). (Optional: set to host time if not provided)'
+                    format: date-time
+                mime:
+                    type: string
+                    description: mime is the mime type of the encoded data.
+                data:
+                    type: string
+                    description: data is the actual set of datapoints, encoded according the the mime type. The data should follow the Feed's value definitions but that is not enforced. (See also Value)
+                    format: byte
+            description: FeedData is set of datapoints shared via a Feed.
+        FeedID:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                twinId:
+                    type: string
+                    description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                hostId:
+                    type: string
+                    description: Host identifier string representation (simple string) (Host to which the twin belongs)
+            description: A feed representation.
+        FeedMeta:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+                storeLast:
+                    type: boolean
+            description: Metadata message for this Feed.
+        FetchInterestResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/FetchInterestResponse_Payload'
+            description: FetchInterestResponse describes a feed value shared on a given interest.
+        FetchInterestResponse_Payload:
+            type: object
+            properties:
+                interest:
+                    $ref: '#/components/schemas/Interest'
+                feedData:
+                    $ref: '#/components/schemas/FeedData'
+            description: FetchInterestResponse payload.
+        GeoCircle:
+            type: object
+            properties:
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+                radiusKm:
+                    type: number
+                    description: Radius (Km) relative to the geolocation
+                    format: double
+            description: GeoCircle is an approximate geographic location.
+        GeoLocation:
+            type: object
+            properties:
+                lat:
+                    type: number
+                    description: Latitude
+                    format: double
+                lon:
+                    type: number
+                    description: Longitude
+                    format: double
+            description: GeoLocation is the geographic location of a Twin.
+        GeoLocationUpdate:
+            type: object
+            properties:
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+            description: GeoLocationUpdate describes the update of a twin location.
+        GetHostIDResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/GetHostIDResponse_Payload'
+            description: 'GetHostIDResponse: response containing the local host twin''s ID'
+        GetHostIDResponse_Payload:
+            type: object
+            properties:
+                hostId:
+                    type: string
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        Headers:
+            type: object
+            properties:
+                clientRef:
+                    type: string
+                    description: Optional client reference. Any responses associated with the request will include this reference.
+                clientAppId:
+                    type: string
+                    description: User namespace used to group all the requests/responses
+                transactionRef:
+                    type: array
+                    items:
+                        type: string
+                    description: Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters
+                consumerGroup:
+                    nullable: true
+                    type: string
+                    description: Used for group listener, optional - Not implemented yet
+                requestTimeout:
+                    type: string
+                    description: Client request timeout used to stop the request processing once the timeout is reached
+                    format: date-time
+            description: 'Headers describes the common headers applicable to all the API requests (except for Search subscribe: see SubscriptionHeaders).'
+        InputID:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+                twinId:
+                    type: string
+                    description: Twin identifier string representation (simple string) (twin to which the feed belongs)
+                hostId:
+                    type: string
+                    description: Host identifier string representation (simple string) (Host to which the twin belongs)
+            description: Representation of an input.
+        InputMessage:
+            type: object
+            properties:
+                occurredAt:
+                    type: string
+                    description: 'OccurredAt is the UTC timestamp of the message. Typically this is either the time at which an application sent this message or the time applicable to the message itself. (Optional: set to host time if not provided)'
+                    format: date-time
+                mime:
+                    type: string
+                    description: Mime is the mime type of the encoded data.
+                data:
+                    type: string
+                    description: Data is the actual message, encoded according the the mime type. The data should follow the Input's value definitions but that is not enforced. (See also Value)
+                    format: byte
+            description: InputMessage describe a message that can be sent to an input
+        InputMeta:
+            type: object
+            properties:
+                inputId:
+                    $ref: '#/components/schemas/InputID'
+            description: Metadata message for this input.
+        Interest:
+            type: object
+            properties:
+                followerTwinId:
+                    $ref: '#/components/schemas/TwinID'
+                followedFeedId:
+                    $ref: '#/components/schemas/FeedID'
+            description: An interest is the relationship between a Twin and a Feed. For example, creating an interest on (following) a Feed results in any data shared on said Feed to be forwarded to the associated Twin. Interests can be revoked either by the subscriber or provider and there may only be one interest between any unique Twin and Feed combination.
+        LangLiteral:
+            type: object
+            properties:
+                lang:
+                    type: string
+                    description: 2-character language code
+                value:
+                    type: string
+                    description: String representation of the value
+            description: 'LangLiteral is a metadata property type describing a string with a given language (implicit datatype: rdf:langString).'
+        Limit:
+            type: object
+            properties:
+                value:
+                    type: integer
+                    description: Max number of results (under configuration max limit constraint)
+                    format: uint32
+            description: Limit is a request parameter to limit the number of results.
+        ListAllFeedsResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/ListAllFeedsResponse_Payload'
+            description: ListAllFeedsResponse describes the list of the feeds owned by a twin.
+        ListAllFeedsResponse_Payload:
+            type: object
+            properties:
+                feedIds:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/FeedID'
+                    description: List of the feeds owned by the twin
+            description: ListAllFeedsResponse payload.
+        ListAllTwinsResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/ListAllTwinsResponse_Payload'
+            description: Response of the list all twins request. Note this is useful for sync responses. In case there are too many twins (millions) this request may fail. Better opt for async behaviour via stomp/websocket.
+        ListAllTwinsResponse_Payload:
+            type: object
+            properties:
+                twins:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ListAllTwinsResponse_TwinDetails'
+            description: Payload of listed twins.
+        ListAllTwinsResponse_TwinDetails:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+                visibility:
+                    enum:
+                        - PRIVATE
+                        - PUBLIC
+                    type: string
+                    description: DEPRECATED - see field description for details.
+                    format: enum
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Twin custom properties.
+                createdAt:
+                    type: string
+                    description: Twin createdAt timestamp.
+                    format: date-time
+                updatedAt:
+                    type: string
+                    description: Twin updatedAt timestamp.
+                    format: date-time
+            description: ListAllTwinsResponse twin details.
+        Literal:
+            type: object
+            properties:
+                dataType:
+                    type: string
+                    description: 'XSD data type (e.g. double) without its namespace prefix (http://www.w3.org/2001/XMLSchema#). The following types are currently supported: dateTime, time, date, boolean, integer, decimal, float, double, nonPositiveInteger, negativeInteger, nonNegativeInteger, positiveInteger, long, unsignedLong, int, unsignedInt, short, unsignedShort, byte, unsignedByte, base64Binary, anyURI'
+                value:
+                    type: string
+                    description: String representation of the value according to XSD datatype specification
+            description: 'Literal is a metadata property type describing a literal with the given datatype (implicit datatype: rdfs:Literal).'
+        Offset:
+            type: object
+            properties:
+                value:
+                    type: integer
+                    description: Result number to start from
+                    format: uint32
+            description: Offset is a request parameter applicable in conjunction with the "Limit" request parameter to start returning results from the given offset.
+        Payload_Filter:
+            type: object
+            properties:
+                text:
+                    nullable: true
+                    type: string
+                    description: Text filtering. One or more keywords which must match text from twin properties. Note that any (rather than all) of the keywords will produce a match.
+                location:
+                    $ref: '#/components/schemas/GeoCircle'
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: 'Properties filtering: one or more exact properties, all of which twins must have.'
+            description: Search request filters, any of these can be used in combination or on their own.
+        Property:
+            type: object
+            properties:
+                key:
+                    type: string
+                    description: The key (predicate) of the property
+                literalValue:
+                    $ref: '#/components/schemas/Literal'
+                langLiteralValue:
+                    $ref: '#/components/schemas/LangLiteral'
+                stringLiteralValue:
+                    $ref: '#/components/schemas/StringLiteral'
+                uriValue:
+                    $ref: '#/components/schemas/Uri'
+            description: Property is a metadata property with a single value. Multiple instances are used to represent a key (predicate) with multiple values.
+        PropertyUpdate:
+            type: object
+            properties:
+                clearedAll:
+                    type: boolean
+                    description: Delete all properties currently set on the twin.
+                deleted:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
+                deletedByKey:
+                    type: array
+                    items:
+                        type: string
+                    description: Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
+                added:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Adds the given properties
+            description: 'PropertyUpdate describes the update of a twin properties. Can be used to add, replace, or delete properties. The order of operations is: clearedAll (if True), deleted, deletedByKey, added. Note that internal properties (such as location) cannot be modified here.'
+        Range:
+            type: object
+            properties:
+                limit:
+                    $ref: '#/components/schemas/Limit'
+                offset:
+                    $ref: '#/components/schemas/Offset'
+            description: Range is the combination of the "Limit" and "Offset" is a request parameters. It is used to return a specific range of results. Default value is applied if no limit is specified.
+        SearchRequest:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                scope:
+                    enum:
+                        - GLOBAL
+                        - LOCAL
+                    type: string
+                    description: Search request scope
+                    format: enum
+                lang:
+                    nullable: true
+                    type: string
+                    description: Search request language, applicable to text filtering. If not specified, text search will match any language.
+                payload:
+                    $ref: '#/components/schemas/SearchRequest_Payload'
+                range:
+                    $ref: '#/components/schemas/Range'
+            description: SearchRequest describes a search request used for both synchronous and asynchronous search.
+        SearchRequest_Payload:
+            type: object
+            properties:
+                responseType:
+                    enum:
+                        - FULL
+                        - LOCATED
+                        - MINIMAL
+                    type: string
+                    description: Expected response type
+                    format: enum
+                expiryTimeout:
+                    type: string
+                    description: UTC time (millis from epoch / unix time) when this search request has to be considered expired.
+                    format: date-time
+                filter:
+                    $ref: '#/components/schemas/Payload_Filter'
+            description: Search request payload.
+        SearchResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/SearchResponse_Payload'
+            description: SearchResponse describes a result associated to a search request. It contains all the matching twins/feeds according to the request scope/range/lang/filters in the expected response type format. In the decentralised iotics operating environment, each node in the network generates a response and the client is expected to receive a stream of response messages.
+        SearchResponse_FeedDetails:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+                storeLast:
+                    type: boolean
+                    description: whether offers the ability to store last received value
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Feed custom properties.
+            description: 'Search response feed details. Included with response type: FULL.'
+        SearchResponse_InputDetails:
+            type: object
+            properties:
+                inputId:
+                    $ref: '#/components/schemas/InputID'
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Input custom properties.
+            description: 'Search response input details. Included with response type: FULL.'
+        SearchResponse_Payload:
+            type: object
+            properties:
+                responseType:
+                    enum:
+                        - FULL
+                        - LOCATED
+                        - MINIMAL
+                    type: string
+                    description: Type of the response.
+                    format: enum
+                status:
+                    $ref: '#/components/schemas/Status'
+                hostId:
+                    type: string
+                    description: Host identifier string representation
+                twins:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchResponse_TwinDetails'
+                    description: Matching twins
+            description: Search Response Payload.
+        SearchResponse_TwinDetails:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+                visibility:
+                    enum:
+                        - PRIVATE
+                        - PUBLIC
+                    type: string
+                    description: DEPRECATED - see field description for details.
+                    format: enum
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Twin custom properties.
+                feeds:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchResponse_FeedDetails'
+                    description: 'Feed details. Included with response type: FULL'
+                inputs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SearchResponse_InputDetails'
+                    description: 'Input details. Included with response type: FULL'
+                createdAt:
+                    type: string
+                    description: Twin createdAt timestamp.
+                    format: date-time
+                updatedAt:
+                    type: string
+                    description: Twin updatedAt timestamp.
+                    format: date-time
+            description: Search response twin details.
+        SendInputMessageRequest_Payload:
+            type: object
+            properties:
+                message:
+                    $ref: '#/components/schemas/InputMessage'
+            description: SendInputMessageRequest payload.
+        SendInputMessageResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+            description: SendInputMessageResponse is used to indicate a successful send.
+        ShareFeedDataRequest_Payload:
+            type: object
+            properties:
+                sample:
+                    $ref: '#/components/schemas/FeedData'
+            description: ShareFeedDataRequest payload.
+        ShareFeedDataResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+            description: ShareFeedDataResponse is used to indicate a successful feed share.
+        SparqlQueryRequest:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                scope:
+                    enum:
+                        - GLOBAL
+                        - LOCAL
+                    type: string
+                    description: SPARQL query request scope
+                    format: enum
+                payload:
+                    $ref: '#/components/schemas/SparqlQueryRequest_Payload'
+            description: SparqlQueryRequest describes a SPARQL query.
+        SparqlQueryRequest_Payload:
+            type: object
+            properties:
+                resultContentType:
+                    enum:
+                        - SPARQL_JSON
+                        - SPARQL_XML
+                        - SPARQL_CSV
+                        - RDF_TURTLE
+                        - RDF_XML
+                        - RDF_NTRIPLES
+                    type: string
+                    description: The desired result content type. Note that choosing an invalid result type for the type of query will result in an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
+                    format: enum
+                query:
+                    type: string
+                    description: A UTF8-encoded SPARQL 1.1 query
+                    format: byte
+            description: SPARQL query request payload.
+        SparqlQueryResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/SparqlQueryResponse_Payload'
+            description: 'SparqlQueryResponse is a part of a result for a SPARQL query request. Multiple chunks form a complete result. Related chunks can be identified by a combination of: - The hostId - Client reference (in headers, set by caller) - Chunk sequence number'
+        SparqlQueryResponse_Payload:
+            type: object
+            properties:
+                hostId:
+                    type: string
+                    description: Result host identifier. Indicates from which host this result chunk came from. For a local result, this field will be unset.
+                seqNum:
+                    type: integer
+                    description: Position of a chunk in result from a given host (and request). The first chunk has a sequence number of 0.
+                    format: uint64
+                last:
+                    type: boolean
+                    description: Indicates whether this is the last chunk from a given host, for a specific request. Results for different requests can be identified by setting a unique clientRef in the request headers.
+                status:
+                    $ref: '#/components/schemas/Status'
+                contentType:
+                    enum:
+                        - SPARQL_JSON
+                        - SPARQL_XML
+                        - SPARQL_CSV
+                        - RDF_TURTLE
+                        - RDF_XML
+                        - RDF_NTRIPLES
+                    type: string
+                    description: Content type of the result.
+                    format: enum
+                resultChunk:
+                    type: string
+                    description: 'Query result chunk, encoded according to actualType. Note that: - The maximum size of each chunk is host-specific.'
+                    format: byte
+            description: Payload of the query result chunk
+        SparqlUpdateRequest:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/SparqlUpdateRequest_Payload'
+            description: Performs a SPARQL update against custom metadata only.
+        SparqlUpdateRequest_Payload:
+            type: object
+            properties:
+                update:
+                    type: string
+                    description: A UTF8-encoded SPARQL 1.1 update
+                    format: byte
+            description: SPARQL update request payload.
+        SparqlUpdateResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+            description: Response of the SPARQL update request.
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        StringLiteral:
+            type: object
+            properties:
+                value:
+                    type: string
+                    description: String representation of the value
+            description: 'StringLiteral is a metadata property type describing a string without a language (implicit datatype: rdf:string).'
+        TwinID:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Twin Identifier (using DID format)
+                hostId:
+                    type: string
+                    description: Host Identifier (using DID format)
+            description: TwinID is the virtual representation of a (physical, purely virtual or hybrid) device, is only ever located in the host it was created.
+        UpdateFeedRequest_Payload:
+            type: object
+            properties:
+                storeLast:
+                    nullable: true
+                    type: boolean
+                    description: StoreLast dictates whether to store the last shared sample of a feed.
+                values:
+                    $ref: '#/components/schemas/Values'
+                properties:
+                    $ref: '#/components/schemas/PropertyUpdate'
+            description: 'UpdateFeedRequest payload. One or more fields can be provided, depending on what needs to be updated. Note that the specified metadata changes are applied in the following order: tags, values, labels, comments'
+        UpdateFeedResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/UpdateFeedResponse_Payload'
+            description: UpdateFeedResponse is used to indicate a successful update.
+        UpdateFeedResponse_Payload:
+            type: object
+            properties:
+                feedId:
+                    $ref: '#/components/schemas/FeedID'
+            description: UpdateFeedResponse payload.
+        UpdateTwinRequest_Payload:
+            type: object
+            properties:
+                newVisibility:
+                    $ref: '#/components/schemas/VisibilityUpdate'
+                properties:
+                    $ref: '#/components/schemas/PropertyUpdate'
+                location:
+                    $ref: '#/components/schemas/GeoLocationUpdate'
+            description: 'UpdateTwinRequest payload. One or more fields can be provided, depending on what needs to be updated. Note that the specified metadata changes are applied in the following order: tags, visibility, properties, labels, comments, location'
+        UpdateTwinResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/UpdateTwinResponse_Payload'
+            description: UpdateTwinResponse describes an updated twin. It is received when the update operation is successful.
+        UpdateTwinResponse_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+            description: UpdateTwinResponse payload.
+        UpsertFeedWithMeta:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Feed identifier string representation (simple string) (unique within the scope of a twin identifier's feed set)
+                storeLast:
+                    type: boolean
+                    description: StoreLast dictates whether to store the last shared sample of the feed. Default 'False'
+                values:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Value'
+                    description: Values to set
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Feed properties to set
+            description: UpsertFeedWithMeta is used to describe the full feed state. Used in UpsertTwinRequest.
+        UpsertInputWithMeta:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+                values:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Value'
+                    description: Values to set
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Properties to set
+            description: UpsertInputWithMeta is used to describe the full input state. Used in UpsertTwinRequest.
+        UpsertTwinRequest_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+                visibility:
+                    enum:
+                        - PRIVATE
+                        - PUBLIC
+                    type: string
+                    description: 'DEPRECATED - see field description for details. If any metadata network allowlist property is provided, the visibility value will be ignored. Default value: ''PRIVATE'''
+                    format: enum
+                properties:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Property'
+                    description: Twin Properties to set
+                location:
+                    $ref: '#/components/schemas/GeoLocation'
+                feeds:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UpsertFeedWithMeta'
+                    description: Feeds with metadata to set for the twin
+                inputs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UpsertInputWithMeta'
+                    description: Inputs with metadata to set for the twin
+            description: UpsertTwinRequest payload. This state will be applied to the twin/feeds
+        UpsertTwinResponse:
+            type: object
+            properties:
+                headers:
+                    $ref: '#/components/schemas/Headers'
+                payload:
+                    $ref: '#/components/schemas/UpsertTwinResponse_Payload'
+            description: UpsertTwinResponse is received when a twin and its feeds have been created/updated.
+        UpsertTwinResponse_Payload:
+            type: object
+            properties:
+                twinId:
+                    $ref: '#/components/schemas/TwinID'
+            description: Payload identifies the twin which was created.
+        Uri:
+            type: object
+            properties:
+                value:
+                    type: string
+                    description: String representation of the value
+            description: Uri is a metadata property type describing am Uri.
+        Value:
+            type: object
+            properties:
+                label:
+                    type: string
+                    description: 'label is the unique identifier of the value. It is language-neutral. E.g.: "t" / "temp" / "temperature".'
+                comment:
+                    type: string
+                    description: 'comment is the (optional) human-readable description of the value. It is language-specific. E.g.: "Engine oil temperature"'
+                unit:
+                    type: string
+                    description: unit is the (optional) fully qualified ontology string URI of the unit, e.g. http://purl.obolibrary.org/obo/UO_0000027
+                dataType:
+                    type: string
+                    description: 'dataType is the xsd type in shorthand notation. Currently supported types are: base64Binary, decimal, float, double, dateTime, time, date, boolean, integer, nonPositiveInteger, negativeInteger, nonNegativeInteger, positiveInteger, long, unsignedLong, int, unsignedInt, short, unsignedShort, byte, unsignedByte'
+            description: Value is the definition of an individual piece of data within a Feed share or an Input send. Values are purely descriptive, e.g. a follower should expect data to match the values associated with said Feed/Input but must be able to recover where this is not the case.
+        Values:
+            type: object
+            properties:
+                added:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Value'
+                    description: added is the list of values to be added. Note that deletedByLabel takes precedence over this, i.e. if both added and deletedByLabel contain the same value, the value will be deleted.
+                deletedByLabel:
+                    type: array
+                    items:
+                        type: string
+                    description: deletedByLabel is the list of labels of values to be deleted.
+            description: Values defines a set of values to be added and/or deleted.
+        VisibilityUpdate:
+            type: object
+            properties:
+                visibility:
+                    enum:
+                        - PRIVATE
+                        - PUBLIC
+                    type: string
+                    description: DEPRECATED - see field description for details.
+                    format: enum
+            description: DEPRECATED - see Visibility field description for details.
+tags:
+    - name: FeedAPI
+      description: |-
+        Create a feed owned by the provided twin.
+         A twin may have one or more feeds. Any twin can subscribe to a feed (access control permitting).
+         A feed generates data in a 1-to-many relationship: one feed may produce data that is used by many consumers (twins).
+         Services only affect local resources, unless stated otherwise.
+    - name: HostAPI
+      description: |-
+        HostAPI enables management of Iotics host twins.
+         Services only affect local resources, unless stated otherwise.
+    - name: InputAPI
+      description: |-
+        Input API groups all the actions link to a twin input.
+         Services only affect local resources, unless stated otherwise.
+    - name: InterestAPI
+      description: InterestAPI enables creation and management of interests between a twin and a feed.
+    - name: MetaAPI
+      description: |-
+        MetaAPI enables querying of metadata associated with Twins and Feeds.
+         Services only affect local resources, unless stated otherwise.
+    - name: SearchAPI
+      description: |-
+        SearchAPI provides a set of services to run synchronous and asynchronous search.
+         Services only affect local resources, unless stated otherwise.
+    - name: TwinAPI
+      description: |-
+        TwinAPI enables creation and management of Iotics twins.
+         Services only affect local resources, unless stated otherwise.

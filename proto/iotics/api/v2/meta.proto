@@ -3,11 +3,12 @@
 // Iotics Web protocol definitions (meta)
 syntax = "proto3";
 
+package iotics.api.v2;
+
 import "google/api/annotations.proto";
 import "google/rpc/status.proto";
-import "iotics/api/common.proto";
-
-package iotics.api;
+import "annotations.proto";
+import "iotics/api/v2/common.proto";
 
 option csharp_namespace = "Iotics.Api";
 option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
@@ -23,7 +24,28 @@ option php_namespace = "Iotics\\Api";
 // MetaAPI enables querying of metadata associated with Twins and Feeds.
 // Services only affect local resources, unless stated otherwise.
 service MetaAPI {
-
+  option (openapi.service_params) = { headers: [
+    {
+      name:"Iotics-ClientAppId",
+      description:"User namespace used to group all the requests/responses."
+    },
+    {
+      name:"Iotics-ClientRef",
+      description: "Optional client reference. Any responses associated with the request will include this reference."
+    },
+    {
+      name:"Iotics-ConsumerGroup",
+      description:"Used for group listener, optional - Not implemented yet."
+    },
+    {
+      name:"Iotics-RequestTimeout",
+      description:"Client request timeout used to stop the request processing once the timeout is reached."
+    },
+    {
+      name:"Iotics-TransactionRef",
+      description:"Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters."
+    }
+  ]};
   // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
   // - Chunks for a particular result will arrive in-order though they might be interleaved with chunks from other
   //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest;

@@ -1,10 +1,13 @@
 # See https://docs.buf.build/lint-usage
 # See https://docs.buf.build/breaking-usage
 # https://github.com/iamrajiv/helloworld-grpc-gateway
-version: v1beta1
-build:
-  roots:
-    - proto
+version: v1
+deps:
+  - buf.build/googleapis/googleapis
+  -
+breaking:
+  use:
+    - FILE
 lint:
   use:
     - DEFAULT
@@ -17,9 +20,3 @@ lint:
     - RPC_REQUEST_STANDARD_NAME
     - RPC_RESPONSE_STANDARD_NAME
     - RPC_REQUEST_RESPONSE_UNIQUE
-breaking:
-  use:
-    - FILE
-deps:
-  - buf.build/googleapis/googleapis
-  - buf.build/grpc-ecosystem/grpc-gateway

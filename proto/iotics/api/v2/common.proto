@@ -1,0 +1,232 @@
+// Copyright (c) 2019-2022 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol definitions (common)
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+package iotics.api.v2;
+
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "CommonProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// Limit is a request parameter to limit the number of results.
+message Limit {
+  // Max number of results (under configuration max limit constraint)
+  uint32 value = 1;
+}
+
+// Offset is a request parameter applicable in conjunction with the "Limit"
+// request parameter to start returning results from the given offset.
+message Offset {
+  // Result number to start from
+  uint32 value = 1;
+}
+
+// Range is the combination of the "Limit" and "Offset" is a request parameters. It is
+// used to return a specific range of results. Default value is applied if no limit is specified.
+message Range {
+  Limit limit = 1;
+  Offset offset = 2;
+}
+
+// LangLiteral is a metadata property type describing a string with a given language (implicit datatype: rdf:langString).
+message LangLiteral {
+  // 2-character language code
+  string lang = 1;
+  // String representation of the value
+  string value = 2;
+}
+
+// StringLiteral is a metadata property type describing a string without a language (implicit datatype: rdf:string).
+message StringLiteral {
+  // String representation of the value
+  string value = 2;
+}
+
+// Literal is a metadata property type describing a literal with the given datatype (implicit datatype: rdfs:Literal).
+message Literal {
+  // XSD data type (e.g. double) without its namespace prefix (http://www.w3.org/2001/XMLSchema#). The following types
+  // are currently supported:
+  // dateTime, time, date, boolean, integer, decimal, float, double, nonPositiveInteger, negativeInteger,
+  // nonNegativeInteger, positiveInteger, long, unsignedLong, int, unsignedInt, short, unsignedShort, byte,
+  // unsignedByte, base64Binary, anyURI
+  string dataType = 1;
+  // String representation of the value according to XSD datatype specification
+  string value = 2;
+}
+
+// Uri is a metadata property type describing am Uri.
+message Uri {
+  // String representation of the value
+  string value = 1;
+}
+
+// Property is a metadata property with a single value.
+// Multiple instances are used to represent a key (predicate) with multiple values.
+message Property {
+  // The key (predicate) of the property
+  string key = 1;
+
+  // The value of the property. Only one of these fields can be set
+  oneof value {
+    Literal literalValue = 2;
+    LangLiteral langLiteralValue = 3;
+    StringLiteral stringLiteralValue = 4;
+    Uri uriValue = 5;
+  }
+}
+
+// GeoLocation is the geographic location of a Twin.
+message GeoLocation {
+  // Latitude
+  double lat = 1;
+  // Longitude
+  double lon = 2;
+}
+
+// GeoCircle is an approximate geographic location.
+message GeoCircle {
+  GeoLocation location = 1;
+  // Radius (Km) relative to the geolocation
+  double radiusKm = 2;
+}
+
+// DEPRECATED
+// This field will be temporarily maintained alongside the metadata network allowlist for backwards compatibility.
+// Going forward, the metadata network allowlist should be used instead.
+//
+// Read behaviour:
+// PRIVATE - the twin is only visible in a LOCAL scope or according to the metadata network allowlist
+// PUBLIC - the twin is visible in any scope. (ie. metadata network allowlist [ALLOW_ALL])
+//
+// Write behaviour:
+// PRIVATE - set the metadata network allowlist to ALLOW_NONE: the twin is only visible in a LOCAL scope
+// PUBLIC - set the metadata network allowlist to ALLOW_ALL: the twin is visible in any scope.
+enum Visibility {
+  PRIVATE = 0;
+  PUBLIC = 1;
+}
+
+// Scope is a request parameter used to apply a scope to a given request.
+// GLOBAL - go over the network/target the public Twin
+// LOCAL - restrain the request to the local host
+enum Scope {
+  GLOBAL = 0;
+  LOCAL = 1;
+}
+
+// Headers describes the common headers applicable to all the API requests
+// (except for Search subscribe: see SubscriptionHeaders).
+message Headers {
+
+  // Optional client reference. Any responses associated with the request will include this reference.
+  string clientRef = 1;
+
+  // User namespace used to group all the requests/responses
+  string clientAppId = 2;
+
+  // Used to loosely link requests/responses in a distributed environment
+  // each layer can add its own id to the list. Transaction ref is limited to
+  // a max of 16 elements per list and, for each list item, a max length of 36
+  // characters
+  repeated string transactionRef = 3;
+
+  // Used for group listener, optional - Not implemented yet
+  google.protobuf.StringValue consumerGroup = 4;
+
+  // Client request timeout used to stop the request processing once the timeout is reached
+  google.protobuf.Timestamp requestTimeout = 5;
+
+}
+
+// SubscriptionHeaders describes a Search subscribe header. (Will be DEPRECATED with the client-ref from Headers).
+message SubscriptionHeaders {
+  // User namespace used to group all the requests/responses
+  string clientAppId = 1;
+
+  // Used to loosely link requests/responses in a distributed environment
+  // each layer can add its own id to the list. Transaction ref is limited to
+  // a max of 16 elements per list and, for each list item, a max length of 36
+  // characters
+  repeated string transactionRef = 2;
+
+  // consumer group (for group listener, optional) - Not implemented yet
+  google.protobuf.StringValue consumerGroup = 3;
+
+}
+
+// TwinID is the virtual representation of a (physical, purely virtual or hybrid) device,
+// is only ever located in the host it was created.
+message TwinID {
+  // Twin Identifier (using DID format)
+  string id = 1;
+  // Host Identifier (using DID format)
+  string hostId = 2;
+}
+
+// Value is the definition of an individual piece of data within a Feed share or an Input send. Values are purely descriptive, e.g. a
+// follower should expect data to match the values associated with said Feed/Input but must be able to recover where this
+// is not the case.
+message Value {
+  // label is the unique identifier of the value. It is language-neutral. E.g.: "t" / "temp" / "temperature".
+  string label = 1;
+  // comment is the (optional) human-readable description of the value. It is language-specific. E.g.: "Engine oil temperature"
+  string comment = 2;
+  // unit is the (optional) fully qualified ontology string URI of the unit, e.g. http://purl.obolibrary.org/obo/UO_0000027
+  string unit = 3;
+  // dataType is the xsd type in shorthand notation.
+  // Currently supported types are: base64Binary, decimal, float, double, dateTime, time, date, boolean, integer,
+  // nonPositiveInteger, negativeInteger, nonNegativeInteger, positiveInteger, long, unsignedLong, int, unsignedInt,
+  // short, unsignedShort, byte, unsignedByte
+  string dataType = 4;
+}
+
+// Values defines a set of values to be added and/or deleted.
+message Values {
+  // added is the list of values to be added. Note that deletedByLabel takes precedence over this, i.e. if both added
+  // and deletedByLabel contain the same value, the value will be deleted.
+  repeated Value added = 1;
+  // deletedByLabel is the list of labels of values to be deleted.
+  repeated string deletedByLabel = 2;
+}
+
+// FeedData is set of datapoints shared via a Feed.
+message FeedData {
+  // occurredAt is the UTC timestamp of the sample. Typically this is either the time at which an application shared
+  // this sample or the time applicable to the sample itself (such as an hourly weather observation).
+  // (Optional: set to host time if not provided)
+  google.protobuf.Timestamp occurredAt = 2;
+  // mime is the mime type of the encoded data.
+  string mime = 3;
+  // data is the actual set of datapoints, encoded according the the mime type. The data should follow the Feed's
+  // value definitions but that is not enforced. (See also Value)
+  bytes data = 4;
+}
+
+
+// PropertyUpdate describes the update of a twin properties.
+// Can be used to add, replace, or delete properties. The order of operations is:
+// clearedAll (if True), deleted, deletedByKey, added.
+// Note that internal properties (such as location) cannot be modified here.
+message PropertyUpdate {
+
+  // Delete all properties currently set on the twin.
+  bool clearedAll = 1;
+
+  // Delete specific exact properties (by key and value). This operation is ignored if clearAll is True.
+  repeated Property deleted = 2;
+  // Delete any properties with the given keys (predicates). This operation is ignored if clearAll is True.
+  repeated string deletedByKey = 3;
+  // Adds the given properties
+  repeated Property added = 4;
+}

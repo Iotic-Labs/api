@@ -3,15 +3,14 @@
 // Iotics Web protocol definitions (twins)
 syntax = "proto3";
 
+package iotics.api.v2;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
-
-import "iotics/api/common.proto";
-import "iotics/api/feed.proto";
-import "iotics/api/input.proto";
-
-package iotics.api;
+import "annotations.proto";
+import "iotics/api/v2/common.proto";
+import "iotics/api/v2/feed.proto";
+import "iotics/api/v2/input.proto";
 
 option csharp_namespace = "Iotics.Api";
 option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
@@ -27,26 +26,74 @@ option php_namespace = "Iotics\\Api";
 // TwinAPI enables creation and management of Iotics twins.
 // Services only affect local resources, unless stated otherwise.
 service TwinAPI {
-
+  option (openapi.service_params) = { headers: [
+    {
+      name:"Iotics-ClientAppId",
+      description:"User namespace used to group all the requests/responses."
+    },
+    {
+      name:"Iotics-ClientRef",
+      description: "Optional client reference. Any responses associated with the request will include this reference."
+    },
+    {
+      name:"Iotics-ConsumerGroup",
+      description:"Used for group listener, optional - Not implemented yet."
+    },
+    {
+      name:"Iotics-RequestTimeout",
+      description:"Client request timeout used to stop the request processing once the timeout is reached."
+    },
+    {
+      name:"Iotics-TransactionRef",
+      description:"Used to loosely link requests/responses in a distributed environment each layer can add its own id to the list. Transaction ref is limited to a max of 16 elements per list and, for each list item, a max length of 36 characters."
+    }
+  ]};
   // CreateTwin creates a twin.
-  rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
+  rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {
+    option (google.api.http) = {
+      post: "/api/v2/twins"
+      body: "*"
+    };
+  }
 
   // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
   // The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
   // described in the payload)
-  rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
+  rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/twins"
+      body: "*"
+    };
+  }
 
   // DeleteTwin deletes a twin.
-  rpc DeleteTwin(DeleteTwinRequest) returns (DeleteTwinResponse) {}
+  rpc DeleteTwin(DeleteTwinRequest) returns (DeleteTwinResponse) {
+    option (google.api.http) = {
+      delete: "/api/v2/hosts/{args.twinId.hostId}/twins/{args.twinId.id}"
+    };
+  }
 
   // UpdateTwin updates a twin (partial update).
-  rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {}
+  rpc UpdateTwin(UpdateTwinRequest) returns (UpdateTwinResponse) {
+    option (google.api.http) = {
+      patch: "/api/v2/hosts/{args.twinId.hostId}/twins/{args.twinId.id}"
+      body: "*"
+    };
+  }
 
   // Describes a twin. (local and remote)
-  rpc DescribeTwin(DescribeTwinRequest) returns (DescribeTwinResponse) {}
+  rpc DescribeTwin(DescribeTwinRequest) returns (DescribeTwinResponse) {
+    option (google.api.http) = {
+      get: "/api/v2/hosts/{args.twinId.hostId}/twins/{args.twinId.id}"
+    };
+  }
 
   // List all twins.
-  rpc ListAllTwins(ListAllTwinsRequest) returns (ListAllTwinsResponse) {}
+  rpc ListAllTwins(ListAllTwinsRequest) returns (ListAllTwinsResponse) {
+    option (google.api.http) = {
+      get: "/api/v2/twins"
+    };
+  }
 }
 
 // List all twins.
