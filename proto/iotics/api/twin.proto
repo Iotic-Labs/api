@@ -256,6 +256,8 @@ message UpdateTwinResponse {
   message Payload {
     // Unique ID of the twin to delete
     TwinID twinId = 1;
+    // Twin updatedAt timestamp
+    google.protobuf.Timestamp updatedAt = 2;
   }
   // UpdateTwinResponse headers
   Headers headers = 1;
