@@ -62,7 +62,7 @@ message CreateFeedRequest {
   }
   // Arguments describes the mandatory arguments to identify the twin the feed belongs to.
   message Arguments {
-    // Identifier of the twin owning this feed
+    // ID of the twin owning this feed
     TwinID twinId = 1;
   }
 
@@ -192,7 +192,7 @@ message ShareFeedDataResponse {
 message ListAllFeedsRequest {
   // ListAllFeedsRequest mandatory arguments.
   message Arguments {
-    // Identifier of the twin owning this feed
+    // ID of the twin owning this feed
     TwinID twinId = 1;
   }
 

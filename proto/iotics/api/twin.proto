@@ -210,13 +210,13 @@ message DescribeTwinResponse {
 // DEPRECATED - see Visibility field description for details.
 message VisibilityUpdate {
   // DEPRECATED - see field description for details.
-  Visibility visibility = 1;
+  optional Visibility visibility = 1;
 }
 
 // GeoLocationUpdate describes the update of a twin location.
 message GeoLocationUpdate {
   // New location of the twin. If unset, the previously set location will be removed
-  GeoLocation location = 1;
+  optional GeoLocation location = 1;
 }
 
 // UpdateTwinRequest is used to update attributes (including metadata) of a given twin.
@@ -276,13 +276,13 @@ message UpsertTwinRequest {
     // If any metadata network allowlist property is provided, the visibility value will be ignored.
     //
     // Default value: 'PRIVATE'
-    Visibility visibility = 2;
+    optional Visibility visibility = 2;
 
     // Twin Properties to set
     repeated Property properties = 5;
 
     // Twin location to set. If not set the Twin will have no location
-    GeoLocation location = 6;
+    optional GeoLocation location = 6;
 
     // Feeds with metadata to set for the twin
     repeated UpsertFeedWithMeta feeds = 7;
