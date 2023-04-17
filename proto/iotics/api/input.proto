@@ -30,6 +30,12 @@ service InputAPI {
 
   // Receives input messages for a specific input.
   rpc ReceiveInputMessages(ReceiveInputMessageRequest) returns (stream ReceiveInputMessageResponse) {}
+
+  // Creates an input. (local and remote)
+  rpc CreateInput(UpsertInputWithMeta) returns (CreateInputResponse) {}
+
+  // Updates an input. (local and remote)
+  rpc UpdateInput(UpsertInputWithMeta) returns (UpdateInputResponse) {}
 }
 
 // Representation of an input.
@@ -68,6 +74,36 @@ message DeleteInputResponse {
   // DeleteInputResponse headers
   Headers headers = 1;
   // DeleteInputResponse payload
+  Payload payload = 2;
+}
+// ---------------------------------------
+
+// CreateInputResponse describes a created input.
+message CreateInputResponse {
+  // CreateInputResponse payload.
+  message Payload {
+    // Created input
+    InputID inputId = 1;
+  }
+
+  // CreateInputResponse headers
+  Headers headers = 1;
+  // CreateInputResponse payload
+  Payload payload = 2;
+}
+// ---------------------------------------
+
+// UpdateInputResponse describes a created input.
+message UpdateInputResponse {
+  // UpdateInputResponse payload.
+  message Payload {
+    // Updated input
+    InputID inputId = 1;
+  }
+
+  // UpdateInputResponse headers
+  Headers headers = 1;
+  // UpdateInputResponse payload
   Payload payload = 2;
 }
 // ---------------------------------------
