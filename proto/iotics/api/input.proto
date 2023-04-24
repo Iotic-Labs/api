@@ -4,7 +4,6 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 import "iotics/api/common.proto";
 
 package iotics.api;
