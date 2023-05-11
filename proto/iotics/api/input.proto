@@ -30,6 +30,12 @@ service InputAPI {
 
   // Receives input messages for a specific input.
   rpc ReceiveInputMessages(ReceiveInputMessageRequest) returns (stream ReceiveInputMessageResponse) {}
+
+  // Creates an input owned by a twin. (Idempotent)
+  rpc CreateInput(CreateInputRequest) returns (CreateInputResponse) {}
+
+  // Updates attributes of an input, including its metadata.
+  rpc UpdateInput(UpdateInputRequest) returns (UpdateInputResponse) {}
 }
 
 // Representation of an input.
@@ -68,6 +74,82 @@ message DeleteInputResponse {
   // DeleteInputResponse headers
   Headers headers = 1;
   // DeleteInputResponse payload
+  Payload payload = 2;
+}
+// ---------------------------------------
+
+// CreateInputRequest describes a created input.
+message CreateInputRequest {
+  // CreateInputRequest payload.
+  message Payload {
+    // Input identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
+    string id = 1;
+  }
+
+  // Arguments describes the mandatory arguments to identify the twin owning this input
+  message Arguments {
+    // Identifier of the twin owning this input
+    TwinID twinId = 1;
+  }
+
+  // CreateInputRequest headers
+  Headers headers = 1;
+  // CreateInputRequest arguments
+  Arguments args = 2;
+  // CreateInputRequest payload
+  Payload payload = 3;
+}
+// ---------------------------------------
+
+// CreateInputResponse describes a created input.
+message CreateInputResponse {
+  // CreateInputResponse payload.
+  message Payload {
+    // Created input
+    InputID inputId = 1;
+  }
+
+  // CreateInputResponse headers
+  Headers headers = 1;
+  // CreateInputResponse payload
+  Payload payload = 2;
+}
+// ---------------------------------------
+
+// UpdateInputRequest is used to update an input.
+message UpdateInputRequest {
+  // UdpateInputRequest payload used to update one or more field
+  message Payload {
+    // Values describe individual data items to add/remove
+    Values values = 1;
+    // Properties describe individual properties to add/remove. Note only custom properties can be modified here.
+    PropertyUpdate properties = 2;
+  }
+  // UpdateInputRequest arguments
+  message Arguments {
+    // Input to update
+    InputID inputId = 1;
+  }
+
+  // UpdateInputRequest headers
+  Headers headers = 1;
+  // UpdateInputRequest arguments
+  Arguments args = 2;
+  // UpdateInputRequest payload
+  Payload payload = 3;
+}
+
+// UpdateInputResponse describes an updated input.
+message UpdateInputResponse {
+  // UpdateInputResponse payload.
+  message Payload {
+    // Updated input
+    InputID inputId = 1;
+  }
+
+  // UpdateInputResponse headers
+  Headers headers = 1;
+  // UpdateInputResponse payload
   Payload payload = 2;
 }
 // ---------------------------------------
