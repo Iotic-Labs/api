@@ -143,8 +143,6 @@ message SearchResponse {
     TwinID twinId = 1;
     // Twin location (if set). Included with response type: FULL and LOCATED
     GeoLocation location = 2;
-    // DEPRECATED - see field description for details.
-    Visibility visibility = 3;
     // Twin custom properties.
     repeated Property properties = 5;
     // Feed details. Included with response type: FULL
