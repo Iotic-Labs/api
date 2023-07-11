@@ -109,6 +109,13 @@ enum Scope {
   LOCAL = 1;
 }
 
+// RequestInfo is a request parameter used to provide additional information about the request.
+// It will also be included in the response.
+message RequestInfo {
+  // startTime isthe start timestamp of the request
+  google.protobuf.Timestamp startTime = 1;
+}
+
 // Headers describes the common headers applicable to all the API requests
 // (except for Search subscribe: see SubscriptionHeaders).
 message Headers {
@@ -131,6 +138,7 @@ message Headers {
   // Client request timeout used to stop the request processing once the timeout is reached
   google.protobuf.Timestamp requestTimeout = 5;
 
+  RequestInfo requestInfo = 6;
 }
 
 // SubscriptionHeaders describes a Search subscribe header. (Will be DEPRECATED with the client-ref from Headers).
