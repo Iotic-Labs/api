@@ -112,8 +112,12 @@ enum Scope {
 // RequestInfo is a request parameter used to provide additional information about the request.
 // It will also be included in the response.
 message RequestInfo {
-  // startTime isthe start timestamp of the request
+  // Start timestamp of the request, from the perspective of the host (server). Values supplied by the client will be
+  // ignored
   google.protobuf.Timestamp startTime = 1;
+  // OpenTelemetry headers for tracing support (W3C Trace Context / Baggage). If no valid context is provided by the
+  // client, the host (server) will initialise one.
+  map <string, string> otelCtx = 2;
 }
 
 // Headers describes the common headers applicable to all the API requests
