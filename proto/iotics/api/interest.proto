@@ -21,7 +21,7 @@ option php_namespace = "Iotics\\Api";
 // ---------------------------------------------------------------------------------------------------------------------
 
 
-// InterestAPI enables creation and management of interests between a twin and a feed.
+// InterestAPI enables creation and management of interests between a twin and a feed or an input.
 service InterestAPI {
   // Fetch feed data for this interest. (local and remote)
   rpc FetchInterests(FetchInterestRequest) returns (stream FetchInterestResponse) {}

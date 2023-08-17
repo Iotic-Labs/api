@@ -42,7 +42,7 @@ service InputAPI {
 message InputID {
   // Input Identifier string representation (simple string) (unique within the scope of a twin identifier's input set)
   string id = 1;
-  // Twin identifier string representation (simple string) (twin to which the feed belongs)
+  // Twin identifier string representation (simple string) (twin to which the input belongs)
   string twinId = 2;
   // Host identifier string representation (simple string) (Host to which the twin belongs)
   string hostId = 3;
@@ -203,7 +203,7 @@ message UpsertInputWithMeta {
 }
 // ---------------------------------------
 
-// InputMessage describe a message that can be sent to an input
+// InputMessage describes a message that can be sent to an input
 message InputMessage {
   // OccurredAt is the UTC timestamp of the message.
   // Typically this is either the time at which an application sent this message

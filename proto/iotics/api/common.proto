@@ -65,7 +65,7 @@ message Literal {
   string value = 2;
 }
 
-// Uri is a metadata property type describing am Uri.
+// Uri is a metadata property type describing a Uri.
 message Uri {
   // String representation of the value
   string value = 1;

@@ -30,8 +30,8 @@ service TwinAPI {
   // CreateTwin creates a twin.
   rpc CreateTwin(CreateTwinRequest) returns (CreateTwinResponse) {}
 
-  // UpsertTwin creates or update a twin with its metadata + the twin feeds with their metadata.
-  // The full state is applied (ie. if the operation succeeds the state of the twin/feeds will be the one
+  // UpsertTwin creates or update a twin with its metadata + the twin feeds and inputs with their metadata.
+  // The full state is applied (ie. if the operation succeeds the state of the twin, feeds and inputs will be the one
   // described in the payload)
   rpc UpsertTwin(UpsertTwinRequest) returns (UpsertTwinResponse) {}
 
@@ -250,10 +250,10 @@ message UpdateTwinResponse {
   Payload payload = 2;
 }
 
-// UpsertTwinRequest describes the full state of a twin + its feeds to create or update (full update)
+// UpsertTwinRequest describes the full state of a twin + its feeds and inputs to create or update (full update)
 message UpsertTwinRequest {
 
-  // UpsertTwinRequest payload. This state will be applied to the twin/feeds
+  // UpsertTwinRequest payload. This state will be applied to the twin, feeds and inputs
   message Payload {
 
     // Unique ID of the twin to create/update
@@ -279,7 +279,7 @@ message UpsertTwinRequest {
   Payload payload = 2;
 }
 
-// UpsertTwinResponse is received when a twin and its feeds have been created/updated.
+// UpsertTwinResponse is received when a twin and its feeds and inputs have been created/updated.
 message UpsertTwinResponse {
 
   // Payload identifies the twin which was created.
