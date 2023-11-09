@@ -36,6 +36,10 @@ service FeedAPI {
   // Shares a new sample of data for the given feed which any (interest) subscribers can receive.
   rpc ShareFeedData(ShareFeedDataRequest) returns (ShareFeedDataResponse) {}
 
+  // Shares feed data over a stream, any sharing error will return the error and close the stream.
+  // Note: cannot share to different feeds over the same stream.
+  rpc StreamFeedData(stream ShareFeedDataRequest) returns (ShareFeedDataResponse) {}
+
   // Lists all feeds owned by a twin.
   rpc ListAllFeeds(ListAllFeedsRequest) returns (ListAllFeedsResponse) {}
 
