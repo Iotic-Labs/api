@@ -149,8 +149,6 @@ message SearchResponse {
     repeated FeedDetails feeds = 10;
     // Input details. Included with response type: FULL
     repeated InputDetails inputs = 11;
-    // Twin createdAt timestamp.
-    google.protobuf.Timestamp createdAt = 12;
     // Twin updatedAt timestamp.
     google.protobuf.Timestamp updatedAt = 13;
   }
