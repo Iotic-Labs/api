@@ -69,8 +69,6 @@ message ListAllTwinsResponse {
     GeoLocation location = 3;
     // Twin custom properties.
     repeated Property properties = 5;
-    // Twin createdAt timestamp.
-    google.protobuf.Timestamp createdAt = 6;
     // Twin updatedAt timestamp.
     google.protobuf.Timestamp updatedAt = 7;
   }
@@ -183,8 +181,6 @@ message DescribeTwinResponse {
     // Custom properties associated with this twin.
     repeated Property properties = 6;
 
-    // Twin createdAt timestamp.
-    google.protobuf.Timestamp createdAt = 7;
     // Twin updatedAt timestamp.
     google.protobuf.Timestamp updatedAt = 8;
   }
