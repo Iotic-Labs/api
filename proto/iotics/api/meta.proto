@@ -23,12 +23,10 @@ option php_namespace = "Iotics\\Api";
 // Services only affect local resources, unless stated otherwise.
 service MetaAPI {
 
-  // SparqlQuery performs a SPARQL 1.1 query and returns one or more results, each as a sequence of chunks. Note that:
-  // - Chunks for a particular result will arrive in-order though they might be interleaved with chunks from other
-  //   results (when performing a non-local query). See scope parameter in SparqlQueryRequest;
-  // - The call will only complete once the (specified or host default) request timeout has been reached. The client can
-  //   choose to end the stream early once they have received enough results. (E.g. in the case of Scope.LOCAL this
-  //   would be after the one and only sequence of chunks has been received.). (local and remote)
+  // SparqlQuery performs a SPARQL 1.1 query against the Federated Knowledge Graph of the Iotics network to which this
+  // host belongs. The result is returned as a sequence of chunks. Note that:
+  // - Result chunks MIGHT arrive out of order and it is the client's responsibility to re-assemble them.
+  // - This RPC is currently in alpha!
   rpc SparqlQuery(SparqlQueryRequest) returns (stream SparqlQueryResponse) {}
 
   // SparqlUpdate performs a SPARQL 1.1 update. When performing an update, the update query must contain a reference to
@@ -38,7 +36,7 @@ service MetaAPI {
   rpc SparqlUpdate(SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
 
   // ExplorerQuery - Deprecated - use SparqlQuery instead.
-  rpc ExplorerQuery(ExplorerRequest) returns (stream SparqlQueryResponse) {}
+  rpc ExplorerQuery(ExplorerRequest) returns (stream ExplorerResponse) {}
 }
 
 // ExplorerRequest - Deprecated. Use SparqlQueryRequest instead.
@@ -48,6 +46,7 @@ message ExplorerRequest {
   message Payload {
     // The desired result content type. Note that choosing an invalid result type for the type of query will result in
     // an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
+    // If not explicitly specified, this field will default to the SPARQL_JSON (the first enum entry).
     SparqlResultType resultContentType = 1;
 
     // keyword defines the search term associated to the explorer request.
@@ -107,10 +106,47 @@ message SparqlQueryRequest {
 
 // SparqlQueryResponse is a part of a result for a SPARQL query request. Multiple chunks form a complete result. Related
 // chunks can be identified by a combination of:
-// - The hostId
 // - Client reference (in headers, set by caller)
 // - Chunk sequence number
 message SparqlQueryResponse {
+
+  // Payload of the query result chunk
+  message Payload {
+
+    // Position of a chunk in result for a given request. The first chunk has a sequence number of 0.
+    uint64 seqNum = 1;
+
+    // Indicates whether this is the last chunk, for a specific request. Results for different requests can be
+    // identified by setting a unique clientRef in the request headers.
+    bool last = 2;
+
+    // Result error status. If set, this will indicate a problem with running the query (e.g. invalid syntax or content
+    // type) as opposed to a more general issue (in which case the standard gRPC error mechanism will be used and the
+    // stream terminated).
+    google.rpc.Status status = 3;
+
+    // Content type of the result.
+    SparqlResultType contentType = 4;
+
+    // Query result chunk, encoded according to actualType.
+    // Note that:
+    // - The maximum size of each chunk is host-specific. A typical default value is 4MiB.
+    bytes resultChunk = 5;
+  }
+
+  // Headers for the query result. clientRef within can be used to identify which query the result applies to.
+  Headers headers = 1;
+
+  // SPARQL query result chunk payload.
+  Payload payload = 2;
+}
+
+// ExplorerResponse is a part of a result for an explorer query request. Multiple chunks form a complete result. Related
+// chunks can be identified by a combination of:
+// - The hostId
+// - Client reference (in headers, set by caller)
+// - Chunk sequence number
+message ExplorerResponse {
 
   // Payload of the query result chunk
   message Payload {
