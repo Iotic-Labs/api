@@ -37,33 +37,6 @@ service MetaAPI {
   // 1. http://data.iotics.com/graph#custom-public (aka custom public graph) - All metadata written to this graph will be
   //    visible during SPARQL queries both with local & global scope (and thus, the Iotics network).
   rpc SparqlUpdate(SparqlUpdateRequest) returns (SparqlUpdateResponse) {}
-
-  // ExplorerQuery - Deprecated - use SparqlQuery instead.
-  rpc ExplorerQuery(ExplorerRequest) returns (stream ExplorerResponse) {}
-}
-
-// ExplorerRequest - Deprecated. Use SparqlQueryRequest instead.
-message ExplorerRequest {
-
-  // Explorer request payload.
-  message Payload {
-    // The desired result content type. Note that choosing an invalid result type for the type of query will result in
-    // an error status reported in the response. (See SparqlResultType for valid content-query type combinations.)
-    // If not explicitly specified, this field will default to the SPARQL_JSON (the first enum entry).
-    SparqlResultType resultContentType = 1;
-
-    // keyword defines the search term associated to the explorer request.
-    string keyword = 2;
-  }
-
-  // Explorer request headers
-  Headers headers = 1;
-
-  // Explorer request scope
-  Scope scope = 2;
-
-  // Explorer request payload
-  Payload payload = 3;
 }
 
 // SparqlResultType defines the result content types for SPARQL requests. Note that applicable content types depend on
@@ -135,48 +108,6 @@ message SparqlQueryResponse {
     // Note that:
     // - The maximum size of each chunk is host-specific. A typical default value is 4MiB.
     bytes resultChunk = 5;
-  }
-
-  // Headers for the query result. clientRef within can be used to identify which query the result applies to.
-  Headers headers = 1;
-
-  // SPARQL query result chunk payload.
-  Payload payload = 2;
-}
-
-// ExplorerResponse is a part of a result for an explorer query request. Multiple chunks form a complete result. Related
-// chunks can be identified by a combination of:
-// - The hostId
-// - Client reference (in headers, set by caller)
-// - Chunk sequence number
-message ExplorerResponse {
-
-  // Payload of the query result chunk
-  message Payload {
-
-    // Result host identifier. Indicates from which host this result chunk came from. For a local result, this field
-    // will be unset.
-    string hostId = 1;
-
-    // Position of a chunk in result from a given host (and request). The first chunk has a sequence number of 0.
-    uint64 seqNum = 2;
-
-    // Indicates whether this is the last chunk from a given host, for a specific request. Results for different
-    // requests can be identified by setting a unique clientRef in the request headers.
-    bool last = 3;
-
-    // Result error status (only applicable to local results). If set, this will
-    // indicate a problem with running the query (e.g. invalid syntax or content type) as opposed to a more general
-    // issue (in which case the standard gRPC error mechanism will be used and the stream terminated).
-    google.rpc.Status status = 4;
-
-    // Content type of the result.
-    SparqlResultType contentType = 5;
-
-    // Query result chunk, encoded according to actualType.
-    // Note that:
-    // - The maximum size of each chunk is host-specific.
-    bytes resultChunk = 6;
   }
 
   // Headers for the query result. clientRef within can be used to identify which query the result applies to.
