@@ -30,7 +30,7 @@ service HostAPI {
 
   // IsHostMetaAllowed determines whether a remote host is allowed to perform meta requests against the given twin.
   // An example of a meta(data) request is twin.DescribeTwin
-  rpc IsHostMetaAllowed(IsHostDataAllowedRequest) returns (IsHostDataAllowedResponse) {}
+  rpc IsHostMetaAllowed(IsHostMetaAllowedRequest) returns (IsHostMetaAllowedResponse) {}
 }
 
 // GetHostIDRequest gets the local host twin's ID
