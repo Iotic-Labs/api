@@ -55,7 +55,7 @@ message HostAllowedArguments {
   string remoteHostId = 1;
 
   // TwinDID of the twin to which the request applies
-  TwinID twinID = 2;
+  TwinID twinId = 2;
 }
 
 // HostAllowedResponsePayload contans response details to a data/meta allow list check.
@@ -64,7 +64,7 @@ message HostAllowedResponsePayload {
   string remoteHostId = 1;
 
   // TwinDID of the twin to which the request applies
-  TwinID twinID = 2;
+  TwinID twinId = 2;
 
   // Whether the twin allows the remote host to perform meta or data actions
   bool allowed = 3;
