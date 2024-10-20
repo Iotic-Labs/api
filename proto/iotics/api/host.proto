@@ -23,14 +23,22 @@ option php_namespace = "Iotics\\Api";
 service HostAPI {
   // GetHostID gets the ID of the host twin.
   rpc GetHostID(GetHostIDRequest) returns (GetHostIDResponse) {}
+
+  // IsHostDataAllowed determines whether a remote host is allowed to perform data requests against the given twin.
+  // An example of a data request is interest.SendInputMessage
+  rpc IsHostDataAllowed(IsHostDataAllowedRequest) returns (IsHostDataAllowedResponse) {}
+
+  // IsHostMetaAllowed determines whether a remote host is allowed to perform meta requests against the given twin.
+  // An example of a meta(data) request is twin.DescribeTwin
+  rpc IsHostMetaAllowed(IsHostMetaAllowedRequest) returns (IsHostMetaAllowedResponse) {}
 }
 
-// GetHostIDRequest: gets the local host twin's ID
+// GetHostIDRequest gets the local host twin's ID
 message GetHostIDRequest {
   Headers headers = 1;
 }
 
-// GetHostIDResponse: response containing the local host twin's ID
+// GetHostIDResponse is the response containing the local host twin's ID
 message GetHostIDResponse {
   message Payload {
     string hostId = 1;
@@ -38,4 +46,62 @@ message GetHostIDResponse {
   Headers headers = 1;
 
   Payload payload = 2;
+}
+
+
+// HostAllowedArguments are the arguments determining which host and twin the allow list check applies to.
+message HostAllowedArguments {
+  // Remote Host Id
+  string remoteHostId = 1;
+
+  // TwinDID of the twin to which the request applies
+  TwinID twinId = 2;
+}
+
+// HostAllowedResponsePayload contans response details to a data/meta allow list check.
+message HostAllowedResponsePayload {
+  // Remote Host Id
+  string remoteHostId = 1;
+
+  // TwinDID of the twin to which the request applies
+  TwinID twinId = 2;
+
+  // Whether the twin allows the remote host to perform meta or data actions
+  bool allowed = 3;
+}
+
+// IsHostDataAllowedRequest determines whether a remote host is allowed to perform data requests against the given twin.
+message IsHostDataAllowedRequest {
+  // IsHostDataAllowedRequest headers
+  Headers headers = 1;
+
+  // IsHostDataAllowedRequest mandatory arguments
+  HostAllowedArguments args = 2;
+}
+
+// IsHostDataAllowedResponse is the response to for an IsHostDataAllowed call
+message IsHostDataAllowedResponse {
+  // IsHostDataAllowedResponse headers
+  Headers headers = 1;
+
+  // IsHostDataAllowedResponse payload
+  HostAllowedResponsePayload payload = 2;
+}
+
+// IsHostMetaAllowedRequest determines whether a remote host is allowed to perform meta requests against the given twin.
+message IsHostMetaAllowedRequest {
+  // IsHostMetaAllowedRequest headers
+  Headers headers = 1;
+
+  // IsHostMetaAllowedRequest mandatory arguments
+  HostAllowedArguments args = 2;
+}
+
+// IsHostDataAllowedResponse is the response to for an IsHostMetaAllowed call
+message IsHostMetaAllowedResponse {
+  // IsHostMetaAllowedResponse headers
+  Headers headers = 1;
+
+  // IsHostMetaAllowedResponse payload
+  HostAllowedResponsePayload payload = 2;
 }
