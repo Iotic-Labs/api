@@ -54,7 +54,7 @@ message UpsertCircleRequest {
 
 message UpsertCircleResponse {
   message Payload {
-    CircleID circleID = 1;
+    CircleID circleId = 1;
   }
   Headers headers = 1;
   Payload payload = 2;
