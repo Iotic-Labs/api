@@ -1,0 +1,120 @@
+// Copyright (c) 2019-2024 Iotic Labs Ltd. All rights reserved.
+
+// Iotics Web protocol definitions (circles)
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "iotics/api/common.proto";
+package iotics.api;
+
+option csharp_namespace = "Iotics.Api";
+option go_package = "github.com/Iotic-Labs/iotic-go-proto-qapi/iotics/api;ioticsapi";
+option java_multiple_files = true;
+option java_outer_classname = "CircleProto";
+option java_package = "com.iotics.api";
+option objc_class_prefix = "IAX";
+option php_namespace = "Iotics\\Api";
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+// CircleAPI enables creation and management of Iotics circles.
+// Services only affect local resources.
+service CircleAPI {
+
+  // UpsertCircle creates or updates a circle with its metadata.
+  // The full state is applied (ie. if the operation succeeds the state of the circle will
+  // be the one described in the payload)
+  rpc UpsertCircle(UpsertCircleRequest) returns (UpsertCircleResponse) {}
+
+  // DeleteCircle deletes a circle.
+  rpc DeleteCircle(DeleteCircleRequest) returns (DeleteCircleResponse) {}
+
+  // Describes a circle.
+  rpc DescribeCircle(DescribeCircleRequest) returns (DescribeCircleResponse) {}
+
+  // List all circles.
+  rpc ListAllCircles(ListAllCirclesRequest) returns (ListAllCirclesResponse) {}
+}
+
+message CircleID {
+  // Circle Identifier (using DID format)
+  string id = 1;
+}
+
+
+message UpsertCircleRequest {
+  message Payload {
+    CircleID circleId = 1;
+    repeated Property properties = 2;
+  }
+  Headers headers = 1;
+  Payload payload = 2;
+}
+
+message UpsertCircleResponse {
+  message Payload {
+    CircleID circleId = 1;
+  }
+  Headers headers = 1;
+  Payload payload = 2;
+}
+
+
+message DeleteCircleRequest {
+  message Arguments {
+    CircleID circleId = 1;
+  }
+  Headers headers = 1;
+  Arguments args = 2;
+}
+
+message DeleteCircleResponse {
+  message Payload {
+    CircleID circleId = 1;
+  }
+  Headers headers = 1;
+  Payload payload = 2;
+}
+
+
+message DescribeCircleRequest {
+  message Arguments {
+    CircleID circleId = 1;
+  }
+  Headers headers = 1;
+  Arguments args = 3;
+}
+
+message DescribeCircleResponse {
+  message MetaResult {
+    repeated Property properties = 1;
+    google.protobuf.Timestamp updatedAt = 2;
+  }
+  message Payload {
+    CircleID circleId = 1;
+    MetaResult result = 2;
+  }
+  Headers headers = 1;
+  Payload payload = 2;
+}
+
+
+message ListAllCirclesRequest {
+  Headers headers = 1;
+  Range range = 20;
+}
+
+message ListAllCirclesResponse {
+  message CircleDetails {
+    CircleID circleId = 1;
+    repeated Property properties = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+  }
+
+  message Payload {
+    repeated CircleDetails circles = 1;
+  }
+  Headers headers = 1;
+  Payload payload = 2;
+}
